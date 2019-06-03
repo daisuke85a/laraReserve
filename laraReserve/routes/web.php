@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/course', 'CourseController@index');
+
+Route::post('/course/create', 'CourseController@create');
