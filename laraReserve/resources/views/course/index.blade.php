@@ -5,6 +5,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                @if (count($errors) > 0)
+                <div>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{$error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <form action="/course/create" method="post">
                     {{ csrf_field() }}
                     <table>
