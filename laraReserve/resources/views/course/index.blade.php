@@ -27,6 +27,12 @@
                         <td>{{$course->title}}</td>
                         <td>{{$course->content}}</td>
                         <td>{{$course->fee}}</td>
+                        <td>
+                            <form action="/course/delete/{{$course->id}}" method="POST">
+                                {{ csrf_field() }}
+                                <input type="submit" value="削除" class="btn btn-danger btn-sm btn-dell">
+                            </form>
+                        </td>
                     </tr>
                     @endforeach
                 </table>
