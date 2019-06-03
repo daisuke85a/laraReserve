@@ -23,4 +23,7 @@ Route::get('/course', 'CourseController@index');
 
 Route::post('/course/create', 'CourseController@create');
 
+Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
+Route::patch('/course/edit/{id}/','CourseController@edit_confirm'); //確認
+Route::post('/course/edit/{id}/', 'CourseController@edit_finish'); //完了
 Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除
