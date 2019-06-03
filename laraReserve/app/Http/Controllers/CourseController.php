@@ -57,7 +57,7 @@ class CourseController extends Controller
         return view('course.edit_index')->with('course', $course);
     }
 
-    public function edit_confirm(Request $req)
+    public function edit_confirm(\App\Http\Requests\CheckCourseRequest $req)  //TODO: バリデーションをチェックする 参考:https://laraweb.net/knowledge/2156/
     {
         $data = $req->all();
         return view('course.edit_confirm')->with($data);
