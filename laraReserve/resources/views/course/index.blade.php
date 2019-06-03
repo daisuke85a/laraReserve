@@ -14,6 +14,23 @@
                     </ul>
                 </div>
                 @endif
+
+                <h2>講座リスト</h2>
+                <table>
+                    <tr>
+                        <th>タイトル</th>
+                        <th>内容</th>
+                        <th>料金</th>
+                    </tr>
+                    @foreach ($courses as $course)
+                    <tr>
+                        <td>{{$course->title}}</td>
+                        <td>{{$course->content}}</td>
+                        <td>{{$course->fee}}</td>
+                    </tr>
+                    @endforeach
+                </table>
+
                 <form action="/course/create" method="post">
                     {{ csrf_field() }}
                     <table>
@@ -31,10 +48,11 @@
                         </tr>
                         <tr>
                             <th></th>
-                            <td><input type="submit" value="send"></td>
+                            <td><input type="submit" value="講座を追加する"></td>
                         </tr>
                 </form>
                 </table>
+
             </div>
         </div>
     </div>

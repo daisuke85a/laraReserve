@@ -11,7 +11,9 @@ class CourseController extends Controller
 {
     public function index()
     {
-        return view('course.index');
+
+        $courses = Course::all();
+        return view('course.index', ['courses' => $courses]);
     }
 
     public function create(Request $request)
