@@ -60,7 +60,7 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="./course">
+                                    <a class="dropdown-item" href="/course">
                                         講座管理
                                     </a>
 
