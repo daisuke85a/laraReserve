@@ -28,11 +28,18 @@
                         <td>{{$course->content}}</td>
                         <td>{{$course->fee}}</td>
                         <td>
-                                <form action="/course/edit/{{$course->id}}" method="GET">
-                                    {{ csrf_field() }}
-                                    <input type="submit" value="編集" class="btn btn-secondary btn-sm btn-dell">
-                                </form>
-                            </td>
+                            <form action="/course/edit/{{$course->id}}" method="GET">
+                                {{ csrf_field() }}
+                                <input type="submit" value="編集" class="btn btn-secondary btn-sm btn-dell">
+                            </form>
+                        </td>
+
+                        <td>
+                            <form action="/{{$course->id}}/lesson/add" method="GET">
+                                {{ csrf_field() }}
+                                <input type="submit" value="日程追加" class="btn btn-secondary btn-sm btn-dell">
+                            </form>
+                        </td>
 
                         <td>
                             <form action="/course/delete/{{$course->id}}" method="POST">

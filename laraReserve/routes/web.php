@@ -27,3 +27,7 @@ Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
 Route::patch('/course/edit/{id}/','CourseController@edit_confirm'); //確認
 Route::post('/course/edit/{id}/', 'CourseController@edit_finish'); //完了
 Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除
+
+Route::get('/{id}/lesson/add/', 'LessonController@add'); //レッスン追加画面表示
+Route::get('/{id}/lesson/create/', 'LessonController@create'); //レッスン追加
+
