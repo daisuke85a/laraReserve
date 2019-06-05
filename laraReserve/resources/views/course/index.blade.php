@@ -31,10 +31,10 @@
                         <td>
                             @if (count($course->lessons) > 0)
                             @foreach ($course->lessons as $lesson)
-                            <p>{{$lesson->getDate()}}〜</p>
+                                <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getDate()}}〜</a></p>
                             @endforeach
                             @else
-                            <p>予定無し</p>
+                                <p>予定無し</p>
                             @endif
                         </td>
 

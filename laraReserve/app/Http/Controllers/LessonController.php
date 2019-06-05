@@ -43,4 +43,12 @@ class LessonController extends Controller
         return redirect('/course');
     }
 
+    public function index(Request $req, $id)
+    {
+
+        $lesson = lesson::findOrFail($id);
+        return view('lesson.index')->with('lesson', $lesson);
+
+    }
+
 }
