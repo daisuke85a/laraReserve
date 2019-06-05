@@ -15,10 +15,10 @@
                 </div>
                 @endif
 
-                <h2>講座リスト</h2>
+                <h2>クラス</h2>
                 <table>
                     <tr>
-                        <th>タイトル</th>
+                        <th>クラス名</th>
                         <th>内容</th>
                         <th>料金</th>
                         <th>レッスン予定</th>
@@ -27,7 +27,7 @@
                     <tr>
                         <td>{{$course->title}}</td>
                         <td>{{$course->content}}</td>
-                        <td>{{$course->fee}}</td>
+                        <td>{{$course->fee}}円</td>
                         <td>
                             @if (count($course->lessons) > 0)
                             @foreach ($course->lessons as $lesson)
@@ -66,20 +66,20 @@
                     {{ csrf_field() }}
                     <table>
                         <tr>
-                            <th>講座名: </th>
+                            <th>クラス名 </th>
                             <td><input type="text" name="title" value="{{old('title')}}"></td>
                         </tr>
                         <tr>
-                            <th>講座内容: </th>
+                            <th>内容 </th>
                             <td><input type="text" name="content" value="{{old('content')}}"></td>
                         </tr>
                         <tr>
-                            <th>料金: </th>
+                            <th>料金 </th>
                             <td><input type="number" name="fee" value="{{old('fee')}}"></td>
                         </tr>
                         <tr>
                             <th></th>
-                            <td><input type="submit" value="講座を追加する"></td>
+                            <td><input type="submit" value="クラスを追加する"></td>
                         </tr>
                 </form>
                 </table>
