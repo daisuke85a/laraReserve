@@ -21,6 +21,7 @@
                         <th>タイトル</th>
                         <th>内容</th>
                         <th>料金</th>
+                        <th>レッスン予定</th>
                     </tr>
                     @foreach ($courses as $course)
                     <tr>
@@ -28,16 +29,26 @@
                         <td>{{$course->content}}</td>
                         <td>{{$course->fee}}</td>
                         <td>
-                            <form action="/course/edit/{{$course->id}}" method="GET">
-                                {{ csrf_field() }}
-                                <input type="submit" value="編集" class="btn btn-secondary btn-sm btn-dell">
-                            </form>
+                            @if (count($course->lessons) > 0)
+                            @foreach ($course->lessons as $lesson)
+                            <p>{{$lesson->getDate()}}〜</p>
+                            @endforeach
+                            @else
+                            <p>予定無し</p>
+                            @endif
                         </td>
 
                         <td>
                             <form action="/{{$course->id}}/lesson/add" method="GET">
                                 {{ csrf_field() }}
-                                <input type="submit" value="日程追加" class="btn btn-secondary btn-sm btn-dell">
+                                <input type="submit" value="日程追加" class="btn btn-primary btn-sm btn-dell">
+                            </form>
+                        </td>
+
+                        <td>
+                            <form action="/course/edit/{{$course->id}}" method="GET">
+                                {{ csrf_field() }}
+                                <input type="submit" value="編集" class="btn btn-secondary btn-sm btn-dell">
                             </form>
                         </td>
 

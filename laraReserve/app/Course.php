@@ -14,5 +14,9 @@ class Course extends Model
         'fee' => 'required'
     );
 
+    public function lessons(){
+        return $this->hasMany('App\Lesson');
+    }
+
 
 }
