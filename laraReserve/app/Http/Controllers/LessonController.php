@@ -40,7 +40,7 @@ class LessonController extends Controller
             Log::debug('未ログインのためレッスン追加を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
         }
 
-        return view('home');
+        return redirect('/course');
     }
 
 }
