@@ -1,99 +1,79 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
                 </div>
             </div>
+
+            @if (count($errors) > 0)
+            <div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <h2>クラス</h2>
+            <table>
+                <tr>
+                    <th>クラス名</th>
+                    <th>内容</th>
+                    <th>料金</th>
+                    <th>レッスン予定</th>
+                </tr>
+                @foreach ($courses as $course)
+                <tr>
+                    <td>{{$course->title}}</td>
+                    <td>{{$course->content}}</td>
+                    <td>{{$course->fee}}円</td>
+                    <td>
+                        @if (count($course->lessons) > 0)
+                        @foreach ($course->lessons as $lesson)
+                            <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getDate()}}〜</a></p>
+                        @endforeach
+                        @else
+                            <p>予定無し</p>
+                        @endif
+                    </td>
+
+                    <td>
+                        <form action="/{{$course->id}}/lesson/add" method="GET">
+                            {{ csrf_field() }}
+                            <input type="submit" value="日程追加" class="btn btn-primary btn-sm btn-dell">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form action="/course/edit/{{$course->id}}" method="GET">
+                            {{ csrf_field() }}
+                            <input type="submit" value="編集" class="btn btn-secondary btn-sm btn-dell">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form action="/course/delete/{{$course->id}}" method="POST">
+                            {{ csrf_field() }}
+                            <input type="submit" value="削除" class="btn btn-danger btn-sm btn-dell">
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+
         </div>
-    </body>
-</html>
+    </div>
+</div>
+@endsection
