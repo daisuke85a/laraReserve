@@ -43,12 +43,15 @@ class LessonController extends Controller
         return redirect('/course');
     }
 
-    public function index(Request $req, $id)
+    public function index(Request $req, $course_id, $id)
     {
-
+        Log::debug('LessonController:index');
+        Log::debug('テスト');
+        Log::debug('LessonController:index $id' . print_r($id,true));
         $lesson = lesson::findOrFail($id);
+        Log::debug('テスト2');
+        Log::debug('LessonController:index $lesson' . print_r($lesson,true));
         return view('lesson.index')->with('lesson', $lesson);
-
     }
 
 }

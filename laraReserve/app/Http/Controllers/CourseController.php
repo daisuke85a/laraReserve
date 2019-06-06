@@ -11,6 +11,7 @@ class CourseController extends Controller
 {
     public function index()
     {
+        Log::debug('CourseController:index');
         $courses = Course::all();
         return view('course.index', ['courses' => $courses]);
     }
