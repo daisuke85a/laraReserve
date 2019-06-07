@@ -15,10 +15,12 @@
                 </div>
                 @endif
 
-                <h2>レッスン表示</h2>
-                <p>開始時間 </p>
+                <h2>レッスン詳細</h2>
+                <h3>クラス名</h3>
+                <p>{{$lesson->title}}</p>
+                <h3>開始時間 </h3>
                 <p>{{$lesson->start}}</p>
-                <p>終了時間 </p>
+                <h3>終了時間 </h3>
                 <p>{{$lesson->end}}</p>
 
                 <h2>レッスンの予約</h2>
@@ -26,10 +28,17 @@
                     {{ csrf_field() }}
                         <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
                         <input type="submit" value="レッスンを予約する">
+                        {{-- TODO:レッスン予約済みの場合はボタンを無効化したい --}}
                 </form>
 
-                <p>このレッスンを予約してくれた人リスト(今後表示したい)</p>
-                {{-- //TODO: 予約した人のリストを表示する --}}
+                <h2>このレッスンを予約してる人</h2>
+                @if (count($reserves) > 0)
+                @foreach ($reserves as $reserve)
+                    <p>{{$reserve->getUserName()}}</p>
+                @endforeach
+                @else
+                    <p>まだ居ません</p>
+                @endif
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Lesson;
+use App\Reserve;
 use Log;
 
 class LessonController extends Controller
@@ -46,12 +47,13 @@ class LessonController extends Controller
     public function index(Request $req, $course_id, $id)
     {
         Log::debug('LessonController:index');
-        Log::debug('テスト');
         Log::debug('LessonController:index $id' . print_r($id,true));
         $lesson = lesson::findOrFail($id);
-        Log::debug('テスト2');
         Log::debug('LessonController:index $lesson' . print_r($lesson,true));
-        return view('lesson.index')->with('lesson', $lesson);
+        $reserves = Reserve::where('lesson_id', $id)->get();
+        Log::debug('LessonController:index $reserves count' . print_r($reserves->count(),true));
+
+        return view('lesson.index')->with([ 'lesson' => $lesson , 'reserves' => $reserves ]);
     }
 
 }

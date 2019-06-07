@@ -13,6 +13,8 @@ class ReserveController extends Controller
 
         if (Auth::check()) {
             // ユーザはログインしている
+
+            // TODO: 同ユーザによりレッスン予約済みの場合は予約をガードしたい
             $user = Auth::user();
             Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
             Log::debug('ReserveController lesson_id' . print_r($request->lesson_id, true) . '"');
