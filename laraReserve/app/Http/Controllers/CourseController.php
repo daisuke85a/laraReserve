@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -29,6 +30,7 @@ class CourseController extends Controller
         $course = new Course;
         $form = $request->all();
         unset($form['_token']);
+        unset($form['image']);
 
         if (Auth::check()) {
             // ユーザはログインしている
@@ -36,7 +38,37 @@ class CourseController extends Controller
             $form += array('user_id' => $user->id);
             Log::debug('$form="' . print_r($form, true) . '"');
 
+            // $ext = $request->file('image')->guessExtension();
+            // Log::debug('$request->file(image)->guessExtension()"' . print_r($ext, true) . '"');
+
+
+            $this->validate($request, [
+                'image' => [
+                    // 必須
+                    'required',
+                    // アップロードされたファイルであること
+                    'file',
+                    // 画像ファイルであること
+                    'image',
+                    // MIMEタイプを指定
+                    'mimes:jpeg,jpg,png',
+                ]
+            ]);
+
             $course->fill($form)->save();
+
+            if($request->file('image')->isValid([])){
+                $image = new Image;
+                $image->name = $request->image->store('public/image');
+                $image->course_id = $course->id;
+                $image->save();
+                //$course->image = $request->image->store('public/image');
+                Log::debug('store Image');
+            }
+            else{
+                Log::debug('inValid Image');
+            }
+
         } else {
             Log::debug('未ログインのため講座追加を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
         }

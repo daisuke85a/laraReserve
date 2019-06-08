@@ -62,7 +62,7 @@
                     @endforeach
                 </table>
 
-                <form action="/course/create" method="post">
+                <form action="/course/create" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <table>
                         <tr>
@@ -76,6 +76,10 @@
                         <tr>
                             <th>料金 </th>
                             <td><input type="number" name="fee" value="{{old('fee')}}"></td>
+                        </tr>
+                        <tr>
+                            <th>画像</th>
+                            <td><input type="file" name ="image" ></td>
                         </tr>
                         <tr>
                             <th></th>
