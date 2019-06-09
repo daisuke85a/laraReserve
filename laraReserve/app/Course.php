@@ -18,5 +18,9 @@ class Course extends Model
         return $this->hasMany('App\Lesson');
     }
 
+    public function mainImage(){
+        return $this->hasOne('App\Image');
+    }
+
 
 }

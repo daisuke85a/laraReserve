@@ -59,7 +59,7 @@ class CourseController extends Controller
 
             if($request->file('image')->isValid([])){
                 $image = new Image;
-                $image->name = $request->image->store('public/image');
+                $image->name = basename($request->image->store('public/image'));
                 $image->course_id = $course->id;
                 $image->save();
                 //$course->image = $request->image->store('public/image');

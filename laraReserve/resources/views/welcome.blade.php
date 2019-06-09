@@ -23,6 +23,9 @@
             <div class="card">
                 <div class="card-header"><h2>{{$course->title}}</h2></div>
                 <div class="card-body">
+                    @if ($course->mainImage != null)
+                        <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
+                    @endif
                     <p>{{$course->content}}</p>
                     <p>{{$course->fee}}円</p>
                     <h3>レッスンの予約</h3>
