@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12">
             <div class="card">
                 @if (count($errors) > 0)
                 <div>
@@ -31,7 +31,7 @@
                         <td>
                             @if (count($course->lessons) > 0)
                             @foreach ($course->lessons as $lesson)
-                                <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getDate()}}〜</a></p>
+                                <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getStartDay()}}</a></p>
                             @endforeach
                             @else
                                 <p>予定無し</p>
