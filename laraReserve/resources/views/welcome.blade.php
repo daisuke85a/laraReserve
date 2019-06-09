@@ -33,12 +33,12 @@
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
-                        <div class="col-md-3">
-                            <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getDate()}}〜</a></p>
+                        <div class="col-md-12">
+                        <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getStartDay()}}  {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</a></p>
                         </div>
                         @endforeach
                         @else
-                        <div class="col-md-3">
+                        <div class="col-md-12">
                         <p>レッスン予定無し</p>
                         </div>
                         @endif
