@@ -17,7 +17,8 @@ class CourseController extends Controller
         return view('course.index', ['courses' => $courses]);
     }
 
-    public function welcome(){
+    public function welcome()
+    {
         $courses = Course::all();
         return view('welcome', ['courses' => $courses]);
     }
@@ -41,7 +42,6 @@ class CourseController extends Controller
             // $ext = $request->file('image')->guessExtension();
             // Log::debug('$request->file(image)->guessExtension()"' . print_r($ext, true) . '"');
 
-
             $this->validate($request, [
                 'image' => [
                     // 必須
@@ -52,20 +52,23 @@ class CourseController extends Controller
                     'image',
                     // MIMEタイプを指定
                     'mimes:jpeg,jpg,png',
-                ]
+                ],
             ]);
 
             $course->fill($form)->save();
 
-            if($request->file('image')->isValid([])){
-                $image = new Image;
-                $image->name = basename($request->image->store('public/image'));
-                $image->course_id = $course->id;
-                $image->save();
-                Log::debug('store Image');
-            }
-            else{
-                Log::debug('inValid Image');
+            if ($request->file('image') != null) {
+                if ($request->file('image')->isValid([])) {
+                    $image = new Image;
+                    $image->name = basename($request->image->store('public/image'));
+                    $image->course_id = $course->id;
+                    $image->save();
+                    Log::debug('store Image');
+                } else {
+                    Log::debug('inValid Image');
+                }
+            } else {
+                Log::debug('no input Image');
             }
 
         } else {
@@ -112,21 +115,25 @@ class CourseController extends Controller
 
             $course->fill($form)->save();
 
-            if($request->file('image')->isValid([])){
+            if ($request->file('image') != null) {
 
-                $image = Image::where('course_id',$course->id)->first();
+                if ($request->file('image')->isValid([])) {
 
-                if($image === null){
-                    $image = new Image;
+                    $image = Image::where('course_id', $course->id)->first();
+
+                    if ($image === null) {
+                        $image = new Image;
+                    }
+
+                    $image->name = basename($request->image->store('public/image'));
+                    $image->course_id = $course->id;
+                    $image->save();
+                    Log::debug('store Image');
+                } else {
+                    Log::debug('inValid Image');
                 }
-
-                $image->name = basename($request->image->store('public/image'));
-                $image->course_id = $course->id;
-                $image->save();
-                Log::debug('store Image');
-            }
-            else{
-                Log::debug('inValid Image');
+            } else {
+                Log::debug('no input Image');
             }
 
         } else {

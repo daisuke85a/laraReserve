@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 @if (count($errors) > 0)
                 <div>
@@ -16,7 +16,7 @@
                 @endif
 
                 <h2>講座リスト</h2>
-                <form action="" method="post" class="form-horizontal"  enctype="multipart/form-data">
+                <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     {{-- {{ method_field('patch') }} --}}
                     <div class="form-group @if($errors->has('title')) has-error @endif">
@@ -30,7 +30,8 @@
                     <div class="form-group @if($errors->has('content')) has-error @endif">
                         <label for="content" class="col-md-3 control-label">内容</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="content" name="content" value="{{$course->content}}">
+                            <input type="text" class="form-control" id="content" name="content"
+                                value="{{$course->content}}">
                             @if($errors->has('content'))<span class="text-danger">{{ $errors->first('content') }}</span>
                             @endif
                         </div>
@@ -44,13 +45,23 @@
                         </div>
                     </div>
 
+                    <div class="form-group @if($errors->has('address')) has-error @endif">
+                        <label for="fee" class="col-md-9 control-label">住所</label>
+                        <div class="col-sm-9">
+                            <input type="nember" class="form-control" id="address" name="address" value="{{$course->address}}">
+                            @if($errors->has('address'))<span class="text-danger">{{ $errors->first('address') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+
                     <div class="form-group @if($errors->has('image')) has-error @endif">
-                            <label for="fee" class="col-md-3 control-label">メインイメージ</label>
-                            <div class="col-sm-9">
-                                <input type="file" class="form-control" id="image" name="image" value="{{$course->fee}}">
-                                @if($errors->has('image'))<span class="text-danger">{{ $errors->first('image') }}</span>
-                                @endif
-                            </div>
+                        <label for="fee" class="col-md-3 control-label">メインイメージ</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" id="image" name="image" value="{{$course->fee}}">
+                            @if($errors->has('image'))<span class="text-danger">{{ $errors->first('image') }}</span>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="col-md-offset-3 text-center"><button class="btn btn-primary">確認</button></div>

@@ -28,7 +28,8 @@
                     @endif
                     <p>{{$course->content}}</p>
                     <p>{{$course->fee}}円</p>
-                    <h3>レッスンの予約</h3>
+                    <p>{{$course->address}}</p>
+                    <p>レッスンの予約</p>
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
