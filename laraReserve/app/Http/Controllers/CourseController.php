@@ -62,7 +62,6 @@ class CourseController extends Controller
                 $image->name = basename($request->image->store('public/image'));
                 $image->course_id = $course->id;
                 $image->save();
-                //$course->image = $request->image->store('public/image');
                 Log::debug('store Image');
             }
             else{
@@ -94,20 +93,15 @@ class CourseController extends Controller
         return view('course.edit_index')->with('course', $course);
     }
 
-    public function edit_confirm(\App\Http\Requests\CheckCourseRequest $req)  //TODO: バリデーションをチェックする 参考:https://laraweb.net/knowledge/2156/
-    {
-        $data = $req->all();
-        return view('course.edit_confirm')->with($data);
-    }
-
     public function edit_finish(Request $request, $id)
     {
         //レコードを検索
         $course = Course::findOrFail($id);
         //値を代入
-        $course = new Course;
+        //$course = new Course;
         $form = $request->all();
         unset($form['_token']);
+        unset($form['image']);
         unset($form['button1']);
 
         if (Auth::check()) {
@@ -117,6 +111,24 @@ class CourseController extends Controller
             Log::debug('$form="' . print_r($form, true) . '"');
 
             $course->fill($form)->save();
+
+            if($request->file('image')->isValid([])){
+
+                $image = Image::where('course_id',$course->id)->first();
+
+                if($image === null){
+                    $image = new Image;
+                }
+
+                $image->name = basename($request->image->store('public/image'));
+                $image->course_id = $course->id;
+                $image->save();
+                Log::debug('store Image');
+            }
+            else{
+                Log::debug('inValid Image');
+            }
+
         } else {
             Log::debug('未ログインのため講座追加を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
         }
