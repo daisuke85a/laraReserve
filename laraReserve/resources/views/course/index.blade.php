@@ -31,10 +31,10 @@
                         <td>
                             @if (count($course->lessons) > 0)
                             @foreach ($course->lessons as $lesson)
-                                <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getStartDay()}}</a></p>
+                            <p><a href="/{{$course->id}}/lesson/{{$lesson->id}}">{{$lesson->getStartDay()}}</a></p>
                             @endforeach
                             @else
-                                <p>予定無し</p>
+                            <p>予定無し</p>
                             @endif
                         </td>
 
@@ -78,8 +78,12 @@
                             <td><input type="number" name="fee" value="{{old('fee')}}"></td>
                         </tr>
                         <tr>
+                            <th>住所 </th>
+                            <td><input type="text" name="address" value="{{old('address')}}"></td>
+                        </tr>
+                        <tr>
                             <th>画像</th>
-                            <td><input type="file" name ="image" ></td>
+                            <td><input type="file" name="image"></td>
                         </tr>
                         <tr>
                             <th></th>
