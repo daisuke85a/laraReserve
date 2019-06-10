@@ -105,8 +105,9 @@
         getLatLng("君津市");
 
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLYvIVANJSRK1eSQGQ-E0oIyBME9WdHPc&callback=initMap"
-        async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY', 'secret')}}&callback=initMap" async
+        defer></script>
+
 </body>
 
 </html>

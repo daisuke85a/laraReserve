@@ -72,8 +72,7 @@
             }
 
         </script>
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLYvIVANJSRK1eSQGQ-E0oIyBME9WdHPc&callback=initMap"
+        <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY', 'secret')}}&callback=initMap"
             async defer></script>
 
         <script>
@@ -82,6 +81,7 @@
                 // 実行したい処理
                 getLatLng("{{$course->address}}");
             }
+
         </script>
     </div>
 </div>
