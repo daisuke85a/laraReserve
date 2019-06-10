@@ -22,17 +22,6 @@
         <script>
             var map;
 
-            function initMap() {
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: {
-                        lat: -34.397,
-                        lng: 150.644
-                    },
-                    zoom: 8
-                });
-                getLatLng("スタジオミッション");
-            }
-
             function getLatLng(place) {
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {
@@ -90,7 +79,7 @@
         <script>
             window.onload = function () {
                 // 実行したい処理
-                getLatLng("スタジオミッション");
+                getLatLng("{{$course->address}}");
             }
         </script>
     </div>
