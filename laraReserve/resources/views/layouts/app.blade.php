@@ -84,6 +84,17 @@
             @yield('content')
         </main>
     </div>
+
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <a href="/privacy" class="small">プライバシーポリシー</a>
+                    <a href="/terms" class="small">利用規約</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

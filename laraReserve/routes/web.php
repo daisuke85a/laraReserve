@@ -25,6 +25,14 @@ Route::get('/map3', function () {
     return view('map3');
 });
 
+Route::get('/privacy', function () {
+    return view('privacy');
+});
+
+Route::get('/terms', function () {
+    return view('terms');
+});
+
 Route::get('/', 'CourseController@welcome');
 
 Auth::routes();
