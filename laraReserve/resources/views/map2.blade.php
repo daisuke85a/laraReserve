@@ -57,6 +57,8 @@
                 },
                 zoom: 8
             });
+
+            getLatLng("スタジオミッション");
         }
 
         function getLatLng(place) {
