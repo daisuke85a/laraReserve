@@ -18,9 +18,6 @@
     @endif
 
     <div class="row">
-        <form action="#" onsubmit="getLatLng(document.getElementById('address').value); return(false);">
-            住所 or ランドマーク：<input type='text' id='address' style='width: 400px' value=""> <input type='submit' value='検索'>
-        </form>
         <div id="map"></div>
         <script>
             var map;
@@ -89,6 +86,13 @@
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLYvIVANJSRK1eSQGQ-E0oIyBME9WdHPc&callback=initMap"
             async defer></script>
+
+        <script>
+            window.onload = function () {
+                // 実行したい処理
+                getLatLng("スタジオミッション");
+            }
+        </script>
     </div>
 </div>
 @endsection
