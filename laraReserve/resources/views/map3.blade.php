@@ -77,6 +77,7 @@
             async defer></script>
 
         <script>
+            //読み込み
             window.onload = function () {
                 // 実行したい処理
                 getLatLng("{{$course->address}}");
