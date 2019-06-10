@@ -58,7 +58,7 @@
                 zoom: 8
             });
 
-            getLatLng("スタジオミッション");
+            getLatLng("{{$course->address}}");
         }
 
         function getLatLng(place) {

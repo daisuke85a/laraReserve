@@ -15,6 +15,8 @@ Route::get('/map', function () {
      return view('map');
 });
 
+Route::get('/map/{id}/', 'CourseController@map');
+
 Route::get('/map2', function () {
     return view('map2');
 });
