@@ -11,9 +11,9 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/map', function () {
+     return view('map');
+});
 
 Route::get('/', 'CourseController@welcome');
 
