@@ -26,7 +26,7 @@ class CourseController extends Controller
     public function map($id)
     {
         $course = Course::findOrFail($id);
-        return view('map2')->with('course', $course);
+        return view('map3')->with('course', $course);
     }
 
     public function create(Request $request)

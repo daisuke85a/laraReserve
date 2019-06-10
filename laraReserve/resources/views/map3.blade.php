@@ -18,6 +18,9 @@
     @endif
 
     <div class="row">
+        <form action="#" onsubmit="getLatLng(document.getElementById('address').value); return(false);">
+            住所 or ランドマーク：<input type='text' id='address' style='width: 400px' value=""> <input type='submit' value='検索'>
+        </form>
         <div id="map"></div>
         <script>
             var map;
@@ -30,9 +33,18 @@
                     },
                     zoom: 8
                 });
+                getLatLng("スタジオミッション");
             }
 
             function getLatLng(place) {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {
+                        lat: -34.397,
+                        lng: 150.644
+                    },
+                    zoom: 16
+                });
+
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode({
                     address: place,
@@ -54,6 +66,7 @@
                             }
                         }
                         map.fitBounds(bounds);
+                        map.setZoom(16);
                     } else if (status == google.maps.GeocoderStatus.ERROR) {
                         alert("サーバとの通信時に何らかのエラーが発生！");
                     } else if (status == google.maps.GeocoderStatus.INVALID_REQUEST) {
@@ -72,7 +85,6 @@
                 });
             }
 
-            getLatLng("君津市");
         </script>
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLYvIVANJSRK1eSQGQ-E0oIyBME9WdHPc&callback=initMap"
