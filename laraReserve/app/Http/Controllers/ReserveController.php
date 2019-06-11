@@ -32,5 +32,6 @@ class ReserveController extends Controller
             return redirect('/login');
         }
 
+        return redirect('/');
     }
 }

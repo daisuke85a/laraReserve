@@ -44,8 +44,11 @@
                             <form action="/reserve/create" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                @if (!$lesson->isDoneReserve())
                                 <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
-                                {{-- TODO:レッスン予約済みの場合はボタンを無効化したい --}}
+                                @else
+                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell" disabled="disabled">
+                                @endif
                             </form>
                         </div>
                         @endforeach
