@@ -44,6 +44,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/course', 'CourseController@index');
 
+Route::get('/course/add', function () {
+    return view('course.add');
+});
+
+
 Route::post('/course/create', 'CourseController@create')->middleware('auth');
 
 Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
