@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider');
+
+
 Route::get('/map', function () {
      return view('map');
 });
