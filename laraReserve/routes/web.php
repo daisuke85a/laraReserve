@@ -55,3 +55,5 @@ Route::get('/{course_id}/lesson/{id}', 'LessonController@index'); //レッスン
 Route::post('/{id}/lesson/create/', 'LessonController@create'); //レッスン追加
 
 Route::post('/reserve/create/', 'ReserveController@create')->middleware('auth'); //レッスン予約
+
+Route::post('/reserve/delete/', 'ReserveController@delete'); //削除

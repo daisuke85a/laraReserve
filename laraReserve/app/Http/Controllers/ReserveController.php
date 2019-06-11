@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Reserve;
+use App\Lesson;
 use Log;
 
 class ReserveController extends Controller
@@ -32,6 +33,14 @@ class ReserveController extends Controller
             return redirect('/login');
         }
 
+        return redirect('/');
+    }
+
+    public function delete(Request $request){
+        Log::debug('lesson_id"' . print_r($request->lesson_id, true) . '"');
+
+        $lesson = Lesson::find($request->lesson_id);
+        $lesson->cancelReserve();
         return redirect('/');
     }
 }

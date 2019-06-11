@@ -36,21 +36,32 @@
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
-                        <div class="col-8">
+                        <div class="col-6">
                             <p>{{$lesson->getStartDay()}}
                                 {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                         </div>
-                        <div class="col-4">
+                        <div class="col-2">
                             <form action="/reserve/create" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
                                 @if (!$lesson->isDoneReserve())
                                 <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
                                 @else
-                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell" disabled="disabled">
+                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
+                                    disabled="disabled">
                                 @endif
                             </form>
                         </div>
+                        <div class="col-2">
+                            @if ($lesson->isDoneReserve())
+                            <form action="/reserve/delete" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                <input type="submit" value="キャンセル" class="btn btn-danger btn-sm btn-dell">
+                            </form>
+                            @endif
+                        </div>
+
                         @endforeach
                         @else
                         <div class="col-md-12">
@@ -66,8 +77,6 @@
     </div>
 </div>
 <script>
-
-
     function getLatLng(place, argmap) {
         var map;
         console.log(place);
@@ -121,17 +130,18 @@
     }
 
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY', 'AIzaSyBcorsRq7wWpYTCJhs75pU5paQ32xzuMAU')}}&callback=initMap" async
-    defer></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY', 'AIzaSyBcorsRq7wWpYTCJhs75pU5paQ32xzuMAU')}}&callback=initMap"
+    async defer></script>
 
 <script>
     //読み込み
     window.onload = function () {
         // 実行したい処理
         @foreach($courses as $course)
-            @if($course->address != "")
-               getLatLng("{{$course->address}}", "map{{$course->id}}");
-            @endif
+        @if($course->address != "")
+        getLatLng("{{$course->address}}", "map{{$course->id}}");
+        @endif
         @endforeach
     }
 

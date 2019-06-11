@@ -47,4 +47,30 @@ class Lesson extends Model
         }
     }
 
+    public function cancelReserve(){
+
+        if(Auth::check()){
+            $user = Auth::user();
+
+
+            Log::debug('user_id"' . print_r($user->id, true) . '"');
+            Log::debug('lesson_id"' . print_r($this->id, true) . '"');
+
+            $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
+
+            if( $reserve !== null){
+                Log::debug('$reserve !== null');
+                $reserve->delete();
+                return true;
+            }
+            else{
+                Log::debug('$reserve === null');
+                return false;
+            }
+        }
+        else{
+            Log::debug('Auth::check() === false');
+            return false;
+        }
+    }
 }
