@@ -23,6 +23,9 @@
                     </ul>
                 </div>
                 @endif
+
+                <p class="pt-1 pl-2">{{$user->name}}さんが管理するクラス</p>
+
                 <table class="table">
                     <thead>
                         <tr>

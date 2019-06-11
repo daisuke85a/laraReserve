@@ -10,11 +10,18 @@ use Log;
 
 class CourseController extends Controller
 {
+
     public function index()
     {
         Log::debug('CourseController:index');
-        $courses = Course::all();
-        return view('course.index', ['courses' => $courses]);
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            Log::debug('$user_id="' . print_r($user->id, true) . '"');
+            $courses = Course::where('user_id', $user->id)->get();
+            return view('course.index', ['courses' => $courses , 'user' => $user ]);
+        }
+
     }
 
     public function welcome()
