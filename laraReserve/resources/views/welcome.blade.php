@@ -28,7 +28,8 @@
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
                     @endif
-                    <p>{{$course->content}}</p>
+                    <h2>こんなことやります</h2>
+                    <p>{!! nl2br(e($course->content)) !!}</p>
                     <p>{{$course->fee}}円</p>
                     <h2>場所</h2>
                     <p>{{$course->address}}</p>
@@ -36,7 +37,7 @@
                     <div>{!! nl2br(e($course->address_detail)) !!}</div>
                     <h2>必要なもの</h2>
                     <div>{!! nl2br(e($course->need)) !!}</div>
-                    <p>レッスンの予定</p>
+                    <h2>レッスンの予定</h2>
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
