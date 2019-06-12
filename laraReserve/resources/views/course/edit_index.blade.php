@@ -54,6 +54,24 @@
                         </div>
                     </div>
 
+                    <div class="form-group @if($errors->has('address_detail')) has-error @endif">
+                        <label for="address_detail" class="col-md-9 control-label">住所の詳細</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="address_detail" name="address_detail">{{$course->address_detail}}</textarea>
+                            @if($errors->has('address_detail'))<span class="text-danger">{{ $errors->first('address_detail') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group @if($errors->has('need')) has-error @endif">
+                        <label for="need" class="col-md-9 control-label">必要なもの</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="need" name="need">{{$course->need}}</textarea>
+                            @if($errors->has('need'))<span class="text-danger">{{ $errors->first('need') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
 
                     <div class="form-group @if($errors->has('image')) has-error @endif">
                         <label for="fee" class="col-md-3 control-label">メインイメージ</label>

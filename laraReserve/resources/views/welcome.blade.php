@@ -30,8 +30,12 @@
                     @endif
                     <p>{{$course->content}}</p>
                     <p>{{$course->fee}}円</p>
+                    <h2>場所</h2>
                     <p>{{$course->address}}</p>
                     <div id="map{{$course->id}}" class="map"></div>
+                    <div>{!! nl2br(e($course->address_detail)) !!}</div>
+                    <h2>必要なもの</h2>
+                    <div>{!! nl2br(e($course->need)) !!}</div>
                     <p>レッスンの予定</p>
                     <div class="row">
                         @if (count($course->lessons) > 0)
