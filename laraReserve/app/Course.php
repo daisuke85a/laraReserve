@@ -22,5 +22,8 @@ class Course extends Model
         return $this->hasOne('App\Image');
     }
 
+    public function subImage(){
+        return $this->hasOne('App\SubImage');
+    }
 
 }

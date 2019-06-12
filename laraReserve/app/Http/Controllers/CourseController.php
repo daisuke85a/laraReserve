@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Image;
+use App\SubImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -19,7 +20,7 @@ class CourseController extends Controller
             $user = Auth::user();
             Log::debug('$user_id="' . print_r($user->id, true) . '"');
             $courses = Course::where('user_id', $user->id)->get();
-            return view('course.index', ['courses' => $courses , 'user' => $user ]);
+            return view('course.index', ['courses' => $courses, 'user' => $user]);
         }
 
     }
@@ -118,6 +119,7 @@ class CourseController extends Controller
         $form = $request->all();
         unset($form['_token']);
         unset($form['image']);
+        unset($form['sub_image']);
         unset($form['button1']);
 
         if (Auth::check()) {
@@ -147,6 +149,23 @@ class CourseController extends Controller
                 }
             } else {
                 Log::debug('no input Image');
+            }
+
+            if ($request->file('sub_image') != null) {
+
+                if ($request->file('sub_image')->isValid([])) {
+
+                    $image = new SubImage;
+
+                    $image->name = basename($request->sub_image->store('public/image'));
+                    $image->course_id = $course->id;
+                    $image->save();
+                    Log::debug('store Sub Image');
+                } else {
+                    Log::debug('inValid Sub Image');
+                }
+            } else {
+                Log::debug('no input Sub Image');
             }
 
         } else {

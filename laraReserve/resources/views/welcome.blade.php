@@ -22,14 +22,19 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{$course->title}}</h2>
-                </div>
-                <div class="card-body">
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
                     @endif
-                    <h2>こんなことやります</h2>
+                    <h2>{{$course->title}}</h2>
+                </div>
+                <div class="card-body">
+                    @if ($course->subImage != null)
+                    <img src="/storage/image/{{$course->subImage->name}}" alt="ClassSubImage" style="max-width:33%">
+                    @endif
+
+                    <h2 class="text-center">\こんなことやります/</h2>
                     <p>{!! nl2br(e($course->content)) !!}</p>
+                    <h2>料金</h2>
                     <p>{{$course->fee}}円</p>
                     <h2>場所</h2>
                     <p>{{$course->address}}</p>

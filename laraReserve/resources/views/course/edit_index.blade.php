@@ -78,8 +78,18 @@
                     <div class="form-group @if($errors->has('image')) has-error @endif">
                         <label for="fee" class="col-md-3 control-label">メインイメージ</label>
                         <div class="col-sm-9">
-                            <input type="file" class="form-control" id="image" name="image" value="{{$course->fee}}">
-                            @if($errors->has('image'))<span class="text-danger">{{ $errors->first('image') }}</span>
+                            <input type="file" class="form-control" id="image" name="image">
+                            @if($errors->has('image'))<span class=" text-danger">{{ $errors->first('image') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group @if($errors->has('sub_image')) has-error @endif">
+                        <label for="fee" class="col-md-3 control-label">サブイメージ</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" id="sub_image" name="sub_image">
+                            @if($errors->has('sub_image'))<span
+                                class="text-danger">{{ $errors->first('sub_image') }}</span>
                             @endif
                         </div>
                     </div>
