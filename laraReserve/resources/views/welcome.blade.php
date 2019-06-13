@@ -19,7 +19,7 @@
 
     <div class="row">
         @foreach ($courses as $course)
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     @if ($course->mainImage != null)
