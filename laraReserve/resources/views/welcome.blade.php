@@ -25,7 +25,7 @@
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
                     @endif
-                    <h2>{{$course->title}}</h2>
+                    <h1 class="h2">{{$course->title}}</h1>
                 </div>
                 <div class="card-body">
                     @if (count($course->subImages) > 0)
@@ -34,17 +34,17 @@
                     @endforeach
                     @endif
 
-                    <h2 class="text-center">\こんなことやります/</h2>
+                    <h2 class="h3 text-center">\こんなことやります/</h2>
                     <p>{!! nl2br(e($course->content)) !!}</p>
-                    <h2>料金</h2>
+                    <h2 class="h3">料金</h2>
                     <p>{{$course->fee}}円</p>
-                    <h2>場所</h2>
+                    <h2 class="h3">場所</h2>
                     <p>{{$course->address}}</p>
                     <div id="map{{$course->id}}" class="map"></div>
                     <div>{!! nl2br(e($course->address_detail)) !!}</div>
-                    <h2>必要なもの</h2>
+                    <h2 class="h3">必要なもの</h2>
                     <div>{!! nl2br(e($course->need)) !!}</div>
-                    <h2>レッスンの予定</h2>
+                    <h2 class="h3">レッスンの予定</h2>
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
