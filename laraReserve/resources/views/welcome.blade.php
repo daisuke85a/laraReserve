@@ -30,7 +30,7 @@
                 <div class="card-body">
                     @if (count($course->subImages) > 0)
                     @foreach ($course->subImages as $subImage)
-                    <img src="/storage/image/{{$subImage->name}}" alt="ClassSubImage" style="max-width:32%">
+                    <img src="/storage/image/{{$subImage->name}}" alt="ClassSubImage" style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
                     @endforeach
                     @endif
 
@@ -40,14 +40,14 @@
                     <p>{{$course->fee}}円</p>
                     <h2 class="h3">会場</h2>
                     <p>{{$course->address}}</p>
+                    <div>{!! nl2br(e($course->address_detail)) !!}</div>
                     <div id="map{{$course->id}}" class="map"></div>
                     <h3 class="h4">会場への入口</h3>
                     @if (count($course->addressImages) > 0)
                     @foreach ($course->addressImages as $addressImage)
-                    <img src="/storage/image/{{$addressImage->name}}" alt="ClassSubImage" style="max-width:32%">
+                    <img src="/storage/image/{{$addressImage->name}}" alt="ClassSubImage" style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
                     @endforeach
                     @endif
-                    <div>{!! nl2br(e($course->address_detail)) !!}</div>
                     <h2 class="h3">必要なもの</h2>
                     <div>{!! nl2br(e($course->need)) !!}</div>
                     <h2 class="h3">レッスンの予定</h2>
