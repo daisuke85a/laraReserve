@@ -28,8 +28,10 @@
                     <h2>{{$course->title}}</h2>
                 </div>
                 <div class="card-body">
-                    @if ($course->subImage != null)
-                    <img src="/storage/image/{{$course->subImage->name}}" alt="ClassSubImage" style="max-width:33%">
+                    @if (count($course->subImages) > 0)
+                    @foreach ($course->subImages as $subImage)
+                    <img src="/storage/image/{{$subImage->name}}" alt="ClassSubImage" style="max-width:32%">
+                    @endforeach
                     @endif
 
                     <h2 class="text-center">\こんなことやります/</h2>
