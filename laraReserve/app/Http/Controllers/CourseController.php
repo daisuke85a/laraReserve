@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Image;
 use App\SubImage;
+use App\AddressImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -120,6 +121,7 @@ class CourseController extends Controller
         unset($form['_token']);
         unset($form['image']);
         unset($form['sub_image']);
+        unset($form['address_image']);
         unset($form['button1']);
 
         if (Auth::check()) {
@@ -166,6 +168,23 @@ class CourseController extends Controller
                 }
             } else {
                 Log::debug('no input Sub Image');
+            }
+
+            if ($request->file('address_image') != null) {
+
+                if ($request->file('address_image')->isValid([])) {
+
+                    $image = new AddressImage;
+
+                    $image->name = basename($request->address_image->store('public/image'));
+                    $image->course_id = $course->id;
+                    $image->save();
+                    Log::debug('store Address Image');
+                } else {
+                    Log::debug('inValid Address Image');
+                }
+            } else {
+                Log::debug('no input Address Image');
             }
 
         } else {

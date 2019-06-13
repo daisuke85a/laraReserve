@@ -54,6 +54,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group @if($errors->has('address_image')) has-error @endif">
+                        <label for="fee" class="col-md-3 control-label">入り口の画像</label>
+                        <div class="col-sm-9">
+                            <input type="file" class="form-control" id="address_image" name="address_image">
+                            @if($errors->has('address_image'))<span
+                                class="text-danger">{{ $errors->first('address_image') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group @if($errors->has('address_detail')) has-error @endif">
                         <label for="address_detail" class="col-md-9 control-label">住所の詳細</label>
                         <div class="col-sm-9">

@@ -26,4 +26,8 @@ class Course extends Model
         return $this->hasMany('App\SubImage');
     }
 
+    public function addressImages(){
+        return $this->hasMany('App\AddressImage');
+    }
+
 }
