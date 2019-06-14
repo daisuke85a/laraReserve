@@ -7,15 +7,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Reserve;
 use App\Lesson;
 use Log;
+use Cookie;
 
 class ReserveController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function create(Request $request){
+
+        if (Auth::check() === false) {
+            Cookie::queue(Cookie::make('noAuthReserveRequest', $request->lesson_id , 10));
+        }
+
+        $this->middleware('auth');
 
         if (Auth::check()) {
             // ユーザはログインしている

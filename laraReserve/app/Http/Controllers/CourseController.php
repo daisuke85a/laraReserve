@@ -9,6 +9,7 @@ use App\AddressImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use Cookie;
 
 class CourseController extends Controller
 {
