@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <th>内容 </th>
-                            <td><input type="text" name="content" value="{{old('content')}}"></td>
+                            <td><textarea name="content" value="{{old('content')}}"></textarea></td>
                         </tr>
                         <tr>
                             <th>料金 </th>
@@ -33,6 +33,15 @@
                             <th>住所 </th>
                             <td><input type="text" name="address" value="{{old('address')}}"></td>
                         </tr>
+                        <tr>
+                            <th>住所の詳細 </th>
+                            <td><textarea name="address_detail" value="{{old('address_detail')}}"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th>必要なもの </th>
+                            <td><textarea name="need" value="{{old('need')}}"></textarea></td>
+                        </tr>
+
                         <tr>
                             <th>画像</th>
                             <td><input type="file" name="image"></td>
