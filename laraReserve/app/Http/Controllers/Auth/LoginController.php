@@ -62,6 +62,7 @@ class LoginController extends Controller
      *                          */
     public function handleProviderCallback($provider)
     {
+
         try {
             $providerUser = \Socialite::with($provider)->user();
         } catch (\Exception $e) {
@@ -75,6 +76,20 @@ class LoginController extends Controller
                 'name' => $providerUser->getName(),
             ]));
 
+            if (Auth::check()) {
+
+                //ログイン前にしてた操作を実行する
+                $noAuthReserveRequest = Cookie::get('noAuthReserveRequest');
+                \Cookie::queue(\Cookie::forget('noAuthReserveRequest'));
+    
+                $reserve = new Reserve();
+                $reserve->fill(['user_id' => Auth::user()->id]);
+                $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
+    
+                $reserve->save();
+            }
+
+            return redirect($this->redirectTo);
         } else {
             return redirect('/login')->with('oauth_error', 'メールアドレスが取得できませんでした');
         }
