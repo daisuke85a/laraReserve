@@ -22,10 +22,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
+                    <h1 class="h2">{{$course->title}}</h1>
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
                     @endif
-                    <h1 class="h2">{{$course->title}}</h1>
                 </div>
                 <div class="card-body">
                     @if (count($course->subImages) > 0)
@@ -96,8 +96,28 @@
                 </div>
             </div>
         </div>
+        <div class="fixed-bottom">
+            <div class="shadow bg-light container">
+                <div class="d-flex justify-content-between">
+                    @foreach ($course->lessons as $lesson)
+                    <div>
+                        <p class="mb-0">次回レッスン</p>
+                        <p class="h3">{{$lesson->getStartDay()}}
+                            {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn-lg btn-success mr-3">
+                            <p class="h3">予約する</p>
+                        </button>
+                        <button type="button" class="btn-lg btn-primary">
+                            <p class="h3">興味がある</p>
+                        </button>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
         @endforeach
-
     </div>
 </div>
 <script>
@@ -163,7 +183,7 @@
     window.onload = function () {
         // 実行したい処理
         @foreach($courses as $course)
-        @if($course->address != "")
+        @if($course-> address != "")
         getLatLng("{{$course->address}}", "map{{$course->id}}");
         @endif
         @endforeach
