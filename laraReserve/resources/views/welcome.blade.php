@@ -22,6 +22,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
+                    <p class="mb-0">渋谷駅徒歩5分 ¥1,000</p>
                     <h1 class="h2">{{$course->title}}</h1>
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
@@ -37,22 +38,27 @@
 
                     <h2 class="h3 text-center">\こんなことやります/</h2>
                     <p>{!! nl2br(e($course->content)) !!}</p>
-                    <h2 class="h3">料金</h2>
+                    <h2 class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">\こんな人におすすめ/</h2>
+                    <p>１．ダンスに興味があるけど、始める勇気がない人<br>
+                    ２．運動不足のため、楽しく汗をかきたい人<br>
+                    ３．この予約システムについて語り合いたい人(私が開発,運用してます)</p>
+                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">料金</h2>
                     <p>{{$course->fee}}円</p>
-                    <h2 class="h3">会場</h2>
-                    <p>{{$course->address}}</p>
-                    <div>{!! nl2br(e($course->address_detail)) !!}</div>
+                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">会場</h2>
+                    <p class="mb-0">渋谷駅 徒歩5分 レンタルスタジオ</p>
+                    <p class="h5 mb-0">{{$course->address}} A-815号室</p>
+                    <a href="http://studio-mission.com">http://studio-mission.com</a>
                     <div id="map{{$course->id}}" class="map"></div>
-                    <h3 class="h4">会場への入口</h3>
                     @if (count($course->addressImages) > 0)
                     @foreach ($course->addressImages as $addressImage)
                     <img src="/storage/image/{{$addressImage->name}}" alt="ClassSubImage"
                         style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
                     @endforeach
                     @endif
-                    <h2 class="h3">必要なもの</h2>
-                    <div>{!! nl2br(e($course->need)) !!}</div>
-                    <h2 class="h3">レッスンの予定</h2>
+                    <p>{!! nl2br(e($course->address_detail)) !!}</p>
+                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">必要なもの</h2>
+                    <p>{!! nl2br(e($course->need)) !!}</p>
+                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">レッスンの予定</h2>
                     <div class="row">
                         @if (count($course->lessons) > 0)
                         @foreach ($course->lessons as $lesson)
@@ -63,7 +69,7 @@
                         <div class="col-2">
                             <form action="/reserve/add/{{$lesson->id}}" method="get">
                                 @if (!$lesson->isDoneReserve())
-                                <input type="submit" value="興味がある" class="btn btn-primary btn-sm btn-dell">
+                                <input type="submit" value="気になる" class="btn btn-primary btn-sm btn-dell">
                                 @elseif($lesson->getReserveKind() == 1)
                                 <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
                                     disabled="disabled">
@@ -106,11 +112,23 @@
                             {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                     </div>
                     <div class="d-flex justify-content-between">
-                        <button type="button" class="btn-lg btn-success mr-3">
+                        {{-- <button type="button" class="btn-lg btn-success mr-3">
                             <p class="h3">予約する</p>
-                        </button>
-                        <button type="button" class="btn-lg btn-primary">
-                            <p class="h3">興味がある</p>
+                        </button> --}}
+                                <form action="/reserve/add/{{$lesson->id}}" method="get">
+                                    @if (!$lesson->isDoneReserve())
+                                    <input type="submit" value="気になる" class="btn btn-lg btn-primary btn-dell h3">
+                                    @elseif($lesson->getReserveKind() == 1)
+                                    <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
+                                        disabled="disabled">
+                                    @elseif($lesson->getReserveKind() == 2)
+                                    <input type="submit" value="行けたら行く" class="btn btn-success btn-sm btn-dell"
+                                        disabled="disabled">
+                                    @elseif($lesson->getReserveKind() == 3)
+                                    <input type="submit" value="いつか行ってみたい" class="btn btn-success btn-sm btn-dell"
+                                        disabled="disabled">
+                                    @endif
+                                </form>
                         </button>
                     </div>
                     @endforeach
