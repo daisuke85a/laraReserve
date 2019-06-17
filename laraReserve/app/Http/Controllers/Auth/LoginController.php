@@ -81,12 +81,18 @@ class LoginController extends Controller
                 //ログイン前にしてた操作を実行する
                 $noAuthReserveRequest = Cookie::get('noAuthReserveRequest');
                 \Cookie::queue(\Cookie::forget('noAuthReserveRequest'));
+
+                $noAuthReserveRequestKind = Cookie::get('noAuthReserveRequestKind');
     
-                $reserve = new Reserve();
-                $reserve->fill(['user_id' => Auth::user()->id]);
-                $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
-    
-                $reserve->save();
+                //予約IDと予約種別が両方Cookieに入力されている場合は保存する
+                if(!empty($noAuthReserveRequest) && !empty($noAuthReserveRequestKind)){
+                    $reserve = new Reserve();
+                    $reserve->fill(['user_id' => Auth::user()->id]);
+                    $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
+                    $reserve->fill(['kind' => $noAuthReserveRequestKind]);
+                    $reserve->fill(['valid' => 1]);
+                    $reserve->save();
+                }
             }
 
             return redirect($this->redirectTo);
@@ -109,6 +115,7 @@ class LoginController extends Controller
             $reserve = new Reserve();
             $reserve->fill(['user_id' => Auth::user()->id]);
             $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
+            $reserve->fill(['valid' => true]);
 
             $reserve->save();
         }

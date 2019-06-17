@@ -9,7 +9,7 @@ class Reserve extends Model
 {
     //
     protected $fillable = [
-        'user_id', 'lesson_id',
+        'user_id', 'lesson_id', 'valid', 'kind'
     ];
 
     public function user(){

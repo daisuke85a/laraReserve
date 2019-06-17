@@ -12,11 +12,19 @@ use Log;
 class ReserveController extends Controller
 {
 
+    public function add(Request $request , $id)
+    {
+        return view('reserve.add')->with([ 'id' => $id ]);
+    }
+
+
     public function create(Request $request)
     {
 
+        // 未ログインの場合は一旦Cokkieに保存する
         if (Auth::check() === false) {
-            Cookie::queue(Cookie::make('noAuthReserveRequest', $request->lesson_id, 10));
+            Cookie::queue(Cookie::make('noAuthReserveRequest', $request->lesson_id, 30));
+            Cookie::queue(Cookie::make('noAuthReserveRequestKind', $request->kind, 30));
         }
 
         // $this->middleware('auth');
@@ -32,6 +40,8 @@ class ReserveController extends Controller
             $reserve = new Reserve();
             $reserve->fill(['user_id' => $user->id]);
             $reserve->fill(['lesson_id' => $request->lesson_id]);
+            $reserve->fill(['kind' => $request->kind]);            
+            $reserve->fill(['valid' => 1]);
 
             $reserve->save();
 
