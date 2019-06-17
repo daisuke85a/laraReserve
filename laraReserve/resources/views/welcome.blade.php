@@ -30,7 +30,8 @@
                 <div class="card-body">
                     @if (count($course->subImages) > 0)
                     @foreach ($course->subImages as $subImage)
-                    <img src="/storage/image/{{$subImage->name}}" alt="ClassSubImage" style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
+                    <img src="/storage/image/{{$subImage->name}}" alt="ClassSubImage"
+                        style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
                     @endforeach
                     @endif
 
@@ -45,7 +46,8 @@
                     <h3 class="h4">会場への入口</h3>
                     @if (count($course->addressImages) > 0)
                     @foreach ($course->addressImages as $addressImage)
-                    <img src="/storage/image/{{$addressImage->name}}" alt="ClassSubImage" style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
+                    <img src="/storage/image/{{$addressImage->name}}" alt="ClassSubImage"
+                        style="width:calc(32vmin); height:calc(32vmin); object-fit:cover;">
                     @endforeach
                     @endif
                     <h2 class="h3">必要なもの</h2>
@@ -62,8 +64,14 @@
                             <form action="/reserve/add/{{$lesson->id}}" method="get">
                                 @if (!$lesson->isDoneReserve())
                                 <input type="submit" value="興味がある" class="btn btn-primary btn-sm btn-dell">
-                                @else
+                                @elseif($lesson->getReserveKind() == 1)
                                 <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
+                                    disabled="disabled">
+                                @elseif($lesson->getReserveKind() == 2)
+                                <input type="submit" value="行けたら行く" class="btn btn-success btn-sm btn-dell"
+                                    disabled="disabled">
+                                @elseif($lesson->getReserveKind() == 3)
+                                <input type="submit" value="いつか行ってみたい" class="btn btn-success btn-sm btn-dell"
                                     disabled="disabled">
                                 @endif
                             </form>

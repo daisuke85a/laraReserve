@@ -33,17 +33,31 @@ class Lesson extends Model
             $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
 
             if( $reserve !== null){
-                Log::debug('$reserve !== null');
                 return true;
             }
             else{
-                Log::debug('$reserve === null');
                 return false;
             }
         }
         else{
-            Log::debug('Auth::check() === false');
             return false;
+        }
+    }
+
+    public function getReserveKind(){
+        if(Auth::check()){
+            $user = Auth::user();
+            $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
+
+            if( $reserve !== null){
+                return $reserve->kind;
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
         }
     }
 
