@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Socialite;
 use Cookie;
 use App\Reserve;
+use App\Services\SocialService;
 
 class LoginController extends Controller
 {
@@ -70,11 +71,7 @@ class LoginController extends Controller
         }
 
         if ($email = $providerUser->getEmail()) {
-            Auth::login(User::firstOrCreate([
-                'email' => $email,
-            ], [
-                'name' => $providerUser->getName(),
-            ]));
+            Auth::login(SocialService::findOrCreate($providerUser, $provider));
 
             if (Auth::check()) {
 

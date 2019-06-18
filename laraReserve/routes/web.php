@@ -63,3 +63,5 @@ Route::get('/reserve/add/{id}', 'ReserveController@add'); //レッスン予約
 Route::post('/reserve/create/', 'ReserveController@create'); //レッスン予約
 
 Route::post('/reserve/delete/', 'ReserveController@delete'); //削除
+
+Route::get('/user/{userId}', 'UserController@show');
