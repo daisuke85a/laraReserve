@@ -107,8 +107,9 @@
                 <div class="d-flex justify-content-between">
                     @foreach ($course->lessons as $lesson)
                     <div>
-                        <p class="h4 mb-0">06月23日(日)</p>
-                        <p class="mb-0">15:00〜16:00 ¥1,000</p>
+                        <p class="mb-0">次回レッスン</p>
+                        <p class="h3">{{$lesson->getStartDay()}}
+                            {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         {{-- <button type="button" class="btn-lg btn-success mr-3">
