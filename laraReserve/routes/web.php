@@ -65,3 +65,10 @@ Route::post('/reserve/create/', 'ReserveController@create'); //レッスン予�
 Route::post('/reserve/delete/', 'ReserveController@delete'); //削除
 
 Route::get('/user/{userId}', 'UserController@show');
+
+// 送信メール本文のプレビュー
+Route::get('sample/mailable/preview', function () {
+    return new App\Mail\MailNotification();
+  });
+
+Route::get('sample/mailable/send', 'MailController@MailNotification');
