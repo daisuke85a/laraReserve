@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\User;
+use App\Course;
+use Debugbar;
 
 class Reserve extends Model
 {
@@ -20,6 +22,16 @@ class Reserve extends Model
         $user = $this->user->name;
 
         return $user;
+    }
+
+    public function getCourseTitle(){
+        $lesson = $this->lesson();
+        \Debugbar::info($lesson);
+        return $this->lesson->id;
+    }
+
+    public function lesson(){
+        return $this->belongsTo('App\Lesson');
     }
 
 }
