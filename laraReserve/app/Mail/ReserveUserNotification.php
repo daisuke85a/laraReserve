@@ -7,8 +7,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Reserve;
+use Log;
 
-class ReserveNotification extends Mailable
+class ReserveUserNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,7 +24,7 @@ class ReserveNotification extends Mailable
     {
         $this->reserve = $argReserve;
 
-        $this->title = $argReserve->getCourseTitle() . "に予約が入りました！";
+        $this->title = $argReserve->getCourseTitle() . "へのご予約ありがとうございます";
         $this->text = "sample";
     }
 
@@ -34,8 +35,10 @@ class ReserveNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.notification')
-                    ->text('emails.notification_plain')
+        Log::debug('ReserveUserNotification build');
+
+        return $this->view('emails.reserveUser')
+                    ->text('emails.reserveUser_plain')
                     ->subject($this->title)
                     ->with([
                         'reserve' => $this->reserve,

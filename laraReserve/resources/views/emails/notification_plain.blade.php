@@ -1,7 +1,5 @@
-Sample Notification!
 
-A sample notification has been sent.
+{{$reserve->getUserName()}}さんが{{$reserve->lesson->getStartDay()}}の{{$reserve->getCourseTitle()}}を予約しました！
 
-{{$text}}
+https://larareserve.funspot.tokyo/
 
-https://www.google.co.jp

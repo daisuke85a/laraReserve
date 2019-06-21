@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReserveNotification;
+use App\Mail\ReserveUserNotification;
 
 class ReserveController extends Controller
 {
@@ -47,7 +48,10 @@ class ReserveController extends Controller
 
             $reserve->save();
 
-            $to = 'dsaito85a@gmail.com';
+            $to = $reserve->getUserEmail();
+            Mail::to($to)->send(new ReserveUserNotification($reserve));
+
+            $to = $reserve->getOwnerEmail();
             Mail::to($to)->send(new ReserveNotification($reserve));
             // $course->fill($form)->save();
         } else {

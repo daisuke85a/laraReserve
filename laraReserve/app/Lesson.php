@@ -87,4 +87,9 @@ class Lesson extends Model
             return false;
         }
     }
+
+    public function course(){
+        return $this->belongsTo('App\Course');
+    }
+
 }

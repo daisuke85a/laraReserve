@@ -30,4 +30,8 @@ class Course extends Model
         return $this->hasMany('App\AddressImage');
     }
 
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
 }
