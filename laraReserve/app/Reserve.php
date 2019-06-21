@@ -58,7 +58,7 @@ class Reserve extends Model
         return $this->lesson->course->title;
     }
 
-    public function invalid(){
+    public function delete(){
 
         $to = $this->getUserEmail();
         Mail::to($to)->send(new CancelUserNotification($this));
@@ -66,8 +66,7 @@ class Reserve extends Model
         $to = $this->getOwnerEmail();
         Mail::to($to)->send(new CancelOwnerNotification($this));
 
-        $this->valid = 0;
-        $this->save();
+        parent::delete();
 
     }
     

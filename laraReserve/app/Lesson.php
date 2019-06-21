@@ -74,7 +74,7 @@ class Lesson extends Model
 
             if( $reserve !== null){
                 Log::debug('$reserve !== null');
-                $reserve->invalid();
+                // $reserve->invalid();
                 $reserve->delete();
                 return true;
             }
