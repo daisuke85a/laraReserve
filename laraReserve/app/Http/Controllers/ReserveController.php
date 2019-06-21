@@ -71,6 +71,7 @@ class ReserveController extends Controller
     public function delete(Request $request)
     {
         Log::debug('lesson_id"' . print_r($request->lesson_id, true) . '"');
+        Log::debug('reserve_id"' . print_r($request->id, true) . '"');
 
         $lesson = Lesson::find($request->lesson_id);
         $lesson->cancelReserve();

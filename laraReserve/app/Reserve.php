@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\Course;
 use Debugbar;
+use App\Mail\CancelUserNotification;
+use App\Mail\CancelOwnerNotification;
 
 class Reserve extends Model
 {
@@ -18,11 +21,23 @@ class Reserve extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function lesson(){
+        return $this->belongsTo('App\Lesson');
+    }
+
+
     public function getUserName(){
         $user = $this->user->name;
 
         return $user;
     }
+
+    public function getOwnerName(){
+        $name = $this->lesson->course->user->name;
+
+        return $name;
+    }
+
 
     public function getOwnerEmail(){
         $email = $this->lesson->course->user->email;
@@ -43,8 +58,18 @@ class Reserve extends Model
         return $this->lesson->course->title;
     }
 
-    public function lesson(){
-        return $this->belongsTo('App\Lesson');
+    public function invalid(){
+
+        $to = $this->getUserEmail();
+        Mail::to($to)->send(new CancelUserNotification($this));
+
+        $to = $this->getOwnerEmail();
+        Mail::to($to)->send(new CancelOwnerNotification($this));
+
+        $this->valid = 0;
+        $this->save();
+
     }
+    
 
 }
