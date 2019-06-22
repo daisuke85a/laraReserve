@@ -72,3 +72,7 @@ Route::get('sample/mailable/preview', function () {
   });
 
 Route::get('sample/mailable/send', 'MailController@MailNotification');
+
+
+Route::post('/like/create/', 'LikeController@create'); //イイね
+Route::post('/like/delete/', 'LikeController@delete'); //イイね

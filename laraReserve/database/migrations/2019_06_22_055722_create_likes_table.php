@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddValidAndKindToReservesTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class AddValidAndKindToReservesTable extends Migration
      */
     public function up()
     {
-        Schema::table('reserves', function (Blueprint $table) {
-            $table->boolean('valid');
-            $table->integer('kind');
+        Schema::create('likes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->integer('course_id');
+            $table->timestamps();
         });
     }
 
@@ -26,9 +28,6 @@ class AddValidAndKindToReservesTable extends Migration
      */
     public function down()
     {
-        Schema::table('reserves', function (Blueprint $table) {
-            $table->dropColumn('valid');
-            $table->integer('kind');
-        });
+        Schema::dropIfExists('likes');
     }
 }

@@ -38,10 +38,12 @@
 
                     <h2 class="h3 text-center">\こんなことやります/</h2>
                     <p>{!! nl2br(e($course->content)) !!}</p>
-                    <h2 class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">\こんな人におすすめ/</h2>
+                    <h2
+                        class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                        \こんな人におすすめ/</h2>
                     <p>１．ダンスに興味があるけど、始める勇気がない人<br>
-                    ２．運動不足のため、楽しく汗をかきたい人<br>
-                    ３．この予約システムについて語り合いたい人(私が開発,運用してます)</p>
+                        ２．運動不足のため、楽しく汗をかきたい人<br>
+                        ３．この予約システムについて語り合いたい人(私が開発,運用してます)</p>
                     <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">料金</h2>
                     <p>{{$course->fee}}円</p>
                     <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">会場</h2>
@@ -114,20 +116,35 @@
                         {{-- <button type="button" class="btn-lg btn-success mr-3">
                             <p class="h3">予約する</p>
                         </button> --}}
-                                <form action="/reserve/add/{{$lesson->id}}" method="get">
-                                    @if (!$lesson->isDoneReserve())
-                                    <input type="submit" value="気になる" class="btn btn-lg btn-primary btn-dell h3">
-                                    @elseif($lesson->getReserveKind() == 1)
-                                    <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
-                                        disabled="disabled">
-                                    @elseif($lesson->getReserveKind() == 2)
-                                    <input type="submit" value="行けたら行く" class="btn btn-success btn-sm btn-dell"
-                                        disabled="disabled">
-                                    @elseif($lesson->getReserveKind() == 3)
-                                    <input type="submit" value="いつか行ってみたい" class="btn btn-success btn-sm btn-dell"
-                                        disabled="disabled">
-                                    @endif
-                                </form>
+
+                        @if(!$course->isDoneLike())
+                        
+                        <form action="/like/create" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="course_id" value="{{$course->id}}">
+                            <input type="submit" value="&#xf004" class="far fa-heart">
+                        </form>
+                        @else
+                        <form action="/like/delete" method="post">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="course_id" value="{{$course->id}}">
+                            <input type="submit" value="&#xf004" class="fas fa-heart">
+                        </form>
+                        @endif
+                        <form action="/reserve/add/{{$lesson->id}}" method="get">
+                            @if (!$lesson->isDoneReserve())
+                            <input type="submit" value="気になる" class="btn btn-lg btn-primary btn-dell h3">
+                            @elseif($lesson->getReserveKind() == 1)
+                            <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
+                                disabled="disabled">
+                            @elseif($lesson->getReserveKind() == 2)
+                            <input type="submit" value="行けたら行く" class="btn btn-success btn-sm btn-dell"
+                                disabled="disabled">
+                            @elseif($lesson->getReserveKind() == 3)
+                            <input type="submit" value="いつか行ってみたい" class="btn btn-success btn-sm btn-dell"
+                                disabled="disabled">
+                            @endif
+                        </form>
                         </button>
                     </div>
                     @endforeach
@@ -200,7 +217,7 @@
     window.onload = function () {
         // 実行したい処理
         @foreach($courses as $course)
-        @if($course-> address != "")
+        @if($course->address != "")
         getLatLng("{{$course->address}}", "map{{$course->id}}");
         @endif
         @endforeach

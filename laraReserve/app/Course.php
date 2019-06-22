@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Course extends Model
 {
@@ -32,6 +33,29 @@ class Course extends Model
 
     public function user(){
         return $this->belongsTo('App\User');
+    }
+
+    public function likes(){
+        return $this->hasMany('App\Like');
+    }
+
+    public function isDoneLike(){
+
+        if(Auth::check()){
+            $user = Auth::user();
+            $like = Like::where('user_id', $user->id)->where('course_id', $this->id)->first();
+
+            if( $like !== null){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+
     }
 
 }
