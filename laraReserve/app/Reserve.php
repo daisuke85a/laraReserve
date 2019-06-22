@@ -9,6 +9,7 @@ use App\Course;
 use Debugbar;
 use App\Mail\CancelUserNotification;
 use App\Mail\CancelOwnerNotification;
+use App\Services\SocialService;
 
 class Reserve extends Model
 {
@@ -28,8 +29,30 @@ class Reserve extends Model
 
     public function getUserName(){
         $user = $this->user->name;
-
         return $user;
+    }
+
+    public function getUserTwitterLink(){
+
+
+        $user = $this->user;
+
+        // social_account情報
+        $socialAccounts = [];
+        foreach ($user->socialAccounts as $account) {
+            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
+        }
+
+        \Debugbar::info($user);
+        \Debugbar::info($socialAccounts);
+
+        if(isset($socialAccounts['twitter']['link'])){
+            return $socialAccounts['twitter']['link'];
+        }
+        else{
+            return null;
+        }
+
     }
 
     public function getOwnerName(){

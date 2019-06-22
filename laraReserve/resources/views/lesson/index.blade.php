@@ -15,29 +15,22 @@
                 </div>
                 @endif
 
-                <h2>レッスン詳細</h2>
-                <h3>クラス名</h3>
-                <p>{{$lesson->title}}</p>
-                <h3>開始時間 </h3>
-                <p>{{$lesson->start}}</p>
-                <h3>終了時間 </h3>
-                <p>{{$lesson->end}}</p>
-
-                <h2>レッスンの予約</h2>
-                <form action="/reserve/create" method="post">
-                    {{ csrf_field() }}
-                        <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                        <input type="submit" value="レッスンを予約する">
-                        {{-- TODO:レッスン予約済みの場合はボタンを無効化したい --}}
-                </form>
-
-                <h2>このレッスンを予約してる人</h2>
+                <h2 class="h3">{{$lesson->course->title}}</h2>
+                <p>{{$lesson->getStartDay()}}
+                    {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
+                <h2 class="h3">予約者リスト</h2>
                 @if (count($reserves) > 0)
                 @foreach ($reserves as $reserve)
-                    <p>{{$reserve->getUserName()}}</p>
+                <p>{{$reserve->getUserName()}}
+                    @if (null !== $reserve->getUserTwitterLink())
+                    <a href="{{ $reserve->getUserTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
                 @endforeach
                 @else
-                    <p>まだ居ません</p>
+                <p>まだ居ません</p>
                 @endif
             </div>
         </div>
