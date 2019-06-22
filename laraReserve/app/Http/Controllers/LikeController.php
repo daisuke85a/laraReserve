@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Log;
+use Cookie;
 use App\Like;
 use App\Mail\LikeOwnerNotification;
 
@@ -39,6 +40,9 @@ class LikeController extends Controller
             
         } else {
             Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            Log::debug(env('TWITTER_LOGIN')); 
+            Log::debug(env('TWITTER_CLIENT_ID')); 
+            Log::debug(env('DB_CONNECTION')); 
 
             if (env('TWITTER_LOGIN')) {
                 return redirect('/login/twitter');

@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Reserve;
+use App\Like;
 use App\Services\SocialService;
 use App\User;
 use Cookie;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Socialite;
+use App\Mail\LikeOwnerNotification;
 
 class LoginController extends Controller
 {
@@ -97,13 +100,13 @@ class LoginController extends Controller
                 //イイねがCookieに入力されている場合は保存する
                 if (!empty($noAuthLikeRequest)) {
                     $like = new Like();
-                    $like->fill(['user_id' => $user->id]);
-                    $like->fill(['course_id' => $request->course_id]);
+                    $like->fill(['user_id' => Auth::user()->id]);
+                    $like->fill(['course_id' => $noAuthLikeRequest]);
         
                     $like->save();
         
                     $to = $like->getOwnerEmail();
-                    Mail::to($to)->send(new LikeNotification($like));
+                    Mail::to($to)->send(new LikeOwnerNotification($like));
                 }
             }
 

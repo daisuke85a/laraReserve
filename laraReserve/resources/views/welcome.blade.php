@@ -122,13 +122,13 @@
                         <form action="/like/create" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="course_id" value="{{$course->id}}">
-                            <input type="submit" value="&#xf004" class="far fa-heart">
+                            <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h1">
                         </form>
                         @else
                         <form action="/like/delete" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="course_id" value="{{$course->id}}">
-                            <input type="submit" value="&#xf004" class="fas fa-heart">
+                            <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h1">
                         </form>
                         @endif
                         <form action="/reserve/add/{{$lesson->id}}" method="get">
