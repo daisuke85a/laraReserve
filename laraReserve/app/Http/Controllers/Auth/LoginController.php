@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Reserve;
 use App\Like;
+use App\Mail\LikeOwnerNotification;
+use App\Reserve;
 use App\Services\SocialService;
 use App\User;
 use Cookie;
@@ -12,7 +13,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Socialite;
-use App\Mail\LikeOwnerNotification;
 
 class LoginController extends Controller
 {
@@ -85,12 +85,17 @@ class LoginController extends Controller
 
                 //予約IDと予約種別が両方Cookieに入力されている場合は保存する
                 if (!empty($noAuthReserveRequest) && !empty($noAuthReserveRequestKind)) {
-                    $reserve = new Reserve();
-                    $reserve->fill(['user_id' => Auth::user()->id]);
-                    $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
-                    $reserve->fill(['kind' => $noAuthReserveRequestKind]);
-                    $reserve->fill(['valid' => 1]);
-                    $reserve->save();
+
+                    //予約の重複を防ぐ
+                    if (0 === Reserve::where('user_id', Auth::user()->id)->where('lesson_id', $noAuthReserveRequest)->count()) {
+                        $reserve = new Reserve();
+                        $reserve->fill(['user_id' => Auth::user()->id]);
+                        $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
+                        $reserve->fill(['kind' => $noAuthReserveRequestKind]);
+                        $reserve->fill(['valid' => 1]);
+                        $reserve->save();
+                    }
+
                 }
 
                 //ログイン前にしてたイイね操作を実行する
@@ -99,14 +104,19 @@ class LoginController extends Controller
 
                 //イイねがCookieに入力されている場合は保存する
                 if (!empty($noAuthLikeRequest)) {
-                    $like = new Like();
-                    $like->fill(['user_id' => Auth::user()->id]);
-                    $like->fill(['course_id' => $noAuthLikeRequest]);
-        
-                    $like->save();
-        
-                    $to = $like->getOwnerEmail();
-                    Mail::to($to)->send(new LikeOwnerNotification($like));
+
+                    //予約の重複を防ぐ
+                    if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $noAuthLikeRequest)->count()) {
+
+                        $like = new Like();
+                        $like->fill(['user_id' => Auth::user()->id]);
+                        $like->fill(['course_id' => $noAuthLikeRequest]);
+
+                        $like->save();
+
+                        $to = $like->getOwnerEmail();
+                        Mail::to($to)->send(new LikeOwnerNotification($like));
+                    }
                 }
             }
 

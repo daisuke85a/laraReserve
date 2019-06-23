@@ -73,7 +73,7 @@
                             <form action="/like/create" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="course_id" value="{{$course->id}}">
-                                <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h1">
+                                <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h3">
                             </form>
                             @else
                             <form action="/like/delete" method="post">
@@ -136,7 +136,7 @@
                         <form action="/like/create" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="course_id" value="{{$course->id}}">
-                            <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h1">
+                            <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h3">
                         </form>
                         @else
                         <form action="/like/delete" method="post">
