@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Lesson;
 use App\Reserve;
+use App\Like;
 use Log;
 
 class LessonController extends Controller
@@ -53,7 +54,8 @@ class LessonController extends Controller
         $reserves = Reserve::where('lesson_id', $id)->get();
         Log::debug('LessonController:index $reserves count' . print_r($reserves->count(),true));
 
-        return view('lesson.index')->with([ 'lesson' => $lesson , 'reserves' => $reserves ]);
+        $likes = Like::where('course_id', $lesson->course->id)->get();
+        return view('lesson.index')->with([ 'lesson' => $lesson , 'reserves' => $reserves , 'likes' => $likes]);
     }
 
 }

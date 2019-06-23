@@ -32,6 +32,22 @@
                 @else
                 <p>まだ居ません</p>
                 @endif
+
+                <h2 class="h3">イイねリスト</h2>
+                @if (count($likes) > 0)
+                @foreach ($likes as $like)
+                <p>{{$like->getUserName()}}
+                    @if (null !== $like->getUserTwitterLink())
+                    <a href="{{ $like->getUserTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
+                @endforeach
+                @else
+                <p>まだ居ません</p>
+                @endif
+
             </div>
         </div>
     </div>

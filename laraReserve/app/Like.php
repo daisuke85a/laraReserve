@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Services\SocialService;
 
 class Like extends Model
 {
@@ -36,6 +37,30 @@ class Like extends Model
     public function getCourseTitle(){
         return $this->course->title;
     }
+
+    public function getUserTwitterLink(){
+
+
+        $user = $this->user;
+
+        // social_account情報
+        $socialAccounts = [];
+        foreach ($user->socialAccounts as $account) {
+            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
+        }
+
+        \Debugbar::info($user);
+        \Debugbar::info($socialAccounts);
+
+        if(isset($socialAccounts['twitter']['link'])){
+            return $socialAccounts['twitter']['link'];
+        }
+        else{
+            return null;
+        }
+
+    }
+
 
 
 }
