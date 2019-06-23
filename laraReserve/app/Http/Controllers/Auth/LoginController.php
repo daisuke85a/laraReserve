@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Socialite;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -77,6 +78,8 @@ class LoginController extends Controller
             Auth::login(SocialService::findOrCreate($providerUser, $provider));
 
             if (Auth::check()) {
+                //ログイン済みであることをキャッシュに保存する(1年保存する)
+                Cookie::queue(Cookie::make('SocialLogin', 1, 365 * 24 * 60 * 60));
 
                 //ログイン前にしてた予約操作を実行する
                 $noAuthReserveRequest = Cookie::get('noAuthReserveRequest');
@@ -148,4 +151,12 @@ class LoginController extends Controller
         return '/';
     }
 
+
+    protected function loggedOut(Request $request)
+    {
+        //ログアウトした場合
+        \Cookie::queue(\Cookie::forget('SocialLogin'));
+
+        return redirect('/');
+    }
 }

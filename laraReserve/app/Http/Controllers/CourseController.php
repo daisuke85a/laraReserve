@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\AddressImage;
 use App\Course;
 use App\Image;
 use App\SubImage;
-use App\AddressImage;
+use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
-use Cookie;
 
 class CourseController extends Controller
 {
@@ -29,6 +29,19 @@ class CourseController extends Controller
 
     public function welcome()
     {
+        if (!Auth::check()) {
+            //過去にログイン済みの場合は自動ログインする
+            $SocialLogin = Cookie::get('SocialLogin');
+            Log::debug('$SocialLogin="' . print_r($SocialLogin, true) . '"');
+            if ($SocialLogin === "1") {
+                if (env('TWITTER_LOGIN')) {
+                    return redirect('/login/twitter');
+                } else {
+                    return redirect('/login');
+                }
+            }
+        }
+
         $courses = Course::all();
         return view('welcome', ['courses' => $courses]);
     }
