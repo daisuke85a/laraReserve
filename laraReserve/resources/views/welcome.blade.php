@@ -40,7 +40,13 @@
                     <div class="d-flex justify-content-center">
                         <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
                     </div>
-                    <p class="text-center">{{$course->user->name}}</p>
+                    <p class="text-center">{{$course->user->name}}
+                        @if (null !== $course->user->getTwitterLink())
+                        <a href="{{ $course->user->getTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-twitter-square fa-2x"></i>
+                        </a>
+                        @endif
+                    </p>
 
                     <p>{!! nl2br(e($course->content)) !!}</p>
                     <h2
@@ -234,8 +240,8 @@
     //読み込み
     window.onload = function () {
         // 実行したい処理
-        @foreach ($courses as $course)
-        @if ($course->address != "")
+        @foreach($courses as $course)
+        @if($course->address != "")
         getLatLng("{{$course->address}}", "map{{$course->id}}");
         @endif
         @endforeach

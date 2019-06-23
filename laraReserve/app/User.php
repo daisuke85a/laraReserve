@@ -57,6 +57,23 @@ class User extends Authenticatable
         else{
             return null;
         }
+    }
+
+    public function getTwitterLink(){
+
+        // social_account情報
+        $socialAccounts = [];
+        foreach ($this->socialAccounts as $account) {
+            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
+        }
+
+        if(isset($socialAccounts['twitter']['link'])){
+            return $socialAccounts['twitter']['link'];
+        }
+        else{
+            return null;
+        }
 
     }
+
 }
