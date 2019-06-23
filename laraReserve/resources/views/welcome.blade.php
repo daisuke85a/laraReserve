@@ -37,6 +37,11 @@
                     @endif
 
                     <h2 class="h3 text-center">\こんなことやります/</h2>
+                    <div class="d-flex justify-content-center">
+                        <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
+                    </div>
+                    <p class="text-center">{{$course->user->name}}</p>
+
                     <p>{!! nl2br(e($course->content)) !!}</p>
                     <h2
                         class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">

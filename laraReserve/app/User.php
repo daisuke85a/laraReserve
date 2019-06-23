@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Services\SocialService;
 
 class User extends Authenticatable
 {
@@ -40,5 +41,22 @@ class User extends Authenticatable
     public function socialAccounts()
     {
         return $this->hasMany('App\SocialAccount');
+    }
+
+    public function getImageLink(){
+
+        // social_account情報
+        $socialAccounts = [];
+        foreach ($this->socialAccounts as $account) {
+            $socialAccounts[$account->provider_name]['imagelink'] = SocialService::findImageLink($account->provider_name, $account->token, $account->secret_token);
+        }
+
+        if(isset($socialAccounts['twitter']['imagelink'])){
+            return $socialAccounts['twitter']['imagelink'];
+        }
+        else{
+            return null;
+        }
+
     }
 }

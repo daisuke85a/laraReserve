@@ -34,7 +34,6 @@ class Reserve extends Model
 
     public function getUserTwitterLink(){
 
-
         $user = $this->user;
 
         // social_account情報

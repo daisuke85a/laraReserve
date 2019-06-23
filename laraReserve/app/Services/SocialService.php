@@ -66,4 +66,23 @@ class SocialService
         }
 
     }
+
+    /**
+     * 画像イメージへのリンクを取得
+     */
+    public static function findImageLink($provider, $token, $secret)
+    {
+        $user = Socialite::driver($provider)->userFromTokenAndSecret($token, $secret);
+        if (!$user) {
+            return '';
+        }
+
+        switch ($provider) {
+            case 'twitter':
+                return $user->getAvatar();
+            default:
+                return '';
+        }
+
+    }
 }
