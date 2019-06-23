@@ -68,7 +68,7 @@
                             <p>{{$lesson->getStartDay()}}
                                 {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2 d-flex">
                             @if(!$course->isDoneLike())
                             <form action="/like/create" method="post">
                                 {{ csrf_field() }}
@@ -90,11 +90,14 @@
                                 <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
                                 @if (!$lesson->isDoneReserve())
                                 <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
+                                <span class="h5 text-primary">{{$lesson->getReservesNum()}}</span>
                                 @else
                                 <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
                                     disabled="disabled">
+                                <span class="h5 text-success">{{$lesson->getReservesNum()}}</span>
                                 @endif
                             </form>
+
                         </div>
                         <div class="col-2">
                             @if ($lesson->isDoneReserve())
@@ -149,9 +152,11 @@
                             <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
                             @if (!$lesson->isDoneReserve())
                             <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
+                            <span class="h5 text-primary">{{$lesson->getReservesNum()}}</span>
                             @else
                             <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
                                 disabled="disabled">
+                            <span class="h5 text-success">{{$lesson->getReservesNum()}}</span>
                             @endif
                         </form>
                     </div>
@@ -224,8 +229,8 @@
     //読み込み
     window.onload = function () {
         // 実行したい処理
-        @foreach($courses as $course)
-        @if($course->address != "")
+        @foreach ($courses as $course)
+        @if ($course->address != "")
         getLatLng("{{$course->address}}", "map{{$course->id}}");
         @endif
         @endforeach

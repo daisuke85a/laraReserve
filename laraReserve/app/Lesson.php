@@ -12,6 +12,14 @@ class Lesson extends Model
 {
     protected $guarded = array('id');
 
+    public function reserves(){
+        return $this->hasMany('App\Reserve');
+    }
+
+    public function getReservesNum(){
+        return $this->reserves()->count();
+    }
+
     public function getStartDay(){
         $day = new DateTime($this->start);
         return $day->format('m月d日');
