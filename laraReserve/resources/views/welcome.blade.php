@@ -69,6 +69,21 @@
                                 {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                         </div>
                         <div class="col-2">
+                            @if(!$course->isDoneLike())
+                            <form action="/like/create" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="course_id" value="{{$course->id}}">
+                                <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h1">
+                            </form>
+                            @else
+                            <form action="/like/delete" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="course_id" value="{{$course->id}}">
+                                <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h3">
+                            </form>
+                            @endif
+                            <span class="heart h5">{{$course->getLikesNum()}}</span>
+
                             <form action="/reserve/create" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="kind" value="1">
@@ -115,7 +130,6 @@
                         </button> --}}
 
                         @if(!$course->isDoneLike())
-
                         <form action="/like/create" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="course_id" value="{{$course->id}}">
@@ -125,9 +139,10 @@
                         <form action="/like/delete" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="course_id" value="{{$course->id}}">
-                            <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h1">
+                            <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h3">
                         </form>
                         @endif
+                        <span class="heart h5">{{$course->getLikesNum()}}</span>
                         <form action="/reserve/create" method="post">
                             {{ csrf_field() }}
                             <input type="hidden" name="kind" value="1">

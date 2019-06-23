@@ -39,6 +39,10 @@ class Course extends Model
         return $this->hasMany('App\Like');
     }
 
+    public function getLikesNum(){
+        return $this->likes()->count();
+    }
+
     public function isDoneLike(){
 
         if(Auth::check()){
