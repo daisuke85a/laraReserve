@@ -11,6 +11,7 @@ use Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReserveNotification;
 use App\Mail\ReserveUserNotification;
+use App\Jobs\SendMail;
 
 class ReserveController extends Controller
 {
@@ -48,12 +49,11 @@ class ReserveController extends Controller
 
             $reserve->save();
 
-            $to = $reserve->getUserEmail();
-            Mail::to($to)->send(new ReserveUserNotification($reserve));
 
-            $to = $reserve->getOwnerEmail();
-            Mail::to($to)->send(new ReserveNotification($reserve));
-            // $course->fill($form)->save();
+            $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
+
+            $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));
+            
         } else {
             Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
 
