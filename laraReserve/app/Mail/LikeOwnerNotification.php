@@ -14,6 +14,7 @@ class LikeOwnerNotification extends Mailable
     use Queueable, SerializesModels;
 
     private $like;
+    private $title;
 
     /**
      * Create a new message instance.

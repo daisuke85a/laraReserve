@@ -49,7 +49,6 @@ class ReserveController extends Controller
 
             $reserve->save();
 
-
             $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
 
             $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));

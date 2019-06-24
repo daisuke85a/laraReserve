@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Mail;
 use Socialite;
 use Illuminate\Http\Request;
 
+use App\Mail\ReserveNotification;
+use App\Mail\ReserveUserNotification;
+use App\Jobs\SendMail;
+
 class LoginController extends Controller
 {
     /*
@@ -97,6 +101,10 @@ class LoginController extends Controller
                         $reserve->fill(['kind' => $noAuthReserveRequestKind]);
                         $reserve->fill(['valid' => 1]);
                         $reserve->save();
+
+                        $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
+
+                        $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));            
                     }
 
                 }
@@ -117,8 +125,7 @@ class LoginController extends Controller
 
                         $like->save();
 
-                        $to = $like->getOwnerEmail();
-                        Mail::to($to)->send(new LikeOwnerNotification($like));
+                        $this->dispatch(new SendMail( $like->getOwnerEmail(), new LikeOwnerNotification($like) ));
                     }
                 }
             }

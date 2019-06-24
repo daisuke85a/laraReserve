@@ -14,7 +14,8 @@ class CancelOwnerNotification extends Mailable
     use Queueable, SerializesModels;
 
     private $reserve;
-
+    private $title;
+    
     /**
      * Create a new message instance.
      *

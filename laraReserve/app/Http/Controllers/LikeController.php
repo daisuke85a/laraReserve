@@ -9,7 +9,7 @@ use Log;
 use Cookie;
 use App\Like;
 use App\Mail\LikeOwnerNotification;
-
+use App\Jobs\SendMail;
 
 class LikeController extends Controller
 {
@@ -35,8 +35,9 @@ class LikeController extends Controller
 
             $like->save();
 
-            $to = $like->getOwnerEmail();
-            Mail::to($to)->send(new LikeOwnerNotification($like));
+            \Debugbar::info($like->getOwnerEmail());
+
+            $this->dispatch(new SendMail( $like->getOwnerEmail(), new LikeOwnerNotification($like) ));
             
         } else {
             Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK

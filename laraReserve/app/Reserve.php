@@ -11,8 +11,10 @@ use App\Mail\CancelUserNotification;
 use App\Mail\CancelOwnerNotification;
 use App\Services\SocialService;
 
+
 class Reserve extends Model
 {
+
     //
     protected $fillable = [
         'user_id', 'lesson_id', 'valid', 'kind'
