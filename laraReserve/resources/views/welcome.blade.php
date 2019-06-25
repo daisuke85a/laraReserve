@@ -79,37 +79,6 @@
                             <p>{{$lesson->getStartDay()}}
                                 {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                         </div>
-                        <div class="col-2 d-flex">
-                            @if(!$course->isDoneLike())
-                            <form action="/like/create" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="course_id" value="{{$course->id}}">
-                                <input type="submit" value="&#xf004" class="far fa-heart heart border-0 h3">
-                            </form>
-                            @else
-                            <form action="/like/delete" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="course_id" value="{{$course->id}}">
-                                <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h3">
-                            </form>
-                            @endif
-                            <span class="heart h5">{{$course->getLikesNum()}}</span>
-
-                            <form action="/reserve/create" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="kind" value="1">
-                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                @if (!$lesson->isDoneReserve())
-                                <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
-                                <span class="h5 text-primary">{{$lesson->getReservesNum()}}</span>
-                                @else
-                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
-                                    disabled="disabled">
-                                <span class="h5 text-success">{{$lesson->getReservesNum()}}</span>
-                                @endif
-                            </form>
-
-                        </div>
                         <div class="col-2">
                             @if ($lesson->isDoneReserve())
                             <form action="/reserve/delete" method="post">
@@ -130,7 +99,7 @@
                 </div>
             </div>
         </div>
-        <div class="fixed-bottom">
+        <div class="fixed-bottom" id="reserve-area">
             <div class="footer-box-shadow bg-light container">
                 <div class="d-flex justify-content-center">
                     @foreach ($course->lessons as $lesson)
@@ -258,6 +227,22 @@
         @endif
         @endforeach
     }
-
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(window).bind("scroll", function() {
+	scrollHeight = $(document).height();
+	scrollPosition = $(window).height() + $(window).scrollTop();
+	if ( (scrollHeight - scrollPosition) / scrollHeight <= 0.05) {
+        $('#reserve-area').removeClass("fixed-bottom");
+        $('#reserve-area').addClass("col");
+	} else {
+        $('#reserve-area').removeClass("col");
+        $('#reserve-area').addClass("fixed-bottom");
+	}
+});
+</script>
+
 @endsection
