@@ -10678,3 +10678,7 @@ body {
   color: #e3342f;
 }
 
+.footer-box-shadow {
+  box-shadow: 0 0 1rem 0.5rem rgba(0, 0, 0, 0.15) !important;
+}
+

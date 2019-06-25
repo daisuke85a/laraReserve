@@ -132,13 +132,13 @@
         </div>
         <div class="fixed-bottom">
             <div class="shadow bg-light container">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-center">
                     @foreach ($course->lessons as $lesson)
                     <div>
-                        <p class="h4 mb-0">06月23日(日)</p>
-                        <p class="mb-0">15:00〜16:00 ¥1,000</p>
+                        <p class="text-center">06月23日(日) 15:00〜16:00 <br>
+                        渋谷徒歩5分 ¥1,000</p>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-center align-items-center">
                         {{-- <button type="button" class="btn-lg btn-success mr-3">
                             <p class="h3">予約する</p>
                         </button> --}}
@@ -157,21 +157,21 @@
                         </form>
                         @endif
                         <span class="heart h5">{{$course->getLikesNum()}}</span>
-                        <form action="/reserve/create" method="post">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="kind" value="1">
-                            <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                            @if (!$lesson->isDoneReserve())
-                            <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
-                            <span class="h5 text-primary">{{$lesson->getReservesNum()}}</span>
-                            @else
-                            <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
-                                disabled="disabled">
-                            <span class="h5 text-success">{{$lesson->getReservesNum()}}</span>
-                            @endif
-                        </form>
                     </div>
                     @endforeach
+                </div>
+                <div class="pb-3">
+                    <form action="/reserve/create" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="kind" value="1">
+                        <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                        @if (!$lesson->isDoneReserve())
+                        <input type="submit" value="予約する" class="btn btn-primary btn-lg btn-block">
+                        <span class="h5 text-primary">{{$lesson->getReservesNum()}}</span>
+                        @else
+                        <input type="submit" value="予約済み ({{$lesson->getReservesNum()}}名参加予定)" class="btn btn-success btn-lg btn-block" disabled="disabled">
+                        @endif
+                    </form>
                 </div>
             </div>
         </div>
