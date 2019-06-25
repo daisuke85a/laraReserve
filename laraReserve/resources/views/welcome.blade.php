@@ -79,11 +79,11 @@
                 <div class="row">
                     @if (count($course->lessons) > 0)
                     @foreach ($course->lessons as $lesson)
-                    <div class="col-6">
+                    <div class="col">
                         <p>{{$lesson->getStartDay()}}
                             {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                     </div>
-                    <div class="col-2">
+                    <div class="col">
                         @if ($lesson->isDoneReserve())
                         <form action="/reserve/delete" method="post">
                             {{ csrf_field() }}
@@ -142,7 +142,7 @@
                     <form action="/like/delete" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="course_id" value="{{$course->id}}">
-                        <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h3">
+                        <input type="submit" value="&#xf004" class="fas fa-heart heart border-0 h3 bg-light">
                     </form>
                     @endif
                     <span class="heart h5">{{$course->getLikesNum()}}</span>
