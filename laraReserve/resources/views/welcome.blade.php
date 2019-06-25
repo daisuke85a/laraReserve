@@ -49,6 +49,11 @@
                     </p>
 
                     <p>{!! nl2br(e($course->content)) !!}</p>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/tJIVFVdqKIo" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
                     <h2
                         class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         \こんな人におすすめ/</h2>
