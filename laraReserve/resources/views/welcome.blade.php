@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-header">
                     <p class="mb-0">渋谷駅徒歩5分 ¥1,000</p>
-                    <h1 class="h2">{{$course->title}}</h1>
+                    <h1 class="h2 font-weight-bold">{{$course->title}}</h1>
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
                     @endif
@@ -36,35 +36,28 @@
                     @endforeach
                     @endif
 
-                    <h2 class="h3 text-center">\こんなことやります/</h2>
+                    <h2 class="h3 text-center font-weight-bold py-3">\こんなことやります/</h2>
                     <div class="d-flex justify-content-center">
-                        <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
+                        <p class="font-weight-bold lead">{!! nl2br(e($course->content)) !!}</p>
                     </div>
-                    <p class="text-center">{{$course->user->name}}
-                        @if (null !== $course->user->getTwitterLink())
-                        <a href="{{ $course->user->getTwitterLink() }}" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-twitter-square fa-2x"></i>
-                        </a>
-                        @endif
-                    </p>
-
-                    <p>{!! nl2br(e($course->content)) !!}</p>
                     <div class="video-container">
                         <iframe width="560" height="315" src="https://www.youtube.com/embed/tJIVFVdqKIo" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                     </div>
                     <h2
-                        class="h3 text-center pt-3 h3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                        class="h3 font-weight-bold text-center mt-3 py-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         \こんな人におすすめ/</h2>
-                    <p>１．ダンスに興味があるけど、始める勇気がない人<br>
-                        ２．運動不足のため、楽しく汗をかきたい人<br>
-                        ３．この予約システムについて語り合いたい人(私が開発,運用してます)</p>
-                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">料金</h2>
+                    <div class="d-flex justify-content-center">
+                        <p class="font-weight-bold lead">１．ダンスに興味があるけど、始める勇気がない人<br>
+                            ２．運動不足のため、楽しく汗をかきたい人<br>
+                            ３．Webエンジニア、デザイナーと仲良くなりたい人</p>
+                    </div>
+                    <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">料金</h2>
                     <p>{{$course->fee}}円</p>
-                    <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">会場</h2>
+                    <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">会場</h2>
                     <p class="mb-0">渋谷駅 徒歩5分 レンタルスタジオ</p>
-                    <p class="h5 mb-0">{{$course->address}} A-815号室</p>
+                    <p class="lead mb-0">{{$course->address}} A-815号室</p>
                     <a href="http://studio-mission.com">http://studio-mission.com</a>
                     <div>
                         {{-- TODO:Google非公式の埋め込み方なので後で見直す必要あり --}}
@@ -80,9 +73,9 @@
                 @endforeach
                 @endif
                 <p>{!! nl2br(e($course->address_detail)) !!}</p>
-                <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">必要なもの</h2>
+                <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">必要なもの</h2>
                 <p>{!! nl2br(e($course->need)) !!}</p>
-                <h2 class="h3 pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">レッスンの予定</h2>
+                <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">レッスンの予定</h2>
                 <div class="row">
                     @if (count($course->lessons) > 0)
                     @foreach ($course->lessons as $lesson)
@@ -107,6 +100,22 @@
                     </div>
                     @endif
                 </div>
+
+                <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0 text-center">\主催者/
+                </h2>
+                <div class="d-flex justify-content-center">
+                    <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
+                </div>
+                <p class="text-center lead font-weight-bold">{{$course->user->name}}
+                    @if (null !== $course->user->getTwitterLink())
+                    <a href="{{ $course->user->getTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
+                <p>Webエンジニアを目指すダンスインストラクター。PHPのリモート案件で月30万の収入を目指す。ポートフォリオとしてこの予約システムを開発、運用中。病気のため通常の会社勤務が難しい。エンジニアやデザイナーにダンスを気軽に楽しんでもらいたい。毎月第4日曜に
+                    #WEB系ダンス会 主催(渋谷¥1000) 瞑想、佐藤優樹</p>
+
             </div>
         </div>
     </div>
