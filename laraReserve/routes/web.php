@@ -18,6 +18,11 @@ Route::get('/map', function () {
      return view('map');
 });
 
+Route::get('/class', function () {
+    return view('class');
+});
+
+
 Route::get('/map/{id}/', 'CourseController@map');
 
 Route::get('/map2', function () {
