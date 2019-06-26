@@ -26,7 +26,7 @@ class Course extends Model
 
     public function getFutureFirstLesson(){
         $date = date('Y-m-d H:i:s');
-        return Lesson::where('end' , '>' , $date )->first();
+        return Lesson::where('end' , '>' , $date )->where('course_id', $this->id)->first();
     }
 
 
