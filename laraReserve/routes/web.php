@@ -54,6 +54,7 @@ Route::get('/course/add', function () {
 
 Route::post('/course/create', 'CourseController@create')->middleware('auth');
 
+Route::get('/course/{id}/', 'CourseController@view'); //参照
 Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
 Route::post('/course/edit/{id}/', 'CourseController@edit_finish'); //完了
 Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除

@@ -27,6 +27,25 @@ class CourseController extends Controller
 
     }
 
+    public function view(Request $request, $id){
+        if (!Auth::check()) {
+            //過去にログイン済みの場合は自動ログインする
+            $SocialLogin = Cookie::get('SocialLogin');
+            Log::debug('$SocialLogin="' . print_r($SocialLogin, true) . '"');
+            if ($SocialLogin === "1") {
+                if (env('TWITTER_LOGIN')) {
+                    return redirect('/login/twitter');
+                } else {
+                    return redirect('/login');
+                }
+            }
+        }
+        $course = Course::find($id)->first();
+
+
+         return view('course.view', ['course' => $course]);        
+    }
+
     public function class(){
         if (!Auth::check()) {
             //過去にログイン済みの場合は自動ログインする
