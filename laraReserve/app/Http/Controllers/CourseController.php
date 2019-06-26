@@ -42,7 +42,10 @@ class CourseController extends Controller
         }
         $course = Course::where('id',$id)->first();
 
-         return view('course.view', ['course' => $course]);        
+        $futureLessons = $course->getFutureLessons();
+        $futureFirstLesson = $course->getFutureFirstLesson();
+
+         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);        
     }
 
     public function welcome()

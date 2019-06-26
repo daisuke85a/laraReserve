@@ -19,6 +19,17 @@ class Course extends Model
         return $this->hasMany('App\Lesson');
     }
 
+    public function getFutureLessons(){
+        $date = date('Y-m-d H:i:s');
+        return Lesson::where('end' , '>' , $date )->where('course_id', $this->id)->get();
+    }
+
+    public function getFutureFirstLesson(){
+        $date = date('Y-m-d H:i:s');
+        return Lesson::where('end' , '>' , $date )->first();
+    }
+
+
     public function mainImage(){
         return $this->hasOne('App\Image');
     }
