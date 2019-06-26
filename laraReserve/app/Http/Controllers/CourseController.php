@@ -40,8 +40,7 @@ class CourseController extends Controller
                 }
             }
         }
-        $course = Course::find($id)->first();
-
+        $course = Course::where('id',$id)->first();
 
          return view('course.view', ['course' => $course]);        
     }
