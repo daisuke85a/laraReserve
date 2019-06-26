@@ -45,24 +45,6 @@ class CourseController extends Controller
          return view('course.view', ['course' => $course]);        
     }
 
-    public function class(){
-        if (!Auth::check()) {
-            //過去にログイン済みの場合は自動ログインする
-            $SocialLogin = Cookie::get('SocialLogin');
-            Log::debug('$SocialLogin="' . print_r($SocialLogin, true) . '"');
-            if ($SocialLogin === "1") {
-                if (env('TWITTER_LOGIN')) {
-                    return redirect('/login/twitter');
-                } else {
-                    return redirect('/login');
-                }
-            }
-        }
-
-        $courses = Course::all();
-        return view('class', ['courses' => $courses]);        
-    }
-
     public function welcome()
     {
         if (!Auth::check()) {
