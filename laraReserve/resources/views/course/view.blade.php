@@ -85,17 +85,32 @@
                 @foreach ($futureLessons as $lesson)
 
                 <div class="row">
-                    <div class="col">
+                    <div class="col-3">
                         <p>{{$lesson->getStartDay()}}
                             {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
                     </div>
-                    <div class="col">
+                    <div class="col-9 d-flex justify-content-start">
+                        <div class="col">
+                            <form action="/reserve/create" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="kind" value="1">
+                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                @if (!$lesson->isDoneReserve())
+                                <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-block">
+                                @else
+                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-block"
+                                    disabled="disabled">
+                                @endif
+                            </form>
+                        </div>
                         @if ($lesson->isDoneReserve())
-                        <form action="/reserve/delete" method="post">
-                            {{ csrf_field() }}
-                            <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                            <input type="submit" value="キャンセル" class="btn btn-danger btn-sm btn-dell">
-                        </form>
+                        <div class="col">
+                            <form action="/reserve/delete" method="post">
+                                {{ csrf_field() }}
+                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
+                                <input type="submit" value="キャンセル" class="btn btn-danger btn-sm btn-block">
+                            </form>
+                        </div>
                         @endif
                     </div>
                 </div>
