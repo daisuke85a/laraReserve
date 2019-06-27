@@ -162,14 +162,14 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="kind" value="1">
                     <input type="hidden" name="lesson_id" value="{{$futureFirstLesson->id}}">
-                    @if (!$lesson->isDoneReserve())
+                    @if (!$futureFirstLesson->isDoneReserve())
                     <input type="submit" value="予約する" class="btn btn-primary btn-lg btn-block">
                     @else
                     <input type="submit" value="予約済み" class="btn btn-success btn-lg btn-block" disabled="disabled">
                     @endif
                 </form>
             </div>
-            @if ($lesson->isDoneReserve())
+            @if ($futureFirstLesson->isDoneReserve())
             <div class="col">
                 <form action="/reserve/delete" method="post">
                     {{ csrf_field() }}
