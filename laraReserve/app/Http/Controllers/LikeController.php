@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Log;
-use Cookie;
+use App\Jobs\SendMail;
 use App\Like;
 use App\Mail\LikeOwnerNotification;
-use App\Jobs\SendMail;
+use Cookie;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Log;
 
 class LikeController extends Controller
 {
@@ -24,31 +23,32 @@ class LikeController extends Controller
         if (Auth::check()) {
             // ユーザはログインしている
 
-            // TODO: 同ユーザによりレッスン予約済みの場合は予約をガードしたい
-            $user = Auth::user();
-            Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
-            Log::debug('ReserveController course_id' . print_r($request->course_id, true) . '"');
+            if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $request->course_id)->count()) {
 
-            $like = new Like();
-            $like->fill(['user_id' => $user->id]);
-            $like->fill(['course_id' => $request->course_id]);
+                $user = Auth::user();
+                Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
+                Log::debug('ReserveController course_id' . print_r($request->course_id, true) . '"');
 
-            $like->save();
+                $like = new Like();
+                $like->fill(['user_id' => $user->id]);
+                $like->fill(['course_id' => $request->course_id]);
 
-            \Debugbar::info($like->getOwnerEmail());
+                $like->save();
 
-            $this->dispatch(new SendMail( $like->getOwnerEmail(), new LikeOwnerNotification($like) ));
-            
+                \Debugbar::info($like->getOwnerEmail());
+
+                $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
+            }
+
         } else {
             Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-            Log::debug(env('TWITTER_LOGIN')); 
-            Log::debug(env('TWITTER_CLIENT_ID')); 
-            Log::debug(env('DB_CONNECTION')); 
+            Log::debug(env('TWITTER_LOGIN'));
+            Log::debug(env('TWITTER_CLIENT_ID'));
+            Log::debug(env('DB_CONNECTION'));
 
             if (env('TWITTER_LOGIN')) {
                 return redirect('/login/twitter');
-            }
-            else{
+            } else {
                 return redirect('/login');
             }
         }
