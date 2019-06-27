@@ -50,8 +50,9 @@ class ReserveController extends Controller
             $reserve->save();
 
             $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
-
             $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));
+
+            return view('course.reserve')->with([ 'course' => $reserve->lesson->course ]);
             
         } else {
             Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK

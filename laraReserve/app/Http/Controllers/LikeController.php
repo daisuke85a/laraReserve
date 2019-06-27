@@ -53,7 +53,7 @@ class LikeController extends Controller
             }
         }
 
-        return redirect('/');
+        return redirect('/course/' . $request->course_id);
 
     }
 
@@ -66,6 +66,6 @@ class LikeController extends Controller
         $like->delete();
 
         //リダイレクト
-        return redirect('/');
+        return redirect('/course/' . $request->course_id);
     }
 }
