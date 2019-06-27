@@ -147,7 +147,7 @@
         <div class="d-flex justify-content-center">
 
             <div>
-                <p class="text-center">06月23日(日) 15:00〜16:00 <br>
+            <p class="text-center">{{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
                     渋谷徒歩5分 ¥1,000 参加人数({{$futureFirstLesson->getReservesNum()}}/6人)</p>
             </div>
             <div class="d-flex justify-content-center align-items-center">

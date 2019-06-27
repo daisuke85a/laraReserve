@@ -54,7 +54,7 @@ class ReserveController extends Controller
                 $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
                 $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));
 
-                return view('course.reserve')->with([ 'course' => $reserve->lesson->course ]);
+                return view('course.reserve')->with([ 'course' => $reserve->lesson->course , 'lesson' => $reserve->lesson]);
             }
             
         } else {
@@ -78,6 +78,8 @@ class ReserveController extends Controller
 
         $lesson = Lesson::find($request->lesson_id);
         $lesson->cancelReserve();
-        return redirect('/');
+
+        return view('course.cancel')->with([ 'course' => $lesson->course , 'lesson' => $lesson]);
+        
     }
 }
