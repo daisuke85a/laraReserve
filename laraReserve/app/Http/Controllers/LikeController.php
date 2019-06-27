@@ -35,8 +35,6 @@ class LikeController extends Controller
 
                 $like->save();
 
-                \Debugbar::info($like->getOwnerEmail());
-
                 $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
             }
 
