@@ -8,6 +8,8 @@ use App\Mail\LikeOwnerNotification;
 use App\Reserve;
 use App\Services\SocialService;
 use App\User;
+use App\Course;
+
 use Cookie;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +74,8 @@ class LoginController extends Controller
     public function handleProviderCallback($provider)
     {
 
+        $redirectTo = '/';
+
         try {
             $providerUser = \Socialite::with($provider)->user();
         } catch (\Exception $e) {
@@ -103,8 +107,9 @@ class LoginController extends Controller
                         $reserve->save();
 
                         $this->dispatch(new SendMail( $reserve->getUserEmail(), new ReserveUserNotification($reserve) ));
-
-                        $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));            
+                        $this->dispatch(new SendMail( $reserve->getOwnerEmail(), new ReserveNotification($reserve) ));   
+                        
+                        return view('course.reserve')->with([ 'course' => $reserve->lesson->course ]);
                     }
 
                 }
@@ -126,6 +131,13 @@ class LoginController extends Controller
                         $like->save();
 
                         $this->dispatch(new SendMail( $like->getOwnerEmail(), new LikeOwnerNotification($like) ));
+
+                        $course = Course::where('id',$noAuthLikeRequest)->first();
+
+                        $futureLessons = $course->getFutureLessons();
+                        $futureFirstLesson = $course->getFutureFirstLesson();
+                
+                        return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);
                     }
                 }
             }
@@ -138,23 +150,7 @@ class LoginController extends Controller
 
     protected function redirectTo()
     {
-
-        \Debugbar::info("redirectTo");
-
-        if (Auth::check()) {
-
-            //ログイン前にしてた操作を実行する
-            $noAuthReserveRequest = Cookie::get('noAuthReserveRequest');
-            \Cookie::queue(\Cookie::forget('noAuthReserveRequest'));
-
-            $reserve = new Reserve();
-            $reserve->fill(['user_id' => Auth::user()->id]);
-            $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
-            $reserve->fill(['valid' => true]);
-
-            $reserve->save();
-        }
-
+        // Twitterログインのみとするため削除
         return '/';
     }
 
