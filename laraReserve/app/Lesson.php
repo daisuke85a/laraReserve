@@ -21,18 +21,19 @@ class Lesson extends Model
     }
 
     public function getStartDay(){
+        $week = array( "日", "月", "火", "水", "木", "金", "土" );
         $day = new DateTime($this->start);
-        return $day->format('m月d日');
+        return $day->format('m/d(' . $week[$day->format("w")] . ')');
     }
 
     public function getStartTime(){
         $day = new DateTime($this->start);
-        return $day->format('H時i分');
+        return $day->format('H:i');
     }
 
     public function getEndTime(){
         $day = new DateTime($this->end);
-        return $day->format('H時i分');
+        return $day->format('H:i');
     }
 
     public function isDoneReserve(){
