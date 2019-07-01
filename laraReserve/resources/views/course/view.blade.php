@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <p class="mb-0">渋谷駅徒歩5分 {{$course->getFeeString()}}</p>
+                    <p class="mb-0">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</p>
                     <h1 class="h2 font-weight-bold">{{$course->title}}</h1>
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
@@ -48,9 +48,7 @@
                         class="h3 font-weight-bold text-center mt-3 py-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         \こんな人におすすめ/</h2>
                     <div class="d-flex justify-content-center">
-                        <p class="font-weight-bold lead">１．ダンスに興味があるけど、始める勇気がない人<br>
-                            ２．運動不足のため、楽しく汗をかきたい人<br>
-                            ３．Webエンジニア、デザイナーと仲良くなりたい人</p>
+                        <p class="font-weight-bold lead">{!! nl2br(e($course->target)) !!}</p>
                     </div>
                     <h2
                         class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
@@ -59,9 +57,9 @@
                     <h2
                         class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         会場</h2>
-                    <p class="mb-0">渋谷駅 徒歩5分 レンタルスタジオ</p>
-                    <p class="lead mb-0">{{$course->address}} A-815号室</p>
-                    <a href="http://studio-mission.com">http://studio-mission.com</a>
+                    <p class="mb-0">{{$course->min_from_station}}</p>
+                    <p class="lead mb-0">{{$course->address . ' '}} {{$course->address_room}}</p>
+                    <a href="{{$course->address_url}}">{{$course->address_url}}</a>
                     <div>
                         {{-- TODO:Google非公式の埋め込み方なので後で見直す必要あり --}}
                         <iframe class="col" style="height: 300px;"
@@ -148,7 +146,7 @@
 
             <div>
             <p class="text-center">{{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
-                    渋谷徒歩5分 {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/6人)</p>
+                {{$course->min_from_station . ' ' }} {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/{{$course->maxNum}}人)</p>
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 {{-- <button type="button" class="btn-lg btn-success mr-3">
