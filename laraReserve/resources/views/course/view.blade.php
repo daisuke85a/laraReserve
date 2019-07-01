@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <p class="mb-0">渋谷駅徒歩5分 ¥1,000</p>
+                    <p class="mb-0">渋谷駅徒歩5分 {{$course->getFeeString()}}</p>
                     <h1 class="h2 font-weight-bold">{{$course->title}}</h1>
                     @if ($course->mainImage != null)
                     <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
@@ -55,7 +55,7 @@
                     <h2
                         class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         料金</h2>
-                    <p>{{$course->fee}}円</p>
+                    <p>{{$course->getFeeString()}}</p>
                     <h2
                         class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                         会場</h2>
@@ -148,7 +148,7 @@
 
             <div>
             <p class="text-center">{{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
-                    渋谷徒歩5分 ¥1,000 参加人数({{$futureFirstLesson->getReservesNum()}}/6人)</p>
+                    渋谷徒歩5分 {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/6人)</p>
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 {{-- <button type="button" class="btn-lg btn-success mr-3">

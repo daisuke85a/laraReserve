@@ -15,6 +15,10 @@ class Course extends Model
         'fee' => 'required'
     );
 
+    public function getFeeString(){
+        return '¥' . number_format($this->fee); 
+    }
+
     public function lessons(){
         return $this->hasMany('App\Lesson');
     }
