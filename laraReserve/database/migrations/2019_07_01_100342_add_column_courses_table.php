@@ -15,11 +15,7 @@ class AddColumnCoursesTable extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             //
-            $table->string('min_from_station')->after('fee');
-            $table->text('target')->after('content');
-            $table->string('address_room')->after('address_detail');
-            $table->string('address_url')->after('address_room');
-            $table->integer('max_num')->after('fee');
+            $table->string('youtube_url')->after('content');
         });
     }
 
@@ -32,11 +28,7 @@ class AddColumnCoursesTable extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             //
-            $table->dropColumn('min_from_station');
-            $table->dropColumn('target');
-            $table->dropColumn('address_room');
-            $table->dropColumn('address_url');
-            $table->dropColumn('max_num');
+            $table->dropColumn('youtube_url');
         });
     }
 }

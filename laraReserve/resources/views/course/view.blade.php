@@ -40,7 +40,7 @@
                         <p class="font-weight-bold lead">{!! nl2br(e($course->content)) !!}</p>
                     </div>
                     <div class="video-container">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/tJIVFVdqKIo" frameborder="0"
+                        <iframe width="560" height="315" src="{{$course->youtube_url}}" frameborder="0"
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                     </div>
@@ -146,7 +146,7 @@
 
             <div>
             <p class="text-center">{{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
-                {{$course->min_from_station . ' ' }} {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/{{$course->maxNum}}人)</p>
+                {{$course->min_from_station . ' ' }} {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/{{$course->max_num}}人)</p>
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 {{-- <button type="button" class="btn-lg btn-success mr-3">

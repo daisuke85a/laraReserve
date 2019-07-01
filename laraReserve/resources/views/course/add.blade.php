@@ -32,6 +32,11 @@
                             <td><textarea name="content" value="{{old('content')}}"></textarea></td>
                         </tr>
                         <tr>
+                            <th>YouTube埋め込み用URL</th>
+                            <td><input type="text" name="youtube_url" value="{{old('youtube_url')}}"></td>                         
+                        </tr>
+
+                        <tr>
                             <th>\こんな人におすすめ/</th>
                             <td><textarea name="target" value="{{old('target')}}"></textarea></td>
                         </tr>

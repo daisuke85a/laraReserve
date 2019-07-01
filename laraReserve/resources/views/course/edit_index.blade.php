@@ -55,6 +55,16 @@
                             @endif
                         </div>
                     </div>
+
+                    <div class="form-group @if($errors->has('youtube_url')) has-error @endif">
+                        <label for="youtube_url" class="col-md-3 control-label">YouTube埋め込み用URL</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="youtube_url" name="youtube_url" value="{{$course->youtube_url}}">
+                            @if($errors->has('youtube_url'))<span class="text-danger">{{ $errors->first('youtube_url') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
                     <div class="form-group @if($errors->has('content')) has-error @endif">
                         <label for="content" class="col-md-3 control-label">\こんな人におすすめ/</label>
                         <div class="col-sm-9">
