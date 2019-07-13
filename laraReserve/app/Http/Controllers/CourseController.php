@@ -10,6 +10,7 @@ use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use Validator;
 
 class CourseController extends Controller
 {
@@ -148,6 +149,18 @@ class CourseController extends Controller
 
     public function edit_finish(Request $request, $id)
     {
+
+        $validator = Validator::make($request->all(),
+            ['title' => 'required|no_ctrl_chars|max:50'],
+            ['content' => 'required|no_ctrl_chars']
+        );
+
+        if ($validator->fails()) {
+            return redirect('course/edit/' . $id)
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
         //レコードを検索
         $course = Course::findOrFail($id);
         //値を代入
