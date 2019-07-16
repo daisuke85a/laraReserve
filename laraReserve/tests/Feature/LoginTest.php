@@ -36,7 +36,11 @@ class LoginTest extends TestCase
     {
 
         // $response = $this->get('login/' . $this->providerName);
-        $response = $this->get('login/twitter');
+
+        //Expected status code 200 but received 500.が発生する。
+        //おそらくリンク元がhttpsじゃないからTwitter認証画面にアクセスできない。
+        //Twitter認証画面にアクセスせずともログインするよう、Mock等を使って実現したい
+        $response = $this->get('/login/twitter');
         $response->assertStatus(200);
     }
 
@@ -45,7 +49,7 @@ class LoginTest extends TestCase
      */
     public function Twitterアカウントでユーザー登録できる()
     {
-        $response = $this->get('login/' . $this->providerName .'/callback');
+        $response = $this->get('/login/' . $this->providerName .'/callback');
         $response->assertStatus(200);
     }
 
