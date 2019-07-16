@@ -18,6 +18,7 @@ class ChangeNullableToCoursesTable extends Migration
             $table->string('address_url')->nullable()->change();
             $table->string('address_detail')->nullable()->change();
             $table->string('need')->nullable()->change();
+            $table->string('youtube_url')->nullable()->change();
         });
     }
 
