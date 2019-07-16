@@ -1,8 +1,12 @@
 <?php
 
 namespace Tests\Feature;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use App\User;
+use Auth;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Socialite;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -14,9 +18,40 @@ class LoginTest extends TestCase
     {
         parent::setUp();
         $this->providerName = 'twitter';
+
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
+
+        // モックを作成
+        $this->user = Mockery::mock('Laravel\Socialite\One\User');
+        $this->user
+            ->shouldReceive('getId')
+            ->andReturn(uniqid())
+            ->shouldReceive('getEmail')
+            ->andReturn(uniqid() . '@test.com')
+            ->shouldReceive('getNickname')
+            ->andReturn('Pseudo')
+            ->shouldReceive('getName')
+            ->andReturn('Name');
+
+        $this->user->token = 'token';
+        $this->user->tokenSecret = 'tokenSecret';
+
+        $this->findUser = User::create([
+            'email' => $this->user->getEmail(),
+            'name' => $this->user->getName(),
+        ]);
+
+        $this->provider = Mockery::mock('Laravel\Socialite\Contracts\Provider');
+        $this->provider->shouldReceive('user')->andReturn($this->user);
     }
 
-        /**
+    public static function tearDownAfterClass(): void
+    {
+        // Mockeryの設定を元に戻す
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(true);
+    }
+
+    /**
      * A basic test example.
      *
      * @return void
@@ -27,7 +62,6 @@ class LoginTest extends TestCase
 
         $response->assertStatus(200);
     }
-
 
     /**
      * @test
@@ -49,8 +83,25 @@ class LoginTest extends TestCase
      */
     public function Twitterアカウントでユーザー登録できる()
     {
-        $response = $this->get('/login/' . $this->providerName .'/callback');
+        Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
+        // Socialite::shouldReceive('findOrCreate')->with([ $this->user, $this->providerName])->andReturn();
+        // SocialService::shouldReceive('findOrCreate')->with($this->user)->with($this->providerName)->andReturn();
+
+        $response = $this->get('/login/' . $this->providerName . '/callback');
         $response->assertStatus(302);
+        // $response->assertRedirect('/');
+
+        //登録されているユーザーデータを取得
+        $user = User::Where(['email' => $this->user->getEmail()])->firstOrFail();
+
+        //各データが正しく登録されているかチェック
+        // $this->assertEquals($user->provider_id, $this->user->getId());
+        // $this->assertEquals($user->provider_name, $this->providerName);
+        $this->assertEquals($user->name, $this->user->getName());
+        $this->assertEquals($user->email, $this->user->getEmail());
+
+        // 認証チェック
+        $this->assertTrue(Auth::check());
     }
 
 }
