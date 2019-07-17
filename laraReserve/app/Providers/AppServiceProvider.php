@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Validator::extend('no_ctrl_chars', 'App\Validation\ParameterValidator@validateNoControlCharacters');
+        Validator::extend('no_ctrl_chars_crlf', 'App\Validation\ParameterValidator@validateNoControlCharactersWithoutCRLF');
     }
 }

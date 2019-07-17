@@ -11,7 +11,7 @@ class Course extends Model
 
     public static $rules =
         ['title' => 'required|no_ctrl_chars|max:50',
-        'content' => 'required', //TODO:改行文字以外の制御文字をガードしたい
+        'content' => 'required|no_ctrl_chars_crlf|max:300', //TODO:改行文字以外の制御文字をガードしたい
         'youtube_url' => '',
         'target' => 'required',
         'fee' => 'required|numeric|max:100000',
