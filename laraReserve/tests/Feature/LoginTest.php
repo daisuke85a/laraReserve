@@ -147,4 +147,48 @@ class LoginTest extends TestCase
         $this->assertEquals($db_course->max_num, $course->max_num);
     }
 
+    /**
+     * @test
+     */
+    public function タイトルに制御文字が入っていてクラス作成に失敗する()
+    {
+        //クラスを作成する
+        $course = new Course([
+            'title' => "タイ\x00トル",
+            'content' => 'こんなことやります',
+            'target' => 'こんな人におすすめ',
+            'fee' => 1000,
+            'min_from_station' => '渋谷駅徒歩5分',
+            'address' => 'レンタルスタジオミッション',
+            'max_num' => 3
+        ]);
+
+        // ログインする
+        Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
+        $this->get('/login/' . $this->providerName . '/callback');
+
+        // クラス情報をポストする
+        $response = $this->post('/course/create',
+            [
+                '_token' => csrf_token(),
+                'title' => $course->title,
+                'content' => $course->content,
+                'target' => $course->target,
+                'fee' => $course->fee,
+                'min_from_station' => $course->min_from_station,
+                'address' => $course->address,
+                'max_num' => $course->max_num
+            ]);
+
+        //エラーメッセージが返信されることを確認
+        $error_response = ['title'];
+        $response->assertSessionHasErrors($error_response);
+
+        // 登録されているクラスデータを取得
+        $db_courses = Course::all();
+
+        //データが登録されていないことをチェック
+        $this->assertEquals($db_courses->count(), 0);
+    }
+
 }

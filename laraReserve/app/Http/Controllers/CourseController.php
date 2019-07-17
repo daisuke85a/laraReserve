@@ -79,7 +79,28 @@ class CourseController extends Controller
         Log::info('create');
         Log::debug('create');
 
-        $this->validate($request, Course::$rules);
+        $validator = Validator::make($request->all(),
+            ['title' => 'required|no_ctrl_chars|max:50',
+            'content' => 'required', //TODO:改行文字以外の制御文字をガードしたい
+            'youtube_url' => '',
+            'target' => 'required',
+            'fee' => 'required|numeric|max:100000',
+            'max_num' => 'required|numeric|max:100000',
+            'min_from_station' => 'required|no_ctrl_chars|max:50',
+            'address' => 'required|no_ctrl_chars|max:50',
+            'address_detail' => 'no_ctrl_chars|max:50',
+            'address_room' => '',
+            'address_url' => '',
+            'need' => '',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect('/course/add')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
 
         $course = new Course;
         $form = $request->all();
