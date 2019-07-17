@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Course;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -84,8 +85,6 @@ class LoginTest extends TestCase
     public function Twitterアカウントでユーザー登録できる()
     {
         Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
-        // Socialite::shouldReceive('findOrCreate')->with([ $this->user, $this->providerName])->andReturn();
-        // SocialService::shouldReceive('findOrCreate')->with($this->user)->with($this->providerName)->andReturn();
 
         $response = $this->get('/login/' . $this->providerName . '/callback');
         $response->assertStatus(302);
@@ -95,13 +94,57 @@ class LoginTest extends TestCase
         $user = User::Where(['email' => $this->user->getEmail()])->firstOrFail();
 
         //各データが正しく登録されているかチェック
-        // $this->assertEquals($user->provider_id, $this->user->getId());
-        // $this->assertEquals($user->provider_name, $this->providerName);
         $this->assertEquals($user->name, $this->user->getName());
         $this->assertEquals($user->email, $this->user->getEmail());
 
         // 認証チェック
         $this->assertTrue(Auth::check());
+    }
+
+    /**
+     * @test
+     */
+    public function クラスを作成できる()
+    {
+        //クラスを作成する
+        $course = new Course([
+            'title' => 'タイトル',
+            'content' => 'こんなことやります',
+            'target' => 'こんな人におすすめ',
+            'fee' => 1000,
+            'min_from_station' => '渋谷駅徒歩5分',
+            'address' => 'レンタルスタジオミッション',
+            'max_num' => 3
+        ]);
+
+        // ログインする
+        Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
+        $this->get('/login/' . $this->providerName . '/callback');
+
+        // クラス情報をポストする
+        $this->post('/course/create',
+            [
+                '_token' => csrf_token(),
+                'title' => $course->title,
+                'content' => $course->content,
+                'target' => $course->target,
+                'fee' => $course->fee,
+                'min_from_station' => $course->min_from_station,
+                'address' => $course->address,
+                'max_num' => $course->max_num
+            ]);
+
+        // 登録されているクラスデータを取得
+        $db_course = Course::Where(['title' => $course->title])->firstOrFail();
+
+        //各データが正しく登録されているかチェック
+        $this->assertEquals($db_course->title, $course->title);
+        $this->assertEquals($db_course->content, $course->content);
+        $this->assertEquals($db_course->target, $course->target);
+        $this->assertEquals($db_course->fee, $course->fee);
+        $this->assertEquals($db_course->min_from_station, $course->min_from_station);
+        $this->assertEquals($db_course->address, $course->address);
+        $this->assertEquals($db_course->max_num, $course->max_num);
     }
 
 }

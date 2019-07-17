@@ -46,7 +46,7 @@ class CourseController extends Controller
         $futureLessons = $course->getFutureLessons();
         $futureFirstLesson = $course->getFutureFirstLesson();
 
-         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);        
+         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);
     }
 
     public function welcome()
@@ -76,6 +76,8 @@ class CourseController extends Controller
 
     public function create(Request $request)
     {
+        Log::info('create');
+        Log::debug('create');
 
         $this->validate($request, Course::$rules);
 
@@ -85,6 +87,8 @@ class CourseController extends Controller
         unset($form['image']);
 
         if (Auth::check()) {
+            Log::debug('create Auth::check ture');
+
             // ユーザはログインしている
             $user = Auth::user();
             $form += array('user_id' => $user->id);
@@ -93,18 +97,18 @@ class CourseController extends Controller
             // $ext = $request->file('image')->guessExtension();
             // Log::debug('$request->file(image)->guessExtension()"' . print_r($ext, true) . '"');
 
-            $this->validate($request, [
-                'image' => [
-                    // 必須
-                    'required',
-                    // アップロードされたファイルであること
-                    'file',
-                    // 画像ファイルであること
-                    'image',
-                    // MIMEタイプを指定
-                    'mimes:jpeg,jpg,png',
-                ],
-            ]);
+            // $this->validate($request, [
+            //     'image' => [
+            //         // 必須
+            //         'required',
+            //         // アップロードされたファイルであること
+            //         'file',
+            //         // 画像ファイルであること
+            //         'image',
+            //         // MIMEタイプを指定
+            //         'mimes:jpeg,jpg,png',
+            //     ],
+            // ]);
 
             $course->fill($form)->save();
 
