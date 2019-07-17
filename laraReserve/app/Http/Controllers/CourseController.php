@@ -79,21 +79,7 @@ class CourseController extends Controller
         Log::info('create');
         Log::debug('create');
 
-        $validator = Validator::make($request->all(),
-            ['title' => 'required|no_ctrl_chars|max:50',
-            'content' => 'required', //TODO:改行文字以外の制御文字をガードしたい
-            'youtube_url' => '',
-            'target' => 'required',
-            'fee' => 'required|numeric|max:100000',
-            'max_num' => 'required|numeric|max:100000',
-            'min_from_station' => 'required|no_ctrl_chars|max:50',
-            'address' => 'required|no_ctrl_chars|max:50',
-            'address_detail' => 'no_ctrl_chars|max:50',
-            'address_room' => '',
-            'address_url' => '',
-            'need' => '',
-            ]
-        );
+        $validator = Validator::make($request->all() , Course::$rules);
 
         if ($validator->fails()) {
             return redirect('/course/add')
@@ -175,21 +161,7 @@ class CourseController extends Controller
     public function edit_finish(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(),
-            ['title' => 'required|no_ctrl_chars|max:50',
-            'content' => 'required', //TODO:改行文字以外の制御文字をガードしたい
-            'youtube_url' => '',
-            'target' => 'required',
-            'fee' => 'required|numeric|max:100000',
-            'max_num' => 'required|numeric|max:100000',
-            'min_from_station' => 'required|no_ctrl_chars|max:50',
-            'address' => 'required|no_ctrl_chars|max:50',
-            'address_detail' => 'no_ctrl_chars|max:50',
-            'address_room' => '',
-            'address_url' => '',
-            'need' => '',
-            ]
-        );
+        $validator = Validator::make($request->all(),Course::$rules);
 
         if ($validator->fails()) {
             return redirect('course/edit/' . $id)
