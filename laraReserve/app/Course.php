@@ -12,16 +12,16 @@ class Course extends Model
     public static $rules =
         ['title' => 'required|no_ctrl_chars|max:50',
         'content' => 'required|no_ctrl_chars_crlf|max:300', //TODO:改行文字以外の制御文字をガードしたい
-        'youtube_url' => '',
-        'target' => 'required',
+        'youtube_url' => 'no_ctrl_chars|max:50',
+        'target' => 'required|no_ctrl_chars_crlf|max:300',
         'fee' => 'required|numeric|max:100000',
         'max_num' => 'required|numeric|max:100000',
         'min_from_station' => 'required|no_ctrl_chars|max:50',
         'address' => 'required|no_ctrl_chars|max:50',
         'address_detail' => 'no_ctrl_chars|max:50',
-        'address_room' => '',
-        'address_url' => '',
-        'need' => '',
+        'address_room' => 'no_ctrl_chars|max:50',
+        'address_url' => 'no_ctrl_chars|max:50',
+        'need' => 'no_ctrl_chars_crlf|max:300',
     ];
 
     public function getFeeString()
