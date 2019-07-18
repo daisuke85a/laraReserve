@@ -319,12 +319,6 @@ class LoginTest extends TestCase
                 'max_num' => $course->max_num,
             ]);
 
-        //TODO::fileアップロードするとif(mb_check_encoding($val,"UTF-8"))に引っかかるっぽい
-        // $response->assertStatus(200);
-        //エラーメッセージが返信されることを確認
-        // $error_response = ['image'];
-        // $response->assertSessionHasErrors($error_response);
-
         // 登録されているクラスデータを取得
         $db_courses = Course::all();
 
@@ -390,6 +384,60 @@ class LoginTest extends TestCase
 
         // ファイルが保存されてないことを確認する
         \Storage::disk('local')->assertMissing('public/image/' . $file->hashName());
+    }
+
+        /**
+     * @test
+     */
+    public function タイトルに画像ファイルを指定してアップロードに失敗する()
+    {
+        // 1
+        \Storage::fake('files');
+        // ローカルストレージの全ファイルを削除する。
+        \Storage::fake('local');
+
+        // 2
+        $file = UploadedFile::fake()->image('dummy.jpg', 10, 10);
+
+        //クラスを作成する
+        $course = new Course([
+            'title' => "タイトル",
+            'content' => "こんなこと\nやります",
+            'target' => 'こんな人におすすめ',
+            'fee' => 1000,
+            'min_from_station' => '渋谷駅徒歩5分',
+            'address' => 'レンタルスタジオミッション',
+            'max_num' => 3,
+        ]);
+
+        // ログインする
+        Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
+        $this->get('/login/' . $this->providerName . '/callback');
+
+        // クラス情報をポストする
+        $response = $this->post('/course/create',
+            [
+                '_token' => csrf_token(),
+                'title' => $file,
+                'image' => $file,
+                'content' => $course->content,
+                'target' => $course->target,
+                'fee' => $course->fee,
+                'min_from_station' => $course->min_from_station,
+                'address' => $course->address,
+                'max_num' => $course->max_num,
+            ]);
+
+        // エラーメッセージが返信されることを確認
+        $error_response = ['title'];
+        $response->assertSessionHasErrors($error_response);
+
+        // 登録されているクラスデータを取得
+        $db_courses = Course::all();
+
+        //データが登録されてないことをチェック
+        $this->assertEquals($db_courses->count(), 0);
+
     }
 
 }
