@@ -12,8 +12,8 @@ class Course extends Model
     public static $rules =
         ['title' => 'required|string|no_ctrl_chars|max:50',
         'image' => 'file|image|mimes:jpeg,jpg,png|max:10000',
-        'content' => 'required|string|no_ctrl_chars_crlf|max:300', //TODO:改行文字以外の制御文字をガードしたい
-        'youtube_url' => 'no_ctrl_chars|string|max:50',
+        'content' => 'required|string|no_ctrl_chars_crlf|max:300',
+        'youtube_url' => 'nullable|url|no_ctrl_chars|string|max:50',
         'target' => 'required|string|no_ctrl_chars_crlf|max:300',
         'fee' => 'required|numeric|max:100000',
         'max_num' => 'required|numeric|max:100000',
@@ -21,7 +21,7 @@ class Course extends Model
         'address' => 'required|string|no_ctrl_chars|max:50',
         'address_detail' => 'no_ctrl_chars|string|max:50',
         'address_room' => 'no_ctrl_chars|string|max:50',
-        'address_url' => 'no_ctrl_chars|string|max:50',
+        'address_url' => 'nullable|url|no_ctrl_chars|string|max:50',
         'need' => 'no_ctrl_chars_crlf|string|max:300',
     ];
 
