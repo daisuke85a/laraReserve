@@ -284,6 +284,8 @@ class LoginTest extends TestCase
 
         // 1
         \Storage::fake('files');
+        // ローカルストレージの全ファイルを削除する。
+        \Storage::fake('local');
 
         // 2
         $file = UploadedFile::fake()->image('dummy.jpg', 10, 10);
