@@ -11,7 +11,7 @@ class Course extends Model
 
     public static $rules =
         ['title' => 'required|no_ctrl_chars|max:50',
-        // 'image' => 'file','image','mimes:jpeg,jpg,png',
+        'image' => 'file|image|mimes:jpeg,jpg,png',
         'content' => 'required|no_ctrl_chars_crlf|max:300', //TODO:改行文字以外の制御文字をガードしたい
         'youtube_url' => 'no_ctrl_chars|max:50',
         'target' => 'required|no_ctrl_chars_crlf|max:300',
