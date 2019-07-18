@@ -6,6 +6,7 @@ use App\Course;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Mockery;
 use Socialite;
 use Tests\TestCase;
@@ -114,7 +115,7 @@ class LoginTest extends TestCase
             'fee' => 1000,
             'min_from_station' => '渋谷駅徒歩5分',
             'address' => 'レンタルスタジオミッション',
-            'max_num' => 3
+            'max_num' => 3,
         ]);
 
         // ログインする
@@ -131,7 +132,7 @@ class LoginTest extends TestCase
                 'fee' => $course->fee,
                 'min_from_station' => $course->min_from_station,
                 'address' => $course->address,
-                'max_num' => $course->max_num
+                'max_num' => $course->max_num,
             ]);
 
         // 登録されているクラスデータを取得
@@ -160,7 +161,7 @@ class LoginTest extends TestCase
             'fee' => 1000,
             'min_from_station' => '渋谷駅徒歩5分',
             'address' => 'レンタルスタジオミッション',
-            'max_num' => 3
+            'max_num' => 3,
         ]);
 
         // ログインする
@@ -177,7 +178,7 @@ class LoginTest extends TestCase
                 'fee' => $course->fee,
                 'min_from_station' => $course->min_from_station,
                 'address' => $course->address,
-                'max_num' => $course->max_num
+                'max_num' => $course->max_num,
             ]);
 
         //エラーメッセージが返信されることを確認
@@ -191,7 +192,7 @@ class LoginTest extends TestCase
         $this->assertEquals($db_courses->count(), 0);
     }
 
-        /**
+    /**
      * @test
      */
     public function contentに制御文字が入っていてクラス作成に失敗する()
@@ -204,7 +205,7 @@ class LoginTest extends TestCase
             'fee' => 1000,
             'min_from_station' => '渋谷駅徒歩5分',
             'address' => 'レンタルスタジオミッション',
-            'max_num' => 3
+            'max_num' => 3,
         ]);
 
         // ログインする
@@ -221,7 +222,7 @@ class LoginTest extends TestCase
                 'fee' => $course->fee,
                 'min_from_station' => $course->min_from_station,
                 'address' => $course->address,
-                'max_num' => $course->max_num
+                'max_num' => $course->max_num,
             ]);
 
         //エラーメッセージが返信されることを確認
@@ -235,7 +236,7 @@ class LoginTest extends TestCase
         $this->assertEquals($db_courses->count(), 0);
     }
 
-        /**
+    /**
      * @test
      */
     public function contentの制御文字は改行だけは許し、クラス作成に成功する。()
@@ -248,7 +249,7 @@ class LoginTest extends TestCase
             'fee' => 1000,
             'min_from_station' => '渋谷駅徒歩5分',
             'address' => 'レンタルスタジオミッション',
-            'max_num' => 3
+            'max_num' => 3,
         ]);
 
         // ログインする
@@ -265,9 +266,8 @@ class LoginTest extends TestCase
                 'fee' => $course->fee,
                 'min_from_station' => $course->min_from_station,
                 'address' => $course->address,
-                'max_num' => $course->max_num
+                'max_num' => $course->max_num,
             ]);
-
 
         // 登録されているクラスデータを取得
         $db_courses = Course::all();
@@ -276,5 +276,70 @@ class LoginTest extends TestCase
         $this->assertEquals($db_courses->count(), 1);
     }
 
+    /**
+     * @test
+     */
+    public function クラスの画像ファイルのアップロードに成功する()
+    {
+
+        // 1
+        \Storage::fake('files');
+
+        // 2
+        $file = UploadedFile::fake()->image('dummy.jpg', 10, 10);
+
+        //クラスを作成する
+        $course = new Course([
+            'title' => "タイトル",
+            'content' => "こんなこと\nやります",
+            'target' => 'こんな人におすすめ',
+            'fee' => 1000,
+            'min_from_station' => '渋谷駅徒歩5分',
+            'address' => 'レンタルスタジオミッション',
+            'max_num' => 3,
+        ]);
+
+        // ログインする
+        Socialite::shouldReceive('with')->with($this->providerName)->andReturn($this->provider);
+        $this->get('/login/' . $this->providerName . '/callback');
+
+        // クラス情報をポストする
+        $response = $this->post('/course/create',
+            [
+                '_token' => csrf_token(),
+                'title' => $course->title,
+                'image' => $file,
+                'content' => $course->content,
+                'target' => $course->target,
+                'fee' => $course->fee,
+                'min_from_station' => $course->min_from_station,
+                'address' => $course->address,
+                'max_num' => $course->max_num,
+            ]);
+
+        //TODO::fileアップロードするとif(mb_check_encoding($val,"UTF-8"))に引っかかるっぽい
+        // $response->assertStatus(200);
+        //エラーメッセージが返信されることを確認
+        // $error_response = ['image'];
+        // $response->assertSessionHasErrors($error_response);
+
+        // 登録されているクラスデータを取得
+        $db_courses = Course::all();
+
+        //データが登録されていることをチェック
+        $this->assertEquals($db_courses->count(), 1);
+
+        // \Storage::disk('files')ではなく、実際にpublic/image/にファイルが有ることを確認する。
+        \Storage::disk('local')->assertExists('public/image/' . $file->hashName());
+
+    }
+
+    /**
+     * @test
+     */
+    public function クラスの画像ファイル形式が異なりのアップロードに失敗する()
+    {
+        $this->assertEquals(0, 1);
+    }
 
 }
