@@ -24,12 +24,33 @@ class UserController extends Controller
             $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
         }
 
-        \Debugbar::info($user);
-        \Debugbar::info($socialAccounts);
-
         return view('user/show', [
             'user' => $user,
             'socialAccounts' => $socialAccounts,
         ]);
     }
+
+        /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
 }

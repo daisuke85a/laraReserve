@@ -2,24 +2,11 @@
 
 @section('content')
 <div class="container">
-    @if (count($errors) > 0)
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{$error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-    @if (session('status'))
-    <div class="alert alert-success" role="alert">
-        {{ session('status') }}
-    </div>
-    @endif
-
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
+            <div>
+                <h2 class="mb-1">名前</h2>
+                <p>{{$user->name}}</p>
                 @foreach ($socialAccounts as $provider => $account)
                 @if (isset($account['link']) && $account['link'])
                 <a href="{{ $account['link'] }}" target="_blank" rel="noopener noreferrer">
@@ -31,6 +18,9 @@
                 </a>
                 @endif
                 @endforeach
+                <h2 class="mb-1">プロフィール</h2>
+                <p>Webエンジニアを目指すダンスインストラクター。PHPのリモート案件で月30万の収入を目指す。ポートフォリオとしてこの予約システムを開発、運用中。病気のため通常の会社勤務が難しい。エンジニアやデザイナーにダンスを気軽に楽しんでもらいたい。毎月第4日曜に
+                        #WEB系ダンス会 主催(渋谷¥1000) 瞑想、佐藤優樹</p>
             </div>
         </div>
     </div>
