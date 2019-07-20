@@ -70,6 +70,8 @@ Route::post('/reserve/delete/', 'ReserveController@delete'); //削除
 
 Route::get('/user/{userId}', 'UserController@show');
 Route::get('/user/{userId}/edit', 'UserController@edit');
+Route::patch('user/update/{userId}', 'UserController@update'); /*編集フォーム */
+
 
 // 送信メール本文のプレビュー
 Route::get('sample/mailable/preview', function () {
@@ -82,10 +84,6 @@ Route::get('sample/mailable/send', 'MailController@MailNotification');
 Route::post('/like/create/', 'LikeController@create'); //イイね
 Route::post('/like/delete/', 'LikeController@delete'); //イイね
 
-Route::get('/mypage/{id}', function(){
-    return view('mypage.show');
-});
 
-Route::get('/mypage/{id}/edit', function(){
-    return view('mypage.edit');
-});
+
+

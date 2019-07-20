@@ -11,6 +11,12 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public static $rules =
+    [
+    'profile' => 'nullable|no_ctrl_chars_crlf|string|max:300',
+];
+
+
     /**
      * The attributes that are mass assignable.
      *
