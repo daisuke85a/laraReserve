@@ -161,7 +161,7 @@
                         </div>                        
                     </div>
 
-                    <div class="col-md-offset-3 text-center"><button class="btn btn-primary">確認</button></div>
+                    <div class="col-md-offset-3 text-center"><button class="btn btn-primary">クラスを更新</button></div>
                 </form>
             </div>
         </div>
