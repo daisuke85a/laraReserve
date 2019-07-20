@@ -5,16 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                @if (count($errors) > 0)
-                <div>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{$error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
                 <h2>クラスの編集</h2>
                 <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
                     {{ csrf_field() }}

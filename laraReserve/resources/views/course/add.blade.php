@@ -5,15 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="card">
-                @if (count($errors) > 0)
-                <div>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{$error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
                 <form action="/course/create" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="form-group @if($errors->has('title')) has-error @endif">
