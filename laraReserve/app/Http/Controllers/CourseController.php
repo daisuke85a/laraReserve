@@ -69,12 +69,6 @@ class CourseController extends Controller
         return view('welcome', ['courses' => $courses]);
     }
 
-    public function map($id)
-    {
-        $course = Course::findOrFail($id);
-        return view('map3')->with('course', $course);
-    }
-
     public function add()
     {
 

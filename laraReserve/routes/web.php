@@ -13,42 +13,11 @@
 
 Route::get('/login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
-
-Route::get('/map', function () {
-     return view('map');
-});
-
-Route::get('/map/{id}/', 'CourseController@map');
-
-Route::get('/map2', function () {
-    return view('map2');
-});
-
-Route::get('/map3', function () {
-    return view('map3');
-});
-
-Route::get('/privacy', function () {
-    return view('privacy');
-});
-
-Route::get('/terms', function () {
-    return view('terms');
-});
-
-Route::get('/', 'CourseController@welcome');
-
-Route::get('/class', 'CourseController@class');
-
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/', 'CourseController@welcome');
 Route::get('/course', 'CourseController@index');
-
 Route::get('/course/add', 'CourseController@add');
-
-
 Route::post('/course/create', 'CourseController@create')->middleware('auth');
 
 Route::get('/course/{id}/', 'CourseController@view'); //参照
@@ -62,18 +31,20 @@ Route::post('/{id}/lesson/create/', 'LessonController@create'); //レッスン�
 
 Route::get('/reserve/add/{id}', 'ReserveController@add'); //レッスン予約
 Route::post('/reserve/create/', 'ReserveController@create'); //レッスン予約
-
 Route::post('/reserve/delete/', 'ReserveController@delete'); //削除
-
-Route::get('/user/{userId}', 'UserController@show');
-Route::get('/user/{userId}/edit', 'UserController@edit');
-Route::patch('user/update/{userId}', 'UserController@update'); /*編集フォーム */
-
-
 
 Route::post('/like/create/', 'LikeController@create'); //イイね
 Route::post('/like/delete/', 'LikeController@delete'); //イイね
 
+Route::get('/user/{userId}', 'UserController@show');
+Route::get('/user/{userId}/edit', 'UserController@edit');
+Route::patch('/user/update/{userId}', 'UserController@update'); /*編集フォーム */
 
 
+Route::get('/privacy', function () {
+    return view('privacy');
+});
 
+Route::get('/terms', function () {
+    return view('terms');
+});
