@@ -68,6 +68,13 @@
                                 <a class="dropdown-item" href="/course">
                                     クラス管理
                                 </a>
+                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}">
+                                    ユーザー情報 表示
+                                </a>
+                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}/edit">
+                                    ユーザー情報 編集
+                                </a>
+
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                     style="display: none;">
