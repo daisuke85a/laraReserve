@@ -80,3 +80,11 @@ Route::get('sample/mailable/send', 'MailController@MailNotification');
 
 Route::post('/like/create/', 'LikeController@create'); //イイね
 Route::post('/like/delete/', 'LikeController@delete'); //イイね
+
+Route::get('/mypage/{id}', function(){
+    return view('mypage.show');
+});
+
+Route::get('/mypage/{id}/edit', function(){
+    return view('mypage.edit');
+});
