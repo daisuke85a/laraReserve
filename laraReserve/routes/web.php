@@ -70,13 +70,6 @@ Route::get('/user/{userId}/edit', 'UserController@edit');
 Route::patch('user/update/{userId}', 'UserController@update'); /*編集フォーム */
 
 
-// 送信メール本文のプレビュー
-Route::get('sample/mailable/preview', function () {
-    return new App\Mail\MailNotification();
-  });
-
-Route::get('sample/mailable/send', 'MailController@MailNotification');
-
 
 Route::post('/like/create/', 'LikeController@create'); //イイね
 Route::post('/like/delete/', 'LikeController@delete'); //イイね
