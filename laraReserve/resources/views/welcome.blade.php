@@ -24,13 +24,13 @@
                 ダンスのレッスンを受講したり、開催することができます。
             </p>
             <p>
-                <a href="#" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
-                <a href="#" class="btn btn-secondary my-2">ダンスレッスンを開催する</a>
+                <a href="#lesson-list" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
+                <a href="/course/add" class="btn btn-secondary my-2">ダンスレッスンを開催する</a>
             </p>
         </div>
     </section>
 
-    <div class="album py-5 bg-light">
+    <div class="album py-5 bg-light" id="lesson-list">
         <div class="container">
             <div class="row">
                 @foreach ($courses as $course)

@@ -47,9 +47,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/course', 'CourseController@index');
 
-Route::get('/course/add', function () {
-    return view('course.add');
-});
+Route::get('/course/add', 'CourseController@add');
 
 
 Route::post('/course/create', 'CourseController@create')->middleware('auth');

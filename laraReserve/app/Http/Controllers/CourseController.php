@@ -28,7 +28,8 @@ class CourseController extends Controller
 
     }
 
-    public function view(Request $request, $id){
+    public function view(Request $request, $id)
+    {
         if (!Auth::check()) {
             //過去にログイン済みの場合は自動ログインする
             $SocialLogin = Cookie::get('SocialLogin');
@@ -41,12 +42,12 @@ class CourseController extends Controller
                 }
             }
         }
-        $course = Course::where('id',$id)->first();
+        $course = Course::where('id', $id)->first();
 
         $futureLessons = $course->getFutureLessons();
         $futureFirstLesson = $course->getFutureFirstLesson();
 
-         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);
+        return view('course.view', ['course' => $course, 'futureLessons' => $futureLessons, 'futureFirstLesson' => $futureFirstLesson]);
     }
 
     public function welcome()
@@ -74,19 +75,30 @@ class CourseController extends Controller
         return view('map3')->with('course', $course);
     }
 
+    public function add()
+    {
+
+        // 未ログインの場合は一旦Cokkieに保存する
+        if (Auth::check() === false) {
+            Cookie::queue(Cookie::make('RedirectCourseAdd', 'true', 30));
+            return redirect('/login/twitter');
+        }
+
+        return view('course.add');
+    }
+
     public function create(Request $request)
     {
         Log::info('create');
         Log::debug('create');
 
-        $validator = Validator::make($request->all() , Course::$rules);
+        $validator = Validator::make($request->all(), Course::$rules);
 
         if ($validator->fails()) {
             return redirect('/course/add')
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
-
 
         $course = new Course;
         $form = $request->all();
@@ -100,22 +112,6 @@ class CourseController extends Controller
             $user = Auth::user();
             $form += array('user_id' => $user->id);
             Log::debug('$form="' . print_r($form, true) . '"');
-
-            // $ext = $request->file('image')->guessExtension();
-            // Log::debug('$request->file(image)->guessExtension()"' . print_r($ext, true) . '"');
-
-            // $this->validate($request, [
-            //     'image' => [
-            //         // 必須
-            //         'required',
-            //         // アップロードされたファイルであること
-            //         'file',
-            //         // 画像ファイルであること
-            //         'image',
-            //         // MIMEタイプを指定
-            //         'mimes:jpeg,jpg,png',
-            //     ],
-            // ]);
 
             $course->fill($form)->save();
 
@@ -161,12 +157,12 @@ class CourseController extends Controller
     public function edit_finish(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(),Course::$rules);
+        $validator = Validator::make($request->all(), Course::$rules);
 
         if ($validator->fails()) {
             return redirect('course/edit/' . $id)
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         //レコードを検索

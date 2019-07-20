@@ -140,6 +140,15 @@ class LoginController extends Controller
                         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);
                     }
                 }
+
+                //ログイン前にしてたクラス作成画面への遷移を実行する
+                $RedirectCourseAdd = Cookie::get('RedirectCourseAdd');
+                \Cookie::queue(\Cookie::forget('RedirectCourseAdd'));
+
+                if($RedirectCourseAdd === 'true'){
+                    return redirect('/course/add');                    
+                }
+
             }
 
             return redirect($this->redirectTo);
