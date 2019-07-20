@@ -20,6 +20,8 @@ class AddColumnCoursesTable extends Migration
             $table->string('address_room')->after('address_detail');
             $table->string('address_url')->after('address_room');
             $table->integer('max_num')->after('fee');
+            $table->string('youtube_url')->after('content');
+
         });
     }
 
@@ -37,6 +39,7 @@ class AddColumnCoursesTable extends Migration
             $table->dropColumn('address_room');
             $table->dropColumn('address_url');
             $table->dropColumn('max_num');
+            // $table->dropColumn('youtube_url');
         });
     }
 }

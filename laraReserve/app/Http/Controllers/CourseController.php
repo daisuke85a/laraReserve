@@ -46,7 +46,7 @@ class CourseController extends Controller
         $futureLessons = $course->getFutureLessons();
         $futureFirstLesson = $course->getFutureFirstLesson();
 
-         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);        
+         return view('course.view', ['course' => $course , 'futureLessons' => $futureLessons , 'futureFirstLesson' => $futureFirstLesson ]);
     }
 
     public function welcome()
@@ -76,8 +76,17 @@ class CourseController extends Controller
 
     public function create(Request $request)
     {
+        Log::info('create');
+        Log::debug('create');
 
-        $this->validate($request, Course::$rules);
+        $validator = Validator::make($request->all() , Course::$rules);
+
+        if ($validator->fails()) {
+            return redirect('/course/add')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
 
         $course = new Course;
         $form = $request->all();
@@ -85,6 +94,8 @@ class CourseController extends Controller
         unset($form['image']);
 
         if (Auth::check()) {
+            Log::debug('create Auth::check ture');
+
             // ユーザはログインしている
             $user = Auth::user();
             $form += array('user_id' => $user->id);
@@ -93,18 +104,18 @@ class CourseController extends Controller
             // $ext = $request->file('image')->guessExtension();
             // Log::debug('$request->file(image)->guessExtension()"' . print_r($ext, true) . '"');
 
-            $this->validate($request, [
-                'image' => [
-                    // 必須
-                    'required',
-                    // アップロードされたファイルであること
-                    'file',
-                    // 画像ファイルであること
-                    'image',
-                    // MIMEタイプを指定
-                    'mimes:jpeg,jpg,png',
-                ],
-            ]);
+            // $this->validate($request, [
+            //     'image' => [
+            //         // 必須
+            //         'required',
+            //         // アップロードされたファイルであること
+            //         'file',
+            //         // 画像ファイルであること
+            //         'image',
+            //         // MIMEタイプを指定
+            //         'mimes:jpeg,jpg,png',
+            //     ],
+            // ]);
 
             $course->fill($form)->save();
 
@@ -150,21 +161,7 @@ class CourseController extends Controller
     public function edit_finish(Request $request, $id)
     {
 
-        $validator = Validator::make($request->all(),
-            ['title' => 'required|no_ctrl_chars|max:50',
-            'content' => 'required', //TODO:改行文字以外の制御文字をガードしたい
-            'youtube_url' => '',
-            'target' => 'required',
-            'fee' => 'required|numeric|max:100000',
-            'max_num' => 'required|numeric|max:100000',
-            'min_from_station' => 'required|no_ctrl_chars|max:50',
-            'address' => 'required|no_ctrl_chars|max:50',
-            'address_detail' => 'no_ctrl_chars|max:50',
-            'address_room' => '',
-            'address_url' => '',
-            'need' => '',
-            ]
-        );
+        $validator = Validator::make($request->all(),Course::$rules);
 
         if ($validator->fails()) {
             return redirect('course/edit/' . $id)
