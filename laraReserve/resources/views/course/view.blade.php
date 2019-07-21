@@ -94,11 +94,14 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" name="kind" value="1">
                                 <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                @if (!$lesson->isDoneReserve())
-                                <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-block">
-                                @else
+                                @if ($lesson->isDoneReserve())
                                 <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-block"
                                     disabled="disabled">
+                                @elseif($lesson->isMaxReserve())
+                                <input type="submit" value="満席" class="btn btn-secondary btn-sm btn-block"
+                                    disabled="disabled">
+                                @else
+                                <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-block">
                                 @endif
                             </form>
                         </div>
@@ -107,7 +110,7 @@
                             <form action="/reserve/delete" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                <input type="submit" value="キャンセル" class="btn btn-danger btn-sm btn-block">
+                                <input type="submit" value="キャンセル" class="btn btn-secondary btn-sm btn-block">
                             </form>
                         </div>
                         @endif
@@ -182,10 +185,13 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="kind" value="1">
                     <input type="hidden" name="lesson_id" value="{{$futureFirstLesson->id}}">
-                    @if (!$futureFirstLesson->isDoneReserve())
-                    <input type="submit" value="予約する" class="btn btn-primary btn-lg btn-block">
-                    @else
+                    @if ($futureFirstLesson->isDoneReserve())
                     <input type="submit" value="予約済み" class="btn btn-success btn-lg btn-block" disabled="disabled">
+                    @elseif($futureFirstLesson->isMaxReserve())
+                    <input type="submit" value="満席" class="btn btn-secondary btn-sm btn-block"
+                        disabled="disabled">
+                    @else
+                    <input type="submit" value="予約する" class="btn btn-primary btn-lg btn-block">
                     @endif
                 </form>
             </div>
@@ -194,7 +200,7 @@
                 <form action="/reserve/delete" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="lesson_id" value="{{$futureFirstLesson->id}}">
-                    <input type="submit" value="キャンセル" class="btn btn-danger btn-lg btn-block">
+                    <input type="submit" value="キャンセル" class="btn btn-secondary btn-lg btn-block">
                 </form>
             </div>
             @endif

@@ -102,4 +102,14 @@ class Lesson extends Model
         return $this->belongsTo('App\Course');
     }
 
+    public function isMaxReserve(){
+
+        if( $this->getReservesNum() >= $this->course->max_num ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

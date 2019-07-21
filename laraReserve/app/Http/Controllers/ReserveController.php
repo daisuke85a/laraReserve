@@ -34,25 +34,28 @@ class ReserveController extends Controller
         if (Auth::check()) {
             // ユーザはログインしている
 
-            // TODO: 同ユーザによりレッスン予約済みの場合は予約をガードする
+            // 同ユーザによりレッスン予約済みの場合は予約をガードする
             if (0 === Reserve::where('user_id', Auth::user()->id)->where('lesson_id', $request->lesson_id)->count()) {
+                // 満席の場合は予約をガードする
+                $lesson = Lesson::findOrFail($request->lesson_id);
+                if (!$lesson->isMaxReserve()) {
+                    $user = Auth::user();
+                    Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
+                    Log::debug('ReserveController lesson_id' . print_r($request->lesson_id, true) . '"');
 
-                $user = Auth::user();
-                Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
-                Log::debug('ReserveController lesson_id' . print_r($request->lesson_id, true) . '"');
+                    $reserve = new Reserve();
+                    $reserve->fill(['user_id' => $user->id]);
+                    $reserve->fill(['lesson_id' => $request->lesson_id]);
+                    $reserve->fill(['kind' => $request->kind]);
+                    $reserve->fill(['valid' => 1]);
 
-                $reserve = new Reserve();
-                $reserve->fill(['user_id' => $user->id]);
-                $reserve->fill(['lesson_id' => $request->lesson_id]);
-                $reserve->fill(['kind' => $request->kind]);
-                $reserve->fill(['valid' => 1]);
+                    $reserve->save();
 
-                $reserve->save();
+                    $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
+                    $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
 
-                $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
-                $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
-
-                return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
+                    return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
+                }
             }
 
         } else {
