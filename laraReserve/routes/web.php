@@ -28,6 +28,7 @@ Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除
 Route::get('/{id}/lesson/add/', 'LessonController@add'); //レッスン追加画面表示
 Route::get('/{course_id}/lesson/{id}', 'LessonController@index'); //レッスン表示
 Route::post('/{id}/lesson/create/', 'LessonController@create'); //レッスン追加
+Route::delete('/{course_id}/lesson/{id}/delete', 'LessonController@delete'); //レッスン削除
 
 Route::get('/reserve/add/{id}', 'ReserveController@add'); //レッスン予約
 Route::post('/reserve/create/', 'ReserveController@create'); //レッスン予約

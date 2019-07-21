@@ -45,6 +45,23 @@ class LessonController extends Controller
         return redirect('/course');
     }
 
+    public function delete(Request $req, $course_id, $id)
+    {
+        if (Auth::check()) {
+
+            $user = Auth::user();
+            $lesson = lesson::findOrFail($id);
+
+            if( $lesson->course->user->id === $user->id ){
+                $lesson->delete();
+                return redirect('course');
+            }
+        }
+
+        abort('403');
+
+    }
+
     public function index(Request $req, $course_id, $id)
     {
         Log::debug('LessonController:index');

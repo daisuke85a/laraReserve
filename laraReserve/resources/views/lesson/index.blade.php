@@ -48,6 +48,13 @@
                 <p>まだ居ません</p>
                 @endif
 
+                
+                <form action="/{{$lesson->course->id}}/lesson/{{$lesson->id}}/delete" method="post">
+                    {{ csrf_field() }}
+                    {{ method_field('delete') }}
+                        <input type="submit" value="レッスンを削除する" class="btn btn-danger btn-lg btn-block"></td>
+                </form>
+
             </div>
         </div>
     </div>
