@@ -79,6 +79,7 @@
                 <p>{!! nl2br(e($course->need)) !!}</p>
                 <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
                     レッスンの予定</h2>
+                @if ($futureLessons !== null)
                 @if (count($futureLessons) > 0)
                 @foreach ($futureLessons as $lesson)
 
@@ -118,6 +119,7 @@
                     <p>レッスン予定無し</p>
                 </div>
                 @endif
+                @endif
             </div>
 
             <h2
@@ -143,8 +145,14 @@
         <div class="d-flex justify-content-center">
 
             <div>
-            <p class="text-center">{{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
-                {{$course->min_from_station . ' ' }} {{$course->getFeeString()}} 参加人数({{$futureFirstLesson->getReservesNum()}}/{{$course->max_num}}人)</p>
+                <p class="text-center">
+                    @if ($futureFirstLesson !== null)
+                    {{$futureFirstLesson->getStartDay()}}{{$futureFirstLesson->getStartTime()}}〜{{$futureFirstLesson->getEndTime()}}<br>
+                    {{$course->min_from_station . ' ' }} {{$course->getFeeString()}}
+                    参加人数({{$futureFirstLesson->getReservesNum()}}/{{$course->max_num}}人)</p>
+                @else
+                <p>レッスン予定なし</p>
+                @endif
             </div>
             <div class="d-flex justify-content-center align-items-center">
                 {{-- <button type="button" class="btn-lg btn-success mr-3">
@@ -168,6 +176,7 @@
             </div>
         </div>
         <div class="row pb-3">
+            @if ($futureFirstLesson !== null)
             <div class="col">
                 <form action="/reserve/create" method="post">
                     {{ csrf_field() }}
@@ -188,6 +197,7 @@
                     <input type="submit" value="キャンセル" class="btn btn-danger btn-lg btn-block">
                 </form>
             </div>
+            @endif
             @endif
         </div>
     </div>
