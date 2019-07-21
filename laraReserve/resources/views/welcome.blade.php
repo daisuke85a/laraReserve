@@ -43,11 +43,20 @@
                             @endif
 
                             <div class="card-body">
-                                <small class="text-muted">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</small>
+                                <small
+                                    class="text-muted">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</small>
                                 <p class="card-text">{{$course->title}}</p>
                                 <div class="d-flex justify-content-left align-items-center">
-                                    <p class="badge badge-pill badge-secondary mr-2">7/28(日)</p>
-                                    <p class="badge badge-pill badge-secondary mr-2">8/28(日)</p>
+                                    <?php $futureLessons = $course->getFutureLessons(); ?>
+                                    @if (count($futureLessons) > 0)
+                                    @foreach ($futureLessons as $lesson)
+                                        <p class="badge badge-pill badge-secondary mr-2">{{$lesson->getStartDay()}}</p>
+                                    @endforeach
+                                    @else
+                                    <div class="col-md-12">
+                                        <p class="badge badge-pill badge-secondary mr-2">レッスン予定なし</p>
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-end align-items-center">
                                     <small class="text-muted">{{$course->user->name}}</small>
