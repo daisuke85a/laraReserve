@@ -87,6 +87,7 @@ class LoginController extends Controller
 
         if (empty($email)) {
             Log::warning('OAuth認証の結果受け取りでメールアドレスの取得失敗');
+            //TODO: 仮実装。本当はemailをnullableにしたい
             $providerUser->email = uniqid();
         }
         else{
