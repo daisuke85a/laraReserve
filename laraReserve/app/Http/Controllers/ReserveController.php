@@ -27,6 +27,7 @@ class ReserveController extends Controller
         if (Auth::check() === false) {
             Cookie::queue(Cookie::make('noAuthReserveRequest', $request->lesson_id, 30));
             Cookie::queue(Cookie::make('noAuthReserveRequestKind', $request->kind, 30));
+            Log::info('未ログインで予約操作したため一旦Cokkieに保存する lesson_id="' . print_r($request->lesson_id, true) . '" kind="' . print_r($request->kind, true) . '" ');                    
         }
 
         // $this->middleware('auth');
@@ -39,9 +40,9 @@ class ReserveController extends Controller
                 // 満席の場合は予約をガードする
                 $lesson = Lesson::findOrFail($request->lesson_id);
                 if (!$lesson->isMaxReserve()) {
+
                     $user = Auth::user();
-                    Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
-                    Log::debug('ReserveController lesson_id' . print_r($request->lesson_id, true) . '"');
+                    Log::info('ログイン中に予約操作を実行 lesson_id="' . print_r($request->lesson_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
 
                     $reserve = new Reserve();
                     $reserve->fill(['user_id' => $user->id]);
@@ -57,10 +58,8 @@ class ReserveController extends Controller
                     return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
                 }
             }
-
+            
         } else {
-            Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-
             return redirect('/login/twitter');
         }
 
@@ -69,8 +68,8 @@ class ReserveController extends Controller
 
     public function delete(Request $request)
     {
-        Log::debug('lesson_id"' . print_r($request->lesson_id, true) . '"');
-        Log::debug('reserve_id"' . print_r($request->id, true) . '"');
+        $user = Auth::user();
+        Log::info('予約削除 lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
 
         $lesson = Lesson::find($request->lesson_id);
         $lesson->cancelReserve();

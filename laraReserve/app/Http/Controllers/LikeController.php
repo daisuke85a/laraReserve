@@ -18,6 +18,7 @@ class LikeController extends Controller
         // 未ログインの場合は一旦Cokkieに保存する
         if (Auth::check() === false) {
             Cookie::queue(Cookie::make('noAuthLikeRequest', $request->course_id, 30));
+            Log::info('未ログインでイイね操作したため一旦Cokkieに保存する course_id="' . print_r($request->course_id, true) . '"');                    
         }
 
         if (Auth::check()) {
@@ -26,8 +27,7 @@ class LikeController extends Controller
             if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $request->course_id)->count()) {
 
                 $user = Auth::user();
-                Log::debug('ReserveController user_id' . print_r($user->id, true) . '"');
-                Log::debug('ReserveController course_id' . print_r($request->course_id, true) . '"');
+                Log::info('ログイン中にイイね操作を実行 lesson_id="' . print_r($request->course_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
 
                 $like = new Like();
                 $like->fill(['user_id' => $user->id]);
@@ -39,11 +39,6 @@ class LikeController extends Controller
             }
 
         } else {
-            Log::debug('未ログインのため予約を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-            Log::debug(env('TWITTER_LOGIN'));
-            Log::debug(env('TWITTER_CLIENT_ID'));
-            Log::debug(env('DB_CONNECTION'));
-
             return redirect('/login/twitter');
 
         }
@@ -54,6 +49,8 @@ class LikeController extends Controller
 
     public function delete(Request $request)
     {
+        $user = Auth::user();
+        Log::info('イイね削除操作 course_id="' . print_r($request->course_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
         //削除対象レコードを検索
         $like = Like::where('course_id', $request->course_id)->where('user_id', Auth::user()->id)->first();
 
