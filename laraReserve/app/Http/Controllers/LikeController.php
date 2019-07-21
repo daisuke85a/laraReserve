@@ -44,11 +44,8 @@ class LikeController extends Controller
             Log::debug(env('TWITTER_CLIENT_ID'));
             Log::debug(env('DB_CONNECTION'));
 
-            if (env('TWITTER_LOGIN')) {
-                return redirect('/login/twitter');
-            } else {
-                return redirect('/login');
-            }
+            return redirect('/login/twitter');
+
         }
 
         return redirect('/course/' . $request->course_id);

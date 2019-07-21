@@ -35,11 +35,7 @@ class CourseController extends Controller
             $SocialLogin = Cookie::get('SocialLogin');
             Log::debug('$SocialLogin="' . print_r($SocialLogin, true) . '"');
             if ($SocialLogin === "1") {
-                if (env('TWITTER_LOGIN')) {
-                    return redirect('/login/twitter');
-                } else {
-                    return redirect('/login');
-                }
+                return redirect('/login/twitter');
             }
         }
         $course = Course::where('id', $id)->first();
@@ -57,11 +53,7 @@ class CourseController extends Controller
             $SocialLogin = Cookie::get('SocialLogin');
             Log::debug('$SocialLogin="' . print_r($SocialLogin, true) . '"');
             if ($SocialLogin === "1") {
-                if (env('TWITTER_LOGIN')) {
-                    return redirect('/login/twitter');
-                } else {
-                    return redirect('/login');
-                }
+                return redirect('/login/twitter');
             }
         }
 
