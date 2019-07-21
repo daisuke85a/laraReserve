@@ -43,7 +43,7 @@
                             @endif
 
                             <div class="card-body">
-                                <small class="text-muted">渋谷駅徒歩5分 ¥1,000</small>
+                                <small class="text-muted">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</small>
                                 <p class="card-text">{{$course->title}}</p>
                                 <div class="d-flex justify-content-left align-items-center">
                                     <p class="badge badge-pill badge-secondary mr-2">7/28(日)</p>
