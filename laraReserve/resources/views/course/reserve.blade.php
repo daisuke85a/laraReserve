@@ -17,14 +17,15 @@
     </div>
     @endif
 
-    <p class="mb-0 text-center">渋谷駅徒歩5分 ¥1,000</p>
+    <p class="mb-0 text-center">{{$course->min_from_station . ' ' }} {{$course->getFeeString()}}</p>
     <h1 class="lead font-weight-bold text-center">{{$course->title}}</h1>
     <p class="text-center">{{$lesson->getStartDay()}}{{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
     <p class="text-center h2 font-weight-bold">予約が完了しました！</p>
 
-    <p class="text-center">続けて16:30〜17:30のレッスンもございます！<br>
+    {{-- TODO:できればカスタマイズ可能にしたい --}}
+    {{-- <p class="text-center">続けて16:30〜17:30のレッスンもございます！<br>
         ¥1,000(税込み)</p>
-    <p class="text-center">当日の気分で参加をご検討ください＼(^o^)／</p>
+    <p class="text-center">当日の気分で参加をご検討ください＼(^o^)／</p> --}}
 
     <p class="text-center">不明点がある場合は下記のアカウントまでDMください</p>
     <div class="d-flex justify-content-center">
