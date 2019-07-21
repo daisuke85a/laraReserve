@@ -54,7 +54,7 @@ class User extends Authenticatable
         // social_account情報
         $socialAccounts = [];
         foreach ($this->socialAccounts as $account) {
-            $socialAccounts[$account->provider_name]['imagelink'] = SocialService::findImageLink($account->provider_name, $account->token, $account->secret_token);
+            $socialAccounts[$account->provider_name]['imagelink'] = SocialService::findImageLink($account->provider_name, $account->token, $account->secret_token_enc);
         }
 
         if(isset($socialAccounts['twitter']['imagelink'])){
@@ -70,7 +70,7 @@ class User extends Authenticatable
         // social_account情報
         $socialAccounts = [];
         foreach ($this->socialAccounts as $account) {
-            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
+            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
         }
 
         if(isset($socialAccounts['twitter']['link'])){

@@ -6,7 +6,7 @@ use App\User;
 use App\Services\SocialService;
 use Socialite;
 use Laravel\Socialite\Contracts\User as ProviderUser;
-
+use Illuminate\Support\Facades\Crypt;
 
 class SocialService
 {
@@ -41,7 +41,7 @@ class SocialService
             'provider_id' => $providerUser->getId(),
             'provider_name' => $provider,
             'token' => $providerUser->token,
-            'secret_token' => $providerUser->tokenSecret,
+            'secret_token_enc' => Crypt::encryptString($providerUser->tokenSecret),
         ]);
 
         return $user;
@@ -53,7 +53,7 @@ class SocialService
      */
     public static function findLink($provider, $token, $secret)
     {
-        $user = Socialite::driver($provider)->userFromTokenAndSecret($token, $secret);
+        $user = Socialite::driver($provider)->userFromTokenAndSecret($token, Crypt::decryptString($secret));
         if (!$user) {
             return '';
         }
@@ -72,7 +72,7 @@ class SocialService
      */
     public static function findImageLink($provider, $token, $secret)
     {
-        $user = Socialite::driver($provider)->userFromTokenAndSecret($token, $secret);
+        $user = Socialite::driver($provider)->userFromTokenAndSecret($token, Crypt::decryptString($secret));
         if (!$user) {
             return '';
         }

@@ -46,7 +46,7 @@ class Like extends Model
         // social_account情報
         $socialAccounts = [];
         foreach ($user->socialAccounts as $account) {
-            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token);
+            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
         }
 
         \Debugbar::info($user);
