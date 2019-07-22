@@ -10,6 +10,8 @@
 
     <title>{{ config('app.name', 'FunSpot') }}</title>
 
+    @yield('ogp')
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 

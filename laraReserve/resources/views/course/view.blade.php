@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('ogp')
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@daisuke7924" />
+<meta name="twitter:creator" content="@daisuke7924" />
+<meta property="og:url" content="{{url()->current()}}" />
+<meta property="og:title" content="{{$course->title}}" />
+<meta property="og:description" content="{{$course->title}}" />
+<meta property="og:image" content="{{url("/")}}/storage/image/{{$course->mainImage->name}}" />
+@endsection
+
 @section('content')
 <div class="container">
     @if (count($errors) > 0)
