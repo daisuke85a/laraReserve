@@ -10,7 +10,7 @@
   
 <p>{{$reserve->getUserName()}}さんが{{$reserve->lesson->getStartDay()}}の{{$reserve->getCourseTitle()}}を予約しました！</p>
 
-<p>https://larareserve.funspot.tokyo/</p>
+<p>{{url("/course")}}/{{$reserve->lesson->course->id}}</p>
 
 </body>
 </html>

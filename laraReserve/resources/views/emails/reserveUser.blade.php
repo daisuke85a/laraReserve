@@ -14,11 +14,11 @@
 
 <p>
 レッスンの詳細については、下記サイトを参照ください。<br>
-https://larareserve.funspot.tokyo/
+  {{url("/course")}}/{{$reserve->lesson->course->id}}
 </p>
 
 <p>また、万が一ご都合が悪くなった場合は、下記サイトよりキャンセル操作をお願いいたします。<br>
-  https://larareserve.funspot.tokyo/
+  {{url("/course")}}/{{$reserve->lesson->course->id}}
 </p>
 
 <p>その他、ご質問がある場合は、{{$reserve->getOwnerEmail()}}までお気軽にお問い合わせください。

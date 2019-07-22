@@ -3,11 +3,10 @@
 
 
 レッスンの詳細については、下記サイトを参照ください。
-https://larareserve.funspot.tokyo/
-
+{{url("/course")}}/{{$reserve->lesson->course->id}}
 
 また、万が一ご都合が悪くなった場合は、下記サイトよりキャンセル操作をお願いいたします。
-https://larareserve.funspot.tokyo/
+{{url("/course")}}/{{$reserve->lesson->course->id}}
 
 
 その他、ご質問がある場合は、{{$reserve->getOwnerEmail()}}までお気軽にお問い合わせください。

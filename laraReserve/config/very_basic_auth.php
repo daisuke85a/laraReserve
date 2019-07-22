@@ -5,10 +5,10 @@
      */
     return [
         // Username
-        'user'              => 'dancecommit',
+        'user'              => 'dancecommit123@',
 
         // Password
-        'password'          => 'dancecommew',
+        'password'          => 'dancecommew987@',
 
         // Environments where the middleware is active. Use "*" to protect all envs
         'envs'              => [
