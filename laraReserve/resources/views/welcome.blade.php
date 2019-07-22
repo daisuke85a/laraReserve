@@ -19,9 +19,12 @@
 
     <section class="jumbotron text-center">
         <div class="container">
-            <h1 class="jumbotron-heading">気軽にダンスを楽しもう〜！</h1>
+            <h1 class="jumbotron-heading">全てのエンジニアに楽しいダンスを</h1>
             <p class="lead text-muted">
-                ダンスのレッスンを受講したり、開催することができます。
+                Twitter連携で簡単予約！
+            </p>
+            <p class="lead text-muted">
+                ダンスのレッスンの受講や開催ができます
             </p>
             <p>
                 <a href="#lesson-list" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
