@@ -55,17 +55,17 @@
                             allowfullscreen></iframe>
                     </div>
                     <h2
-                        class="h3 font-weight-bold text-center mt-3 py-3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                        class="h3 font-weight-bold text-center mt-3 py-3 border border-secondary border-right-0 border-left-0 border-bottom-0">
                         \こんな人におすすめ/</h2>
                     <div class="d-flex justify-content-center">
                         <p class="font-weight-bold lead">{!! nl2br(e($course->target)) !!}</p>
                     </div>
                     <h2
-                        class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                        class="h3 font-weight-bold pt-3 border border-secondary border-right-0 border-left-0 border-bottom-0">
                         料金</h2>
                     <p>{{$course->getFeeString()}}</p>
                     <h2
-                        class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                        class="h3 font-weight-bold pt-3 border border-secondary border-right-0 border-left-0 border-bottom-0">
                         会場</h2>
                     <p class="mb-0">{{$course->min_from_station}}</p>
                     <p class="lead mb-0">{{$course->address . ' '}} {{$course->address_room}}</p>
@@ -84,10 +84,10 @@
                 @endforeach
                 @endif
                 <p>{!! nl2br(e($course->address_detail)) !!}</p>
-                <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                <h2 class="h3 font-weight-bold pt-3 border border-secondary border-right-0 border-left-0 border-bottom-0">
                     必要なもの</h2>
                 <p>{!! nl2br(e($course->need)) !!}</p>
-                <h2 class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0">
+                <h2 class="h3 font-weight-bold pt-3 border border-secondary border-right-0 border-left-0 border-bottom-0">
                     レッスンの予定</h2>
                 @if ($futureLessons !== null)
                 @if (count($futureLessons) > 0)
@@ -131,23 +131,23 @@
                 </div>
                 @endif
                 @endif
-            </div>
 
-            <h2
-                class="h3 font-weight-bold pt-3 border border-primary border-right-0 border-left-0 border-bottom-0 text-center">
-                \主催者/
-            </h2>
-            <div class="d-flex justify-content-center">
-                <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
+                <h2
+                    class="h3 font-weight-bold pt-3 border border-secondary border-right-0 border-left-0 border-bottom-0 text-center">
+                    \主催者/
+                </h2>
+                <div class="d-flex justify-content-center">
+                    <div><img src="{{$course->user->getImageLink()}}" alt="image" class="text-center"></div>
+                </div>
+                <p class="text-center lead font-weight-bold">{{$course->user->name}}
+                    @if (null !== $course->user->getTwitterLink())
+                    <a href="{{ $course->user->getTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
+                <p>{{$course->user->profile}}</p>
             </div>
-            <p class="text-center lead font-weight-bold">{{$course->user->name}}
-                @if (null !== $course->user->getTwitterLink())
-                <a href="{{ $course->user->getTwitterLink() }}" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-twitter-square fa-2x"></i>
-                </a>
-                @endif
-            </p>
-            <p>{{$course->user->profile}}</p>
         </div>
     </div>
 </div>

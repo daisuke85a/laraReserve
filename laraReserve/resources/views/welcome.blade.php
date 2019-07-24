@@ -5,7 +5,7 @@
 <meta name="twitter:site" content="@daisuke7924" />
 <meta name="twitter:creator" content="@daisuke7924" />
 <meta property="og:url" content="{{url()->current()}}" />
-<meta property="og:title" content="運動不足のオフィスワーカーへ楽しいダンスを" />
+<meta property="og:title" content="運動不足の社会人へ楽しいダンスを" />
 <meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に予約できます。" />
 <meta property="og:image" content="{{url("/")}}/storage/default/top.jpg" />
 @endsection
@@ -28,7 +28,7 @@
 
 <section class="jumbotron text-center jumbotron-fluid">
     <div class="container py-5">
-        <h1 class="jumbotron-heading text-white py-5">運動不足のオフィスワーカーへ<br />楽しいダンスを</h1>
+        <h1 class="jumbotron-heading text-white py-5">運動不足の社会人へ<br />楽しいダンスを</h1>
         <p class="lead text-white">
             ダンスのレッスンの受講や開催ができます</p>
         <p class="lead text-white">
