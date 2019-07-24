@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('ogp')
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@daisuke7924" />
+<meta name="twitter:creator" content="@daisuke7924" />
+<meta property="og:url" content="{{url()->current()}}" />
+<meta property="og:title" content="運動不足のオフィスワーカーへ楽しいダンスを" />
+<meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に予約できます。" />
+<meta property="og:image" content="{{url("/")}}/storage/default/top.jpg" />
+@endsection
+
 @section('content')
 @if (count($errors) > 0)
 <div>
