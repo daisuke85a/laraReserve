@@ -21,7 +21,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" inte      grity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" inte
+        grity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 
 <body>
@@ -56,28 +57,27 @@
                         </li>
                         @endif
                         @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="/course">
+                                ダンスレッスンを開催する
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
-
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}">
+                                    プロフィール表示
+                                </a>
+                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}/edit">
+                                    プロフィール設定
+                                </a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
-                                <a class="dropdown-item" href="/course">
-                                    クラス管理
-                                </a>
-                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}">
-                                    ユーザー情報 表示
-                                </a>
-                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}/edit">
-                                    ユーザー情報 編集
-                                </a>
-
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                     style="display: none;">
                                     @csrf
