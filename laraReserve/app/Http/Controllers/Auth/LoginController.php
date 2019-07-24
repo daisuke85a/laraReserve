@@ -80,6 +80,7 @@ class LoginController extends Controller
             $providerUser = \Socialite::with($provider)->user();
         } catch (\Exception $e) {
             Log::warning('OAuth認証の結果受け取りで予期せぬエラーが発生しました');
+            Log::warning($e);
             return redirect('/')->with('oauth_error', '予期せぬエラーが発生しました');
         }
 
