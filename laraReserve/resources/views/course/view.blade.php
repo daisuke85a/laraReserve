@@ -224,18 +224,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script type="text/javascript">
-    $(window).bind("scroll", function () {
-        scrollHeight = $(document).height();
-        scrollPosition = $(window).height() + $(window).scrollTop();
-        if ((scrollHeight - scrollPosition) / scrollHeight <= 0.05) {
-            $('#reserve-area').removeClass("fixed-bottom");
-            $('#reserve-area').addClass("col");
-        } else {
-            $('#reserve-area').removeClass("col");
-            $('#reserve-area').addClass("fixed-bottom");
-        }
-    });
-
+    // $(window).bind("scroll", function () {
+    //     scrollHeight = $(document).height();
+    //     scrollPosition = $(window).height() + $(window).scrollTop();
+    //     if ((scrollHeight - scrollPosition) / scrollHeight <= 0.10) {
+    //         $('#reserve-area').removeClass("fixed-bottom");
+    //         $('#reserve-area').addClass("col");
+    //     } else {
+    //         $('#reserve-area').removeClass("col");
+    //         $('#reserve-area').addClass("fixed-bottom");
+    //     }
+    // });
 </script>
 
 @endsection

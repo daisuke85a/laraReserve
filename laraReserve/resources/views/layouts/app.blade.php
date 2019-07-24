@@ -96,9 +96,9 @@
     </div>
 
     <footer>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8 text-center">
+        <div class="container pb-5">
+            <div class="row justify-content-center pb-5">
+                <div class="col-md-8 text-center pb-5">
                     <a href="/privacy" class="small">プライバシーポリシー</a>
                     <a href="/terms" class="small">利用規約</a>
                 </div>
