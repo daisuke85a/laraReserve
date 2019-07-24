@@ -18,9 +18,9 @@
     @endif
 
     <section class="jumbotron text-center">
-        <div class="container">
-            <h1 class="jumbotron-heading">全てのエンジニアに、楽しいダンスを</h1>
-            <p class="lead text-muted">
+        <div class="container py-5">
+            <h1 class="jumbotron-heading text-white py-5">運動不足のエンジニアに、楽しいダンスを</h1>
+            <p class="lead text-white">
                 Twitter連携で簡単予約<br>
                 ダンスのレッスンの受講や開催ができます
             </p>
