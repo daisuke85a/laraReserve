@@ -18,11 +18,11 @@
 
 <section class="jumbotron text-center jumbotron-fluid">
     <div class="container py-5">
-        <h1 class="jumbotron-heading text-white py-5">運動不足のオフィスワーカーへ、楽しいダンスを</h1>
-        <p class="lead text-white py-3">
-            Twitter連携で簡単予約<br>
-            ダンスのレッスンの受講や開催ができます
-        </p>
+        <h1 class="jumbotron-heading text-white py-5">運動不足のオフィスワーカーへ<br />楽しいダンスを</h1>
+        <p class="lead text-white">
+            ダンスのレッスンの受講や開催ができます</p>
+        <p class="lead text-white">
+            Twitter連携で簡単に予約できます</p>
         <p class="py-3">
             <a href="#lesson-list" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
             <a href="/course/add" class="btn btn-secondary my-2">ダンスレッスンを開催する</a>
