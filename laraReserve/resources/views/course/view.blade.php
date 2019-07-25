@@ -7,7 +7,9 @@
 <meta property="og:url" content="{{url()->current()}}" />
 <meta property="og:title" content="{{$course->title}}" />
 <meta property="og:description" content="{{$course->title}}" />
+@if ($course->mainImage != null)
 <meta property="og:image" content="{{url("/")}}/storage/image/{{$course->mainImage->name}}" />
+@endif
 @endsection
 
 @section('content')
