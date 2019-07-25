@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('title')
-<title>運動不足の社会人へ楽しいダンスを | EEDance</title>
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
 @endsection
 @section('description')
 <meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">

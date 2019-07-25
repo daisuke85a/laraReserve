@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-<title>運動不足の社会人へ楽しいダンスを | EEDance</title>
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
 @endsection
 @section('description')
 <meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">
@@ -12,7 +12,7 @@
 <meta name="twitter:site" content="@daisuke7924" />
 <meta name="twitter:creator" content="@daisuke7924" />
 <meta property="og:url" content="{{url()->current()}}" />
-<meta property="og:title" content="運動不足の社会人へ楽しいダンスを | EEDance" />
+<meta property="og:title" content="ダンスで楽しく運動不足を解消しよう | EEDance" />
 <meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。" />
 <meta property="og:image" content="{{url("/")}}/storage/default/top1.jpg" />
 @endsection
@@ -35,7 +35,7 @@
 
 <section class="jumbotron text-center jumbotron-fluid">
     <div class="container py-5">
-        <h1 class="jumbotron-heading text-white py-5">運動不足の社会人へ<br />楽しいダンスを</h1>
+        <h1 class="jumbotron-heading text-white py-5">ダンスで楽しく<br />運動不足を解消しよう</h1>
         <p class="lead text-white">
             ダンスのレッスンの受講や開催ができます</p>
         <p class="lead text-white">
