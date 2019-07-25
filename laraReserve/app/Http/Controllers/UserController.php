@@ -82,7 +82,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), User::$rules);
 
         if ($validator->fails()) {
-            return redirect('user/edit/' . $id)
+            return redirect('user/' . $id . '/edit/' )
                 ->withErrors($validator)
                 ->withInput();
         }
