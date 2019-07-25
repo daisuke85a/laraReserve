@@ -5,9 +5,9 @@
 <meta name="twitter:site" content="@daisuke7924" />
 <meta name="twitter:creator" content="@daisuke7924" />
 <meta property="og:url" content="{{url()->current()}}" />
-<meta property="og:title" content="運動不足の社会人へ楽しいダンスを" />
-<meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に予約できます。" />
-<meta property="og:image" content="{{url("/")}}/storage/default/top.jpg" />
+<meta property="og:title" content="運動不足の社会人へ楽しいダンスを | EEDance" />
+<meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。" />
+<meta property="og:image" content="{{url("/")}}/storage/default/top1.jpg" />
 @endsection
 
 @section('content')

@@ -19,7 +19,7 @@ class Course extends Model
         'max_num' => 'required|numeric|max:100000',
         'min_from_station' => 'required|string|no_ctrl_chars|max:50',
         'address' => 'required|string|no_ctrl_chars|max:50',
-        'address_detail' => 'no_ctrl_chars|string|max:50',
+        'address_detail' => 'no_ctrl_chars|string|max:200',
         'address_room' => 'no_ctrl_chars|string|max:50',
         'address_url' => 'nullable|url|no_ctrl_chars|string|max:50',
         'need' => 'no_ctrl_chars_crlf|string|max:300',
