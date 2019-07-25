@@ -1,12 +1,20 @@
 @extends('layouts.app')
 
+@section('title')
+<title>{{$course->title}} | EEDance</title>
+@endsection
+@section('description')
+<meta name="description" content="{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}">
+@endsection
+
+
 @section('ogp')
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@daisuke7924" />
 <meta name="twitter:creator" content="@daisuke7924" />
 <meta property="og:url" content="{{url()->current()}}" />
 <meta property="og:title" content="{{$course->title}}" />
-<meta property="og:description" content="{{$course->title}}" />
+<meta property="og:description" content="{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}" />
 @if ($course->mainImage != null)
 <meta property="og:image" content="{{url("/")}}/storage/image/{{$course->mainImage->name}}" />
 @endif

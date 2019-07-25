@@ -8,8 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'FunSpot') }}</title>
-
+    @yield('title')
+    @yield('description')
     @yield('ogp')
 
     <!-- Scripts -->
