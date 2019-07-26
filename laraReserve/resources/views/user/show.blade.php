@@ -28,6 +28,8 @@
                 @endif
                 @endforeach
                 <h2 class="mb-1">予約リスト</h2>
+
+                @if (count($reserves) > 0)
                 <p>{{$user->name}} さんは以下のレッスンを予約しています</p>
                 @foreach ($reserves as $reserve)
                 <a href="/course/{{$reserve->lesson->course->id}}" class="btn btn-outline-primary" role="button">
@@ -35,8 +37,11 @@
                     {{$reserve->lesson->course->title}}<br />
                 </a>
                 @endforeach
-                @if (count($reserves) === 0)
-                    <p>予約中のレッスンはありません</p>
+                @else
+                <p>{{$user->name}} さんは現在レッスンを予約していません</p>
+                <a href="/#lesson-list" class="btn btn-outline-primary" role="button">
+                    こちらからお好みのレッスンを探してみてください
+                </a>
                 @endif
             </div>
         </div>
