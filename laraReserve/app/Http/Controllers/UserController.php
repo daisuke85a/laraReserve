@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Lesson;
+use App\Course;
 use App\Services\SocialService;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class UserController extends Controller
@@ -33,9 +35,27 @@ class UserController extends Controller
                     $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
                 }
 
+                // 現在有効な予約を取得する
+                // TODO: 開催終了した予約を分けたい
+                // TODO: クラスが削除されたら、関連するレッスンや予約を削除したい
+                // TODO: もしかしたら、DBからは削除せずに、無効フラグを立てて残しておきたいかも。
+                $reserves = [];
+                $reservesCount = 0;
+                foreach ($user->reserves as $reserve) {
+                    $lesson = Lesson::find($reserve->lesson_id);
+                    if ($lesson !== null) {
+                        $course = Course::find($lesson->course_id);
+                        if ($course !== null) {
+                            $reserves[$reservesCount] = $reserve;
+                            $reservesCount++;
+                        }
+                    }
+                }
+
                 return view('user/show', [
                     'user' => $user,
                     'socialAccounts' => $socialAccounts,
+                    'reserves' => $reserves,
                 ]);
             }
         }
@@ -82,7 +102,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), User::$rules);
 
         if ($validator->fails()) {
-            return redirect('user/' . $id . '/edit/' )
+            return redirect('user/' . $id . '/edit/')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -98,7 +118,7 @@ class UserController extends Controller
                 $user->profile = $request->profile;
                 $user->save();
 
-                return redirect('user/' . $user->id  );
+                return redirect('user/' . $user->id);
             }
         }
         abort('403');

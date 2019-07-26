@@ -13,21 +13,31 @@
     <div class="row">
         <div class="col-md-12">
             <div>
-                <h2 class="mb-1">名前</h2>
-                <p>{{$user->name}}</p>
-                @foreach ($socialAccounts as $provider => $account)
-                @if (isset($account['link']) && $account['link'])
-                <a href="{{ $account['link'] }}" target="_blank" rel="noopener noreferrer">
-                    @if ($provider === 'twitter')
-                    <i class="fab fa-twitter-square fa-2x"></i>
-                    @else
-                    {{ $provider }}
-                    @endif
-                </a>
+                <h2 class="mb-1">マイページ</h2>
+                <p>{{$user->name}}
+                    @foreach ($socialAccounts as $provider => $account)
+                    @if (isset($account['link']) && $account['link'])
+                    <a href="{{ $account['link'] }}" target="_blank" rel="noopener noreferrer">
+                        @if ($provider === 'twitter')
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                        @else
+                        {{ $provider }}
+                        @endif
+                    </a>
+                </p>
                 @endif
                 @endforeach
-                <h2 class="mb-1">プロフィール</h2>
-                <p>{{$user->profile}}</p>
+                <h2 class="mb-1">予約リスト</h2>
+                <p>{{$user->name}} さんは以下のレッスンを予約しています</p>
+                @foreach ($reserves as $reserve)
+                <a href="/course/{{$reserve->lesson->course->id}}" class="btn btn-outline-primary" role="button">
+                    {{$reserve->lesson->getStartDay()}}{{$reserve->lesson->getStartTime()}}〜{{$reserve->lesson->getEndTime()}}<br />
+                    {{$reserve->lesson->course->title}}<br />
+                </a>
+                @endforeach
+                @if (count($reserves) === 0)
+                    <p>予約中のレッスンはありません</p>
+                @endif
             </div>
         </div>
     </div>

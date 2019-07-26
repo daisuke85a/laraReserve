@@ -82,4 +82,9 @@ class User extends Authenticatable
 
     }
 
+    public function reserves()
+    {
+        return $this->hasMany('App\Reserve');
+    }
+
 }
