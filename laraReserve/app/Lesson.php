@@ -74,26 +74,20 @@ class Lesson extends Model
 
         if(Auth::check()){
             $user = Auth::user();
-
-
-            Log::debug('user_id"' . print_r($user->id, true) . '"');
-            Log::debug('lesson_id"' . print_r($this->id, true) . '"');
-
             $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
 
             if( $reserve !== null){
                 Log::debug('$reserve !== null');
-                // $reserve->invalid();
                 $reserve->delete();
                 return true;
             }
             else{
-                Log::debug('$reserve === null');
+                Log::warning('「存在しないレッスンの予約」を削除しようとした ユーザーID="' . print_r(Auth::user()->id, true) . '" LessonID="' . print_r($this->id, true) ); 
                 return false;
             }
         }
         else{
-            Log::debug('Auth::check() === false');
+            Log::warning('未ログインのためレッスン削除操作を不許可とする'); 
             return false;
         }
     }
