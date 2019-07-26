@@ -12,19 +12,28 @@ class Lesson extends Model
 {
     protected $guarded = array('id');
 
+    public function reserves(){
+        return $this->hasMany('App\Reserve');
+    }
+
+    public function getReservesNum(){
+        return $this->reserves()->count();
+    }
+
     public function getStartDay(){
+        $week = array( "日", "月", "火", "水", "木", "金", "土" );
         $day = new DateTime($this->start);
-        return $day->format('m月d日');
+        return $day->format('m/d(' . $week[$day->format("w")] . ')');
     }
 
     public function getStartTime(){
         $day = new DateTime($this->start);
-        return $day->format('H時i分');
+        return $day->format('H:i');
     }
 
     public function getEndTime(){
         $day = new DateTime($this->end);
-        return $day->format('H時i分');
+        return $day->format('H:i');
     }
 
     public function isDoneReserve(){
@@ -33,17 +42,31 @@ class Lesson extends Model
             $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
 
             if( $reserve !== null){
-                Log::debug('$reserve !== null');
                 return true;
             }
             else{
-                Log::debug('$reserve === null');
                 return false;
             }
         }
         else{
-            Log::debug('Auth::check() === false');
             return false;
+        }
+    }
+
+    public function getReserveKind(){
+        if(Auth::check()){
+            $user = Auth::user();
+            $reserve = Reserve::where('user_id', $user->id)->where('lesson_id', $this->id)->first();
+
+            if( $reserve !== null){
+                return $reserve->kind;
+            }
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
         }
     }
 
@@ -60,6 +83,7 @@ class Lesson extends Model
 
             if( $reserve !== null){
                 Log::debug('$reserve !== null');
+                // $reserve->invalid();
                 $reserve->delete();
                 return true;
             }
@@ -73,4 +97,19 @@ class Lesson extends Model
             return false;
         }
     }
+
+    public function course(){
+        return $this->belongsTo('App\Course');
+    }
+
+    public function isMaxReserve(){
+
+        if( $this->getReservesNum() >= $this->course->max_num ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

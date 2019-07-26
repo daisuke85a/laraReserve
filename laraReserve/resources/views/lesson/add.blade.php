@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('title')
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
+@endsection
+@section('description')
+<meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">
+@endsection
+
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

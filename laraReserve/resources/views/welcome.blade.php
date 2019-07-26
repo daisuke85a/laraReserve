@@ -1,149 +1,97 @@
 @extends('layouts.app')
 
+@section('title')
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
+@endsection
+@section('description')
+<meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">
+@endsection
+
+@section('ogp')
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@daisuke7924" />
+<meta name="twitter:creator" content="@daisuke7924" />
+<meta property="og:url" content="{{url()->current()}}" />
+<meta property="og:title" content="ダンスで楽しく運動不足を解消しよう | EEDance" />
+<meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。" />
+<meta property="og:image" content="{{url("/")}}/storage/default/top1.jpg" />
+@endsection
+
 @section('content')
+@if (count($errors) > 0)
+<div>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{$error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+@if (session('status'))
+<div class="alert alert-success" role="alert">
+    {{ session('status') }}
+</div>
+@endif
+
+<section class="jumbotron text-center jumbotron-fluid">
+    <div class="container py-5">
+        <h1 class="jumbotron-heading text-white py-5">ダンスで楽しく<br />運動不足を解消しよう</h1>
+        <p class="lead text-white">
+            ダンスのレッスンの受講や開催ができます</p>
+        <p class="lead text-white">
+            Twitter連携で簡単に予約できます</p>
+        <p class="py-3">
+            <a href="#lesson-list" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
+            <a href="/course/add" class="btn btn-secondary my-2">ダンスレッスンを開催する</a>
+        </p>
+    </div>
+</section>
+
 <div class="container">
-    @if (count($errors) > 0)
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{$error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-    @if (session('status'))
-    <div class="alert alert-success" role="alert">
-        {{ session('status') }}
-    </div>
-    @endif
-
-    <div class="row">
-        @foreach ($courses as $course)
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h2>{{$course->title}}</h2>
-                </div>
-                <div class="card-body">
-                    @if ($course->mainImage != null)
-                    <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage" style="max-width:100%">
-                    @endif
-                    <p>{{$course->content}}</p>
-                    <p>{{$course->fee}}円</p>
-                    <p>{{$course->address}}</p>
-                    <div id="map{{$course->id}}" class="map"></div>
-                    <p>レッスンの予定</p>
-                    <div class="row">
-                        @if (count($course->lessons) > 0)
-                        @foreach ($course->lessons as $lesson)
-                        <div class="col-6">
-                            <p>{{$lesson->getStartDay()}}
-                                {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
-                        </div>
-                        <div class="col-2">
-                            <form action="/reserve/create" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                @if (!$lesson->isDoneReserve())
-                                <input type="submit" value="予約する" class="btn btn-primary btn-sm btn-dell">
-                                @else
-                                <input type="submit" value="予約済み" class="btn btn-success btn-sm btn-dell"
-                                    disabled="disabled">
-                                @endif
-                            </form>
-                        </div>
-                        <div class="col-2">
-                            @if ($lesson->isDoneReserve())
-                            <form action="/reserve/delete" method="post">
-                                {{ csrf_field() }}
-                                <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                                <input type="submit" value="キャンセル" class="btn btn-danger btn-sm btn-dell">
-                            </form>
+    <div class="album py-5 bg-light" id="lesson-list">
+        <div class="container">
+            <div class="row">
+                @foreach ($courses as $course)
+                <div class="col-md-6">
+                    <a href="/course/{{$course->id}}">
+                        <div class="card mb-4 shadow-sm">
+                            @if ($course->mainImage != null)
+                            <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage"
+                                style="max-width:100%">
                             @endif
-                        </div>
 
-                        @endforeach
-                        @else
-                        <div class="col-md-12">
-                            <p>レッスン予定無し</p>
+                            <div class="card-body">
+                                <small
+                                    class="text-muted">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</small>
+                                <p class="card-text">{{$course->title}}</p>
+                                <div class="d-flex justify-content-left align-items-center">
+                                    <?php $futureLessons = $course->getFutureLessons(); ?>
+                                    @if (count($futureLessons) > 0)
+                                    @foreach ($futureLessons as $lesson)
+                                    <p class="badge badge-pill badge-secondary mr-2">{{$lesson->getStartDay()}}</p>
+                                    @endforeach
+                                    @else
+                                    <div class="col-md-12">
+                                        <p class="badge badge-pill badge-secondary mr-2">レッスン予定なし</p>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <small class="text-muted">{{$course->user->name}}</small>
+                                    @if (null !== $course->user->getTwitterLink())
+                                    <a href="{{ $course->user->getTwitterLink() }}" target="_blank"
+                                        rel="noopener noreferrer">
+                                        <i class="fab fa-twitter-square"></i>
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                        @endif
-                    </div>
+                    </a>
                 </div>
+                @endforeach
             </div>
         </div>
-        @endforeach
-
     </div>
-</div>
-<script>
-    function getLatLng(place, argmap) {
-        var map;
-        console.log(place);
-        console.log(argmap);
-        map = new google.maps.Map(document.getElementById(argmap), {
-            center: {
-                lat: -34.397,
-                lng: 150.644
-            },
-            zoom: 16
-        });
 
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-            address: place,
-            region: 'jp'
-        }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var bounds = new google.maps.LatLngBounds();
-                for (var r in results) {
-                    if (results[r].geometry) {
-                        var latlng = results[r].geometry.location;
-                        bounds.extend(latlng);
-                        var address = results[0].formatted_address.replace(/^日本, /, '');
-                        new google.maps.InfoWindow({
-                            content: address + "<br>(Lat, Lng) = " + latlng.toString()
-                        }).open(map, new google.maps.Marker({
-                            position: latlng,
-                            map: map
-                        }));
-                    }
-                }
-                map.fitBounds(bounds);
-                map.setZoom(16);
-            } else if (status == google.maps.GeocoderStatus.ERROR) {
-                alert("サーバとの通信時に何らかのエラーが発生！");
-            } else if (status == google.maps.GeocoderStatus.INVALID_REQUEST) {
-                alert("リクエストに問題アリ！geocode()に渡すGeocoderRequestを確認せよ！！");
-            } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                alert("短時間にクエリを送りすぎ！落ち着いて！！");
-            } else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
-                alert("このページではジオコーダの利用が許可されていない！・・・なぜ！？");
-            } else if (status == google.maps.GeocoderStatus.UNKNOWN_ERROR) {
-                alert("サーバ側でなんらかのトラブルが発生した模様。再挑戦されたし。");
-            } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                alert("見つかりません");
-            } else {
-                alert("えぇ～っと・・、バージョンアップ？");
-            }
-        });
-    }
-
-</script>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_API_KEY', 'AIzaSyBcorsRq7wWpYTCJhs75pU5paQ32xzuMAU')}}&callback=initMap"
-    async defer></script>
-
-<script>
-    //読み込み
-    window.onload = function () {
-        // 実行したい処理
-        @foreach($courses as $course)
-        @if($course->address != "")
-        getLatLng("{{$course->address}}", "map{{$course->id}}");
-        @endif
-        @endforeach
-    }
-
-</script>
-@endsection
+    @endsection

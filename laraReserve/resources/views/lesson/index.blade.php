@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('title')
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
+@endsection
+@section('description')
+<meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">
+@endsection
+
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -15,30 +23,46 @@
                 </div>
                 @endif
 
-                <h2>レッスン詳細</h2>
-                <h3>クラス名</h3>
-                <p>{{$lesson->title}}</p>
-                <h3>開始時間 </h3>
-                <p>{{$lesson->start}}</p>
-                <h3>終了時間 </h3>
-                <p>{{$lesson->end}}</p>
-
-                <h2>レッスンの予約</h2>
-                <form action="/reserve/create" method="post">
-                    {{ csrf_field() }}
-                        <input type="hidden" name="lesson_id" value="{{$lesson->id}}">
-                        <input type="submit" value="レッスンを予約する">
-                        {{-- TODO:レッスン予約済みの場合はボタンを無効化したい --}}
-                </form>
-
-                <h2>このレッスンを予約してる人</h2>
+                <h2 class="h3">{{$lesson->course->title}}</h2>
+                <p>{{$lesson->getStartDay()}}
+                    {{$lesson->getStartTime()}}〜{{$lesson->getEndTime()}}</p>
+                <h2 class="h3">予約者リスト</h2>
                 @if (count($reserves) > 0)
                 @foreach ($reserves as $reserve)
-                    <p>{{$reserve->getUserName()}}</p>
+                <p>{{$reserve->getUserName()}}
+                    @if (null !== $reserve->getUserTwitterLink())
+                    <a href="{{ $reserve->getUserTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
                 @endforeach
                 @else
-                    <p>まだ居ません</p>
+                <p>まだ居ません</p>
                 @endif
+
+                <h2 class="h3">イイねリスト</h2>
+                @if (count($likes) > 0)
+                @foreach ($likes as $like)
+                <p>{{$like->getUserName()}}
+                    @if (null !== $like->getUserTwitterLink())
+                    <a href="{{ $like->getUserTwitterLink() }}" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter-square fa-2x"></i>
+                    </a>
+                    @endif
+                </p>
+                @endforeach
+                @else
+                <p>まだ居ません</p>
+                @endif
+
+                
+                <form action="/{{$lesson->course->id}}/lesson/{{$lesson->id}}/delete" method="post">
+                    {{ csrf_field() }}
+                    {{ method_field('delete') }}
+                        <input type="submit" value="レッスンを削除する" class="btn btn-danger btn-lg btn-block"></td>
+                </form>
+
             </div>
         </div>
     </div>
