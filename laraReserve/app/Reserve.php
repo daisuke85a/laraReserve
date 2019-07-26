@@ -91,7 +91,6 @@ class Reserve extends Model
         Mail::to($to)->send(new CancelOwnerNotification($this));
 
         parent::delete();
-
     }
     
 

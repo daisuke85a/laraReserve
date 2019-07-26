@@ -55,19 +55,19 @@ class LessonController extends Controller
     {
         if (Auth::check()) {
 
-            $user = Auth::user();
-            $lesson = lesson::findOrFail($id);
+            $lesson = lesson::find($id);
 
-            if( $lesson->course->user->id === $user->id ){
-                $lesson->delete();
-                return redirect('course');
+            if( $lesson !== null ){
+               $lesson->delete();
+               Log::info('レッスン予約を削除 ユーザーID="' . print_r(Auth::user()->id, true) . '" LessonID="' . print_r($id, true) ); 
             }
             else{
-                Log::warning('別ユーザからレッスン削除操作された。レッスン追加を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-            }
+                Log::warning('「存在しないレッスン」の予約を削除しようとした ユーザーID="' . print_r(Auth::user()->id, true) . '" LessonID="' . print_r($id, true) ); 
+            }            
+            return redirect('course');   
         }
         else{
-            Log::warning('未ログインのためレッスン削除操作を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            Log::warning('未ログインのためレッスン削除操作を不許可とする'); 
         }
 
         abort('403');
@@ -76,13 +76,8 @@ class LessonController extends Controller
 
     public function index(Request $req, $course_id, $id)
     {
-        Log::debug('LessonController:index');
-        Log::debug('LessonController:index $id' . print_r($id,true));
         $lesson = lesson::findOrFail($id);
-        Log::debug('LessonController:index $lesson' . print_r($lesson,true));
         $reserves = Reserve::where('lesson_id', $id)->get();
-        Log::debug('LessonController:index $reserves count' . print_r($reserves->count(),true));
-
         $likes = Like::where('course_id', $lesson->course->id)->get();
         return view('lesson.index')->with([ 'lesson' => $lesson , 'reserves' => $reserves , 'likes' => $likes]);
     }
