@@ -57,6 +57,10 @@
                         </li>
                         @endif
                         @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/{{Auth::user()->id}}">
+                                マイページ</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -65,9 +69,6 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/course">
                                     ダンスレッスン開催
-                                </a>
-                                <a class="dropdown-item" href="/user/{{Auth::user()->id}}">
-                                    プロフィール表示
                                 </a>
                                 <a class="dropdown-item" href="/user/{{Auth::user()->id}}/edit">
                                     プロフィール設定
