@@ -127,11 +127,17 @@ class CourseController extends Controller
         //削除対象レコードを検索
         $course = Course::find($id);
 
-        //削除
-        $course->delete();
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($course->user->id === $user->id) {
+                //削除
+                $course->delete();
+                //リダイレクト
+                return redirect('/course');
+            }
+        }
 
-        //リダイレクト
-        return redirect('/course');
+        abort('403');
     }
 
     public function edit_index($id)
@@ -153,6 +159,7 @@ class CourseController extends Controller
 
         //レコードを検索
         $course = Course::findOrFail($id);
+
         //値を代入
         //$course = new Course;
         $form = $request->all();
@@ -165,68 +172,76 @@ class CourseController extends Controller
         if (Auth::check()) {
             // ユーザはログインしている
             $user = Auth::user();
-            $form += array('user_id' => $user->id);
-            Log::debug('$form="' . print_r($form, true) . '"');
 
-            $course->fill($form)->save();
+            if ($course->user->id === $user->id) {
 
-            if ($request->file('image') != null) {
+                $form += array('user_id' => $user->id);
+                Log::debug('$form="' . print_r($form, true) . '"');
 
-                if ($request->file('image')->isValid([])) {
+                $course->fill($form)->save();
 
-                    $image = Image::where('course_id', $course->id)->first();
+                if ($request->file('image') != null) {
 
-                    if ($image === null) {
-                        $image = new Image;
+                    if ($request->file('image')->isValid([])) {
+
+                        $image = Image::where('course_id', $course->id)->first();
+
+                        if ($image === null) {
+                            $image = new Image;
+                        }
+
+                        $image->name = basename($request->image->store('public/image'));
+                        $image->course_id = $course->id;
+                        $image->save();
+                        Log::debug('store Image');
+                    } else {
+                        Log::debug('inValid Image');
                     }
-
-                    $image->name = basename($request->image->store('public/image'));
-                    $image->course_id = $course->id;
-                    $image->save();
-                    Log::debug('store Image');
                 } else {
-                    Log::debug('inValid Image');
+                    Log::debug('no input Image');
                 }
-            } else {
-                Log::debug('no input Image');
-            }
 
-            if ($request->file('sub_image') != null) {
+                if ($request->file('sub_image') != null) {
 
-                if ($request->file('sub_image')->isValid([])) {
+                    if ($request->file('sub_image')->isValid([])) {
 
-                    $image = new SubImage;
+                        $image = new SubImage;
 
-                    $image->name = basename($request->sub_image->store('public/image'));
-                    $image->course_id = $course->id;
-                    $image->save();
-                    Log::debug('store Sub Image');
+                        $image->name = basename($request->sub_image->store('public/image'));
+                        $image->course_id = $course->id;
+                        $image->save();
+                        Log::debug('store Sub Image');
+                    } else {
+                        Log::debug('inValid Sub Image');
+                    }
                 } else {
-                    Log::debug('inValid Sub Image');
+                    Log::debug('no input Sub Image');
                 }
-            } else {
-                Log::debug('no input Sub Image');
-            }
 
-            if ($request->file('address_image') != null) {
+                if ($request->file('address_image') != null) {
 
-                if ($request->file('address_image')->isValid([])) {
+                    if ($request->file('address_image')->isValid([])) {
 
-                    $image = new AddressImage;
+                        $image = new AddressImage;
 
-                    $image->name = basename($request->address_image->store('public/image'));
-                    $image->course_id = $course->id;
-                    $image->save();
-                    Log::debug('store Address Image');
+                        $image->name = basename($request->address_image->store('public/image'));
+                        $image->course_id = $course->id;
+                        $image->save();
+                        Log::debug('store Address Image');
+                    } else {
+                        Log::debug('inValid Address Image');
+                    }
                 } else {
-                    Log::debug('inValid Address Image');
+                    Log::debug('no input Address Image');
                 }
-            } else {
-                Log::debug('no input Address Image');
             }
-
+            else{
+                Log::warning('別ユーザからクラス編集された。クラス編集を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+                abort('403');
+            }
         } else {
-            Log::debug('未ログインのため講座追加を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            Log::warning('未ログインのためクラス編集を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            abort('403');
         }
 
         //リダイレクト

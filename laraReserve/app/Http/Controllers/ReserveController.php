@@ -58,6 +58,9 @@ class ReserveController extends Controller
                     return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
                 }
             }
+            else{
+                Log::info('同ユーザによりレッスン予約済みの場合は予約をガードする lesson_id="' . print_r($request->lesson_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
+            }
             
         } else {
             return redirect('/login/twitter');
@@ -69,10 +72,15 @@ class ReserveController extends Controller
     public function delete(Request $request)
     {
         $user = Auth::user();
-        Log::info('予約削除 lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
-
         $lesson = Lesson::find($request->lesson_id);
-        $lesson->cancelReserve();
+
+        if($user->id === $lesson->course->user->id){
+            Log::info('予約削除 lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
+            $lesson->cancelReserve();
+        }
+        else{
+            Log::warning('別のユーザから予約削除を試みられた lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
+        }
 
         return view('course.cancel')->with(['course' => $lesson->course, 'lesson' => $lesson]);
 
