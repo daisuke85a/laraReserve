@@ -10,6 +10,7 @@ use Debugbar;
 use App\Mail\CancelUserNotification;
 use App\Mail\CancelOwnerNotification;
 use App\Services\SocialService;
+use Log;
 
 
 class Reserve extends Model
@@ -38,11 +39,17 @@ class Reserve extends Model
 
         $user = $this->user;
 
-        // social_account情報
-        $socialAccounts = [];
-        foreach ($user->socialAccounts as $account) {
-            $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
+        try {
+            // social_account情報
+            $socialAccounts = [];
+            foreach ($user->socialAccounts as $account) {
+                $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
+            }
+        } catch (\Exception $e) {
+            Log::info('Twitterリンクの取得に失敗"' . print_r($user->id, true) . '" ');                    
+            return null;
         }
+
 
         \Debugbar::info($user);
         \Debugbar::info($socialAccounts);
