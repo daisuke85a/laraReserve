@@ -95,4 +95,8 @@ class Course extends Model
 
     }
 
+    public function isValid(){
+        return $this->valid === 1 ? true : false;
+    }
+
 }

@@ -41,12 +41,16 @@
                             <th>レッスン予定</th>
                             <th>日程追加</th>
                             <th>編集</th>
-                            <th>削除</th>
+                            <th>有効化/無効化</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($courses as $course)
+                        @if ($course->isValid())
                         <tr>
+                        @else
+                        <tr class="table-dark">
+                        @endif
                             <th scope="row">{{$course->title}}</th>
                             <td>
                                 @if (count($course->lessons) > 0)
@@ -73,10 +77,18 @@
                             </td>
 
                             <td>
-                                <form action="/course/delete/{{$course->id}}" method="POST">
+                                @if ($course->isValid())
+                                <form action="/course/invalid/{{$course->id}}" method="POST">
                                     {{ csrf_field() }}
-                                    <input type="submit" value="削除" class="btn btn-danger btn-sm btn-dell">
+                                    <input type="submit" value="無効にする" class="btn btn-danger btn-sm btn-dell">
                                 </form>
+                                @else
+                                <form action="/course/valid/{{$course->id}}" method="POST">
+                                    {{ csrf_field() }}
+                                    <input type="submit" value="有効にする" class="btn btn-success btn-sm btn-dell">
+                                </form>
+
+                                @endif
                             </td>
                         </tr>
                         @endforeach
