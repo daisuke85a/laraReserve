@@ -24,7 +24,9 @@ if (\App::environment('production')) {
     Route::get('/course/{id}/', 'CourseController@view'); //参照
     Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
     Route::post('/course/edit/{id}/', 'CourseController@edit_finish'); //完了
-    Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除
+    Route::post('/course/invalid/{id}/', 'CourseController@invalid'); //無効
+    Route::post('/course/valid/{id}/', 'CourseController@valid'); //有効
+
 
     Route::get('/{id}/lesson/add/', 'LessonController@add'); //レッスン追加画面表示
     Route::get('/{course_id}/lesson/{id}', 'LessonController@index'); //レッスン表示
@@ -64,7 +66,8 @@ if (\App::environment('production')) {
         Route::get('/course/{id}/', 'CourseController@view'); //参照
         Route::get('/course/edit/{id}/', 'CourseController@edit_index'); //編集
         Route::post('/course/edit/{id}/', 'CourseController@edit_finish'); //完了
-        Route::post('/course/delete/{id}/', 'CourseController@delete'); //削除
+        Route::post('/course/invalid/{id}/', 'CourseController@invalid'); //無効
+        Route::post('/course/valid/{id}/', 'CourseController@valid'); //有効
 
         Route::get('/{id}/lesson/add/', 'LessonController@add'); //レッスン追加画面表示
         Route::get('/{course_id}/lesson/{id}', 'LessonController@index'); //レッスン表示

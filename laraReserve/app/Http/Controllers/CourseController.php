@@ -38,7 +38,7 @@ class CourseController extends Controller
                 return redirect('/login/twitter');
             }
         }
-        $course = Course::where('id', $id)->first();
+        $course = Course::where('id', $id)->where('valid', true )->first();
 
         $futureLessons = $course->getFutureLessons();
         $futureFirstLesson = $course->getFutureFirstLesson();
@@ -57,7 +57,7 @@ class CourseController extends Controller
             }
         }
 
-        $courses = Course::all();
+        $courses = Course::where('valid', true )->get();
         return view('welcome', ['courses' => $courses]);
     }
 
@@ -97,6 +97,7 @@ class CourseController extends Controller
             // ユーザはログインしている
             $user = Auth::user();
             $form += array('user_id' => $user->id);
+            $form += array('valid' => true);
             Log::debug('$form="' . print_r($form, true) . '"');
 
             $course->fill($form)->save();
@@ -122,7 +123,7 @@ class CourseController extends Controller
         return redirect('/course');
     }
 
-    public function delete(Request $request, $id)
+    public function invalid(Request $request, $id)
     {
         //削除対象レコードを検索
         $course = Course::find($id);
@@ -131,7 +132,26 @@ class CourseController extends Controller
             $user = Auth::user();
             if ($course->user->id === $user->id) {
                 //削除
-                $course->delete();
+                $course->valid = false;
+                $course->update();
+                //リダイレクト
+                return redirect('/course');
+            }
+        }
+
+        abort('403');
+    }
+
+    public function valid(Request $request, $id)
+    {
+        //削除対象レコードを検索
+        $course = Course::find($id);
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($course->user->id === $user->id) {
+                $course->valid = true;
+                $course->update();
                 //リダイレクト
                 return redirect('/course');
             }
@@ -234,8 +254,7 @@ class CourseController extends Controller
                 } else {
                     Log::debug('no input Address Image');
                 }
-            }
-            else{
+            } else {
                 Log::warning('別ユーザからクラス編集された。クラス編集を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
                 abort('403');
             }
