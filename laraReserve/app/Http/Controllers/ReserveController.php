@@ -74,7 +74,7 @@ class ReserveController extends Controller
         $user = Auth::user();
         $lesson = Lesson::find($request->lesson_id);
 
-        if($user->id === $lesson->course->user->id){
+        if($lesson != null){
             Log::info('予約削除 lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
             $lesson->cancelReserve();
         }
