@@ -14,8 +14,8 @@ class AddTextToCoursesTable extends Migration
     public function up()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->text('address_detail')->after('address');
-            $table->text('need')->after('address_detail');
+            $table->text('address_detail')->after('address')->nullable();;
+            $table->text('need')->after('address_detail')->nullable();;
         });
     }
 

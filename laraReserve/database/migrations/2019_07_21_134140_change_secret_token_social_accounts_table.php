@@ -16,7 +16,7 @@ class ChangeSecretTokenSocialAccountsTable extends Migration
         //
         Schema::table('social_accounts', function (Blueprint $table) {
             $table->dropColumn('secret_token');
-            $table->text('secret_token_enc');
+            $table->text('secret_token_enc')->nullable();;
         });
     }
 

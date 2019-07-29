@@ -15,7 +15,7 @@ class AddValidToCoursesTable extends Migration
     {
         Schema::table('courses', function (Blueprint $table) {
             //
-            $table->boolean('valid')->default(true);
+            $table->boolean('valid')->default(true)->nullable();;
         });
     }
 
