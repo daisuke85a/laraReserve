@@ -10,7 +10,7 @@ jobs:
       - image: circleci/php:7.1-node-browsers
     branches:
         only:
-          - test/circleci
+          - test/circleci 
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
