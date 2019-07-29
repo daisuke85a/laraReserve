@@ -63,6 +63,10 @@ jobs:
           cd laraReserve
           php artisan migrate --env=testing --database=sqlite_testing --force
       # run tests with phpunit or codecept
-      - run: ./laraReserve/vendor/bin/phpunit
+      - run: 
+         name: ./vendor/bin/phpunit
+         command: |
+          cd laraReserve
+          php vendor/bin/phpunit
       #- run: ./vendor/bin/codecept build
       #- run: ./vendor/bin/codecept run
