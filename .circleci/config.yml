@@ -76,7 +76,7 @@ jobs:
 
       # prepare the database
       - run:
-         name: php artisan migrate
+         name: php artisan migrate --env=testing --force
          command: |
           cd laraReserve
           php artisan migrate
