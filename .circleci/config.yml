@@ -46,11 +46,12 @@ jobs:
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
 
-      - run: sudo apt-get install -y libpng-dev
+       # Install Library 
+      - run: sudo apt-get install -y libpng-dev libjpeg-dev
 
-      - run:
-          name: Install PHP Extensions gd
-          command: sudo docker-php-ext-install gd
+       # Install PHP Extension 
+      - run: sudo docker-php-ext-configure gd --with-png-dir=/usr/include --with-jpeg-dir=/usr/include
+      - run: sudo docker-php-ext-install gd 
 
       - run:
           name: Install PHP extensions
