@@ -19,6 +19,7 @@ jobs:
     branches:
         only:
           - test/circleci 
+          - development
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
