@@ -14,7 +14,7 @@ class AddColumnAddressCoursesTable extends Migration
     public function up()
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('address')->after('fee');
+            $table->string('address')->after('fee')->nullable();
         });
     }
 

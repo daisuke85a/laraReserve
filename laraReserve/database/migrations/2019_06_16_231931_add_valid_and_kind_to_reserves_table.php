@@ -14,8 +14,8 @@ class AddValidAndKindToReservesTable extends Migration
     public function up()
     {
         Schema::table('reserves', function (Blueprint $table) {
-            $table->boolean('valid');
-            $table->integer('kind');
+            $table->boolean('valid')->nullable();;
+            $table->integer('kind')->nullable();;
         });
     }
 
