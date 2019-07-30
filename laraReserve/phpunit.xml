@@ -29,7 +29,5 @@
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite_testing"/>
-        <env name="APP_KEY" value="base64:cS7InX4ww+/Op9cnPWrRqJM+bFM00pvmGzL80r3EPS0="/>
-    </php>
+        <server name="DB_DATABASE" value="test_laraReserve"/>    </php>
 </phpunit>

@@ -56,12 +56,11 @@ jobs:
       #     - node_modules
 
       # prepare the database
-      - run: touch laraReserve/storage/testing.sqlite
       - run:
-         name: php artisan migrate --env=testing --database=sqlite_testing --force
+         name: php artisan migrate
          command: |
           cd laraReserve
-          php artisan migrate --env=testing --database=sqlite_testing --force
+          php artisan migrate
       # run tests with phpunit or codecept
       - run: 
          name: ./vendor/bin/phpunit
