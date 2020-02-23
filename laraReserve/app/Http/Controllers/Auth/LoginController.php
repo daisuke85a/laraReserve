@@ -12,6 +12,7 @@ use App\Mail\ReserveUserNotification;
 use App\Reserve;
 use App\Services\SocialService;
 use App\Services\ReserveService;
+use App\Services\LikeService;
 use App\User;
 use Cookie;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -129,25 +130,16 @@ class LoginController extends Controller
             //イイねがCookieに入力されている場合は保存する
             if (!empty($noAuthLikeRequest)) {
 
-                //予約の重複を防ぐ
-                if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $noAuthLikeRequest)->count()) {
-                    Log::info('ログイン前にしたイイねを実行 COURSE ID="' . print_r($noAuthLikeRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');
-                    $like = new Like();
-                    $like->fill(['user_id' => Auth::user()->id]);
-                    $like->fill(['course_id' => $noAuthLikeRequest]);
+                $like = LikeService::create(Auth::user(), $noAuthLikeRequest);
 
-                    $like->save();
-
+                if($like != null){
                     $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
 
                     $course = Course::where('id', $noAuthLikeRequest)->first();
-
                     $futureLessons = $course->getFutureLessons();
                     $futureFirstLesson = $course->getFutureFirstLesson();
 
                     return view('course.view', ['course' => $course, 'futureLessons' => $futureLessons, 'futureFirstLesson' => $futureFirstLesson]);
-                }else{
-                    Log::info('ログイン前にしたイイねは重複のため実行せず COURSE ID="' . print_r($noAuthLikeRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');                    
                 }
             }
 
