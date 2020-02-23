@@ -11,6 +11,8 @@ use App\Mail\ReserveNotification;
 use App\Mail\ReserveUserNotification;
 use App\Reserve;
 use App\Services\SocialService;
+use App\Services\ReserveService;
+use App\Services\LikeService;
 use App\User;
 use Cookie;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -53,11 +55,11 @@ class LoginController extends Controller
     }
 
     /**
-     *      * OAuth認証先にリダイレクト
-     *           *
-     *                * @param str $provider
-     *                     * @return \Illuminate\Http\Response
-     *                          */
+     ** OAuth認証先にリダイレクト
+     **
+     ** @param str $provider
+     ** @return \Illuminate\Http\Response
+     **/
     public function redirectToProvider($provider)
     {
         Log::debug('redirectToProvider="' . print_r($provider, true) . '"');
@@ -65,11 +67,11 @@ class LoginController extends Controller
     }
 
     /**
-     *      * OAuth認証の結果受け取り
-     *           *
-     *                * @param str $provider
-     *                     * @return \Illuminate\Http\Response
-     *                          */
+     ** OAuth認証の結果受け取り
+     **
+     ** @param str $provider
+     ** @return \Illuminate\Http\Response
+     **/
     public function handleProviderCallback($provider)
     {
         Log::debug('handleProviderCallback="' . print_r($provider, true) . '"');
@@ -111,25 +113,14 @@ class LoginController extends Controller
             //予約IDと予約種別が両方Cookieに入力されている場合は保存する
             if (!empty($noAuthReserveRequest) && !empty($noAuthReserveRequestKind)) {
 
-                //予約の重複を防ぐ
-                if (0 === Reserve::where('user_id', Auth::user()->id)->where('lesson_id', $noAuthReserveRequest)->count()) {
-                    Log::info('ログイン前にした予約操作を実行 Lesson ID="' . print_r($noAuthReserveRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');
-                    $reserve = new Reserve();
-                    $reserve->fill(['user_id' => Auth::user()->id]);
-                    $reserve->fill(['lesson_id' => $noAuthReserveRequest]);
-                    $reserve->fill(['kind' => $noAuthReserveRequestKind]);
-                    $reserve->fill(['valid' => 1]);
-                    $reserve->save();
+                $reserve = ReserveService::create(Auth::user(), $noAuthReserveRequest, $noAuthReserveRequestKind);
 
+                if($reserve != null){
                     $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
                     $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
 
                     return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
-                }else{
-                    Log::info('ログイン前にした予約操作は重複のため実行せず COURSE ID="' . print_r($noAuthReserveRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');                    
                 }
-
-
             }
 
             //ログイン前にしてたイイね操作を実行する
@@ -139,25 +130,16 @@ class LoginController extends Controller
             //イイねがCookieに入力されている場合は保存する
             if (!empty($noAuthLikeRequest)) {
 
-                //予約の重複を防ぐ
-                if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $noAuthLikeRequest)->count()) {
-                    Log::info('ログイン前にしたイイねを実行 COURSE ID="' . print_r($noAuthLikeRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');
-                    $like = new Like();
-                    $like->fill(['user_id' => Auth::user()->id]);
-                    $like->fill(['course_id' => $noAuthLikeRequest]);
+                $like = LikeService::create(Auth::user(), $noAuthLikeRequest);
 
-                    $like->save();
-
+                if($like != null){
                     $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
 
                     $course = Course::where('id', $noAuthLikeRequest)->first();
-
                     $futureLessons = $course->getFutureLessons();
                     $futureFirstLesson = $course->getFutureFirstLesson();
 
                     return view('course.view', ['course' => $course, 'futureLessons' => $futureLessons, 'futureFirstLesson' => $futureFirstLesson]);
-                }else{
-                    Log::info('ログイン前にしたイイねは重複のため実行せず COURSE ID="' . print_r($noAuthLikeRequest, true) . '" ユーザーID="' . print_r(Auth::user()->id, true) . '" ');                    
                 }
             }
 
