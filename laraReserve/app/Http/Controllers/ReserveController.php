@@ -7,6 +7,7 @@ use App\Lesson;
 use App\Mail\ReserveNotification;
 use App\Mail\ReserveUserNotification;
 use App\Reserve;
+use App\Services\ReserveService;
 use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,36 +31,14 @@ class ReserveController extends Controller
             Log::info('未ログインで予約操作したため一旦Cokkieに保存する lesson_id="' . print_r($request->lesson_id, true) . '" kind="' . print_r($request->kind, true) . '" ');                    
         }
 
-        // $this->middleware('auth');
-
         if (Auth::check()) {
-            // ユーザはログインしている
+            $reserve = ReserveService::create(Auth::user(), $request->lesson_id, $request->kind);
 
-            // 同ユーザによりレッスン予約済みの場合は予約をガードする
-            if (0 === Reserve::where('user_id', Auth::user()->id)->where('lesson_id', $request->lesson_id)->count()) {
-                // 満席の場合は予約をガードする
-                $lesson = Lesson::findOrFail($request->lesson_id);
-                if (!$lesson->isMaxReserve()) {
+            if($reserve != null){
+                $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
+                $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
 
-                    $user = Auth::user();
-                    Log::info('ログイン中に予約操作を実行 lesson_id="' . print_r($request->lesson_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
-
-                    $reserve = new Reserve();
-                    $reserve->fill(['user_id' => $user->id]);
-                    $reserve->fill(['lesson_id' => $request->lesson_id]);
-                    $reserve->fill(['kind' => $request->kind]);
-                    $reserve->fill(['valid' => 1]);
-
-                    $reserve->save();
-
-                    $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
-                    $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
-
-                    return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
-                }
-            }
-            else{
-                Log::info('同ユーザによりレッスン予約済みの場合は予約をガードする lesson_id="' . print_r($request->lesson_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
+                return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
             }
             
         } else {

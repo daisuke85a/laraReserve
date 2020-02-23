@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\SendMail;
 use App\Like;
 use App\Mail\LikeOwnerNotification;
+use App\Services\LikeService;
 use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,25 +23,13 @@ class LikeController extends Controller
         }
 
         if (Auth::check()) {
-            // ユーザはログインしている
+            $like = LikeService::create(Auth::user(),$request->course_id);
 
-            if (0 === Like::where('user_id', Auth::user()->id)->where('course_id', $request->course_id)->count()) {
-
-                $user = Auth::user();
-                Log::info('ログイン中にイイね操作を実行 lesson_id="' . print_r($request->course_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
-
-                $like = new Like();
-                $like->fill(['user_id' => $user->id]);
-                $like->fill(['course_id' => $request->course_id]);
-
-                $like->save();
-
+            if($like != null){
                 $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
             }
-
         } else {
             return redirect('/login/twitter');
-
         }
 
         return redirect('/course/' . $request->course_id);
