@@ -21,46 +21,41 @@ class UserController extends Controller
     {
         $userId = intval($userId);
 
-        //未ログイン時は閲覧禁止
-        if (Auth::check()) {
-            $user = User::findOrFail($userId);
-            $authUser = Auth::user();
+        $user = User::findOrFail($userId);
+        $authUser = Auth::user();
 
-            //自分以外は閲覧禁止
-            if ($authUser->id === $user->id) {
+        //自分以外は閲覧禁止
+        if ($authUser->id === $user->id) {
 
-                // social_account情報
-                $socialAccounts = [];
-                foreach ($user->socialAccounts as $account) {
-                    $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
-                }
+            // social_account情報
+            $socialAccounts = [];
+            foreach ($user->socialAccounts as $account) {
+                $socialAccounts[$account->provider_name]['link'] = SocialService::findLink($account->provider_name, $account->token, $account->secret_token_enc);
+            }
 
-                // 現在有効な予約を取得する
-                // TODO: 開催終了した予約を分けたい
-                // TODO: クラスが削除されたら、関連するレッスンや予約を削除したい
-                // TODO: もしかしたら、DBからは削除せずに、無効フラグを立てて残しておきたいかも。
-                $reserves = [];
-                $reservesCount = 0;
-                foreach ($user->reserves as $reserve) {
-                    $lesson = Lesson::find($reserve->lesson_id);
-                    if ($lesson !== null) {
-                        $course = Course::find($lesson->course_id);
-                        if ($course !== null) {
-                            $reserves[$reservesCount] = $reserve;
-                            $reservesCount++;
-                        }
+            // 現在有効な予約を取得する
+            // TODO: 開催終了した予約を分けたい
+            // TODO: クラスが削除されたら、関連するレッスンや予約を削除したい
+            // TODO: もしかしたら、DBからは削除せずに、無効フラグを立てて残しておきたいかも。
+            $reserves = [];
+            $reservesCount = 0;
+            foreach ($user->reserves as $reserve) {
+                $lesson = Lesson::find($reserve->lesson_id);
+                if ($lesson !== null) {
+                    $course = Course::find($lesson->course_id);
+                    if ($course !== null) {
+                        $reserves[$reservesCount] = $reserve;
+                        $reservesCount++;
                     }
                 }
-
-                return view('user/show', [
-                    'user' => $user,
-                    'socialAccounts' => $socialAccounts,
-                    'reserves' => $reserves,
-                ]);
             }
-        }
 
-        abort('403');
+            return view('user/show', [
+                'user' => $user,
+                'socialAccounts' => $socialAccounts,
+                'reserves' => $reserves,
+            ]);
+        }
     }
 
     /**
@@ -73,19 +68,15 @@ class UserController extends Controller
     {
         $userId = intval($id);
 
-        //未ログイン時は閲覧禁止
-        if (Auth::check()) {
-            $user = User::findOrFail($id);
-            $authUser = Auth::user();
+        $user = User::findOrFail($id);
+        $authUser = Auth::user();
 
-            //自分以外は閲覧禁止
-            if ($authUser->id === $user->id) {
-                return view('user/edit', [
-                    'user' => $user,
-                ]);
-            }
+        //自分以外は閲覧禁止
+        if ($authUser->id === $user->id) {
+            return view('user/edit', [
+                'user' => $user,
+            ]);
         }
-        abort('403');
     }
 
     /**
@@ -107,20 +98,16 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        //未ログイン時は閲覧禁止
-        if (Auth::check()) {
-            $user = User::findOrFail($id);
-            $authUser = Auth::user();
+        $user = User::findOrFail($id);
+        $authUser = Auth::user();
 
-            //自分以外は更新禁止
-            if ($authUser->id === $user->id) {
+        //自分以外は更新禁止
+        if ($authUser->id === $user->id) {
 
-                $user->profile = $request->profile;
-                $user->save();
+            $user->profile = $request->profile;
+            $user->save();
 
-                return redirect('user/' . $user->id);
-            }
+            return redirect('user/' . $user->id);
         }
-        abort('403');
     }
 }

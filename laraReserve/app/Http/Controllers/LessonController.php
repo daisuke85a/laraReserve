@@ -23,28 +23,22 @@ class LessonController extends Controller
         $form = $request->all();
         unset($form['_token']);
 
-        if (Auth::check()) {
-            // ユーザはログインしている
-            $user = Auth::user();
-            $id = (int) ($form["course_id"]);
-            $course = Course::findOrFail((int) ($form["course_id"]));
+        // ユーザはログインしている
+        $user = Auth::user();
+        $id = (int) ($form["course_id"]);
+        $course = Course::findOrFail((int) ($form["course_id"]));
 
-            if ($course->user->id === $user->id) {
-                $lesson = new Lesson();
-                Log::info('レッスンを追加 $form[course_id]"' . print_r($form["course_id"], true) . '"');
+        if ($course->user->id === $user->id) {
+            $lesson = new Lesson();
+            Log::info('レッスンを追加 $form[course_id]"' . print_r($form["course_id"], true) . '"');
 
-                $start = new \DateTime($form["date"] . " " . $form["start_time"]);
-                $end = new \DateTime($form["date"] . " " . $form["end_time"]);
+            $start = new \DateTime($form["date"] . " " . $form["start_time"]);
+            $end = new \DateTime($form["date"] . " " . $form["end_time"]);
 
-                $lesson->fill(['course_id' => $form["course_id"], 'start' => $start, 'end' => $end]);
-                $lesson->save();
-            } else {
-                Log::warning('別ユーザからレッスン追加された。レッスン追加を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-                abort('403');
-            }
-
+            $lesson->fill(['course_id' => $form["course_id"], 'start' => $start, 'end' => $end]);
+            $lesson->save();
         } else {
-            Log::warning('未ログインのためクラス編集を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            Log::warning('別ユーザからレッスン追加された。レッスン追加を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
             abort('403');
         }
 
@@ -53,19 +47,14 @@ class LessonController extends Controller
 
     public function delete(Request $req, $course_id, $id)
     {
-        if (Auth::check()) {
+        $user = Auth::user();
+        $lesson = lesson::findOrFail($id);
 
-            $user = Auth::user();
-            $lesson = lesson::findOrFail($id);
-
-            if ($lesson->course->user->id === $user->id) {
-                $lesson->delete();
-                return redirect('course');
-            } else {
-                Log::warning('別ユーザからレッスン削除操作された。レッスン追加を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
-            }
+        if ($lesson->course->user->id === $user->id) {
+            $lesson->delete();
+            return redirect('course');
         } else {
-            Log::warning('未ログインのためレッスン削除操作を不許可とする'); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
+            Log::warning('別ユーザからレッスン削除操作された。レッスン追加を不許可とする ユーザーID="' . print_r(Auth::user()->id, true) . '" '); //TODO: errorsに格納できればベスト。ただ、通常運用では通らないコードなので、対応は任意でOK
         }
 
         abort('403');

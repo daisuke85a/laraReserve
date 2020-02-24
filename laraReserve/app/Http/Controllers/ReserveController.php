@@ -24,26 +24,14 @@ class ReserveController extends Controller
     public function create(Request $request)
     {
 
-        // 未ログインの場合は一旦Cokkieに保存する
-        if (Auth::check() === false) {
-            Cookie::queue(Cookie::make('noAuthReserveRequest', $request->lesson_id, 30));
-            Cookie::queue(Cookie::make('noAuthReserveRequestKind', $request->kind, 30));
-            Log::info('未ログインで予約操作したため一旦Cokkieに保存する lesson_id="' . print_r($request->lesson_id, true) . '" kind="' . print_r($request->kind, true) . '" ');                    
-        }
+        $reserve = ReserveService::create(Auth::user(), $request->lesson_id, $request->kind);
 
-        if (Auth::check()) {
-            $reserve = ReserveService::create(Auth::user(), $request->lesson_id, $request->kind);
+        if($reserve != null){
+            $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
+            $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
 
-            if($reserve != null){
-                $this->dispatch(new SendMail($reserve->getUserEmail(), new ReserveUserNotification($reserve)));
-                $this->dispatch(new SendMail($reserve->getOwnerEmail(), new ReserveNotification($reserve)));
-
-                return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
-            }
-            
-        } else {
-            return redirect('/login/twitter');
-        }
+            return view('course.reserve')->with(['course' => $reserve->lesson->course, 'lesson' => $reserve->lesson]);
+        }            
 
         return redirect('/');
     }
