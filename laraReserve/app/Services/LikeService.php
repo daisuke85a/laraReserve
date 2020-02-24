@@ -21,4 +21,11 @@ class LikeService
         return null;
     }
 
+   public static function delete($user, $course_id){
+        //削除対象レコードを検索
+        $like = Like::where('course_id', $course_id)->where('user_id', $user->id)->first();
+        //削除
+        $like->delete();
+   }    
+
 }

@@ -27,13 +27,7 @@ class LikeController extends Controller
 
     public function delete(Request $request)
     {
-        $user = Auth::user();
-        Log::info('イイね削除操作 course_id="' . print_r($request->course_id, true) . '" ユーザーID="' . print_r($user->id, true) . '" ');
-        //削除対象レコードを検索
-        $like = Like::where('course_id', $request->course_id)->where('user_id', Auth::user()->id)->first();
-
-        //削除
-        $like->delete();
+        LikeService::delete(Auth::user(),$request->course_id);
 
         //リダイレクト
         return redirect('/course/' . $request->course_id);
