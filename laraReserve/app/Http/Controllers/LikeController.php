@@ -6,7 +6,6 @@ use App\Jobs\SendMail;
 use App\Like;
 use App\Mail\LikeOwnerNotification;
 use App\Services\LikeService;
-use Cookie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -16,20 +15,10 @@ class LikeController extends Controller
     public function create(Request $request)
     {
 
-        // 未ログインの場合は一旦Cokkieに保存する
-        if (Auth::check() === false) {
-            Cookie::queue(Cookie::make('noAuthLikeRequest', $request->course_id, 30));
-            Log::info('未ログインでイイね操作したため一旦Cokkieに保存する course_id="' . print_r($request->course_id, true) . '"');                    
-        }
+        $like = LikeService::create(Auth::user(),$request->course_id);
 
-        if (Auth::check()) {
-            $like = LikeService::create(Auth::user(),$request->course_id);
-
-            if($like != null){
-                $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
-            }
-        } else {
-            return redirect('/login/twitter');
+        if($like != null){
+            $this->dispatch(new SendMail($like->getOwnerEmail(), new LikeOwnerNotification($like)));
         }
 
         return redirect('/course/' . $request->course_id);
