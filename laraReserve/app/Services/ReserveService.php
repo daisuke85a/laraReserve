@@ -35,4 +35,16 @@ class ReserveService
         return null;
     }
 
+    public static function delete($user, $lesson_id){
+        $lesson = Lesson::find($lesson_id);
+        if($lesson != null){
+            Log::info('予約削除 lesson_id="' . print_r($lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
+            $lesson->cancelReserve();
+        }
+        else{
+            Log::warning('別のユーザから予約削除を試みられた lesson_id="' . print_r($lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
+        }
+
+        return $lesson;
+    }
 }

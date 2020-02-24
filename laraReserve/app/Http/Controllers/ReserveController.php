@@ -38,16 +38,7 @@ class ReserveController extends Controller
 
     public function delete(Request $request)
     {
-        $user = Auth::user();
-        $lesson = Lesson::find($request->lesson_id);
-
-        if($lesson != null){
-            Log::info('予約削除 lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
-            $lesson->cancelReserve();
-        }
-        else{
-            Log::warning('別のユーザから予約削除を試みられた lesson_id="' . print_r($request->lesson_id, true) .  '" ユーザーID="' . print_r($user->id, true) . '"  ');
-        }
+        $lesson = ReserveService::delete(Auth::user(), $request->lesson_id);
 
         return view('course.cancel')->with(['course' => $lesson->course, 'lesson' => $lesson]);
 
