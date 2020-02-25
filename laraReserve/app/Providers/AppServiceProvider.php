@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Validator::extend('no_ctrl_chars', 'App\Validation\ParameterValidator@validateNoControlCharacters');
+        Validator::extend('no_ctrl_chars_crlf', 'App\Validation\ParameterValidator@validateNoControlCharactersWithoutCRLF');
     }
 }

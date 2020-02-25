@@ -1,99 +1,97 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('title')
+<title>ダンスで楽しく運動不足を解消しよう | EEDance</title>
+@endsection
+@section('description')
+<meta name="description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。">
+@endsection
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+@section('ogp')
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@daisuke7924" />
+<meta name="twitter:creator" content="@daisuke7924" />
+<meta property="og:url" content="{{url()->current()}}" />
+<meta property="og:title" content="ダンスで楽しく運動不足を解消しよう | EEDance" />
+<meta property="og:description" content="ダンスのレッスンの受講や開催ができます。Twitter連携で簡単に利用できます。" />
+<meta property="og:image" content="{{url("/")}}/storage/default/top1.jpg" />
+@endsection
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+@section('content')
+@if (count($errors) > 0)
+<div>
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{$error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+@if (session('status'))
+<div class="alert alert-success" role="alert">
+    {{ session('status') }}
+</div>
+@endif
 
-            .full-height {
-                height: 100vh;
-            }
+<section class="jumbotron text-center jumbotron-fluid">
+    <div class="container py-5">
+        <h1 class="jumbotron-heading text-white py-5">ダンスで楽しく<br />運動不足を解消しよう</h1>
+        <p class="lead text-white">
+            ダンスのレッスンの受講や開催ができます</p>
+        <p class="lead text-white">
+            Twitter連携で簡単に予約できます</p>
+        <p class="py-3">
+            <a href="#lesson-list" class="btn btn-primary my-2">ダンスレッスンを受ける</a>
+            <a href="/course/add" class="btn btn-secondary my-2">ダンスレッスンを開催する</a>
+        </p>
+    </div>
+</section>
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+<div class="container">
+    <div class="album py-5 bg-light" id="lesson-list">
+        <div class="container">
+            <div class="row">
+                @foreach ($courses as $course)
+                <div class="col-md-6">
+                    <a href="/course/{{$course->id}}">
+                        <div class="card mb-4 shadow-sm">
+                            @if ($course->mainImage != null)
+                            <img src="/storage/image/{{$course->mainImage->name}}" alt="ClassMainImage"
+                                style="max-width:100%">
+                            @endif
 
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+                            <div class="card-body">
+                                <small
+                                    class="text-muted">{{$course->min_from_station . ' ' }}{{$course->getFeeString()}}</small>
+                                <p class="card-text">{{$course->title}}</p>
+                                <div class="d-flex justify-content-left align-items-center">
+                                    <?php $futureLessons = $course->getFutureLessons(); ?>
+                                    @if (count($futureLessons) > 0)
+                                    @foreach ($futureLessons as $lesson)
+                                    <p class="badge badge-pill badge-secondary mr-2">{{$lesson->getStartDay()}}</p>
+                                    @endforeach
+                                    @else
+                                    <div class="col-md-12">
+                                        <p class="badge badge-pill badge-secondary mr-2">レッスン予定なし</p>
+                                    </div>
+                                    @endif
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <small class="text-muted">{{$course->user->name}}</small>
+                                    @if (null !== $course->user->getTwitterLink())
+                                    <a href="{{ $course->user->getTwitterLink() }}" target="_blank"
+                                        rel="noopener noreferrer">
+                                        <i class="fab fa-twitter-square"></i>
+                                    </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                @endforeach
             </div>
         </div>
-    </body>
-</html>
+    </div>
+
+    @endsection
