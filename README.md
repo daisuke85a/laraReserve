@@ -1,6 +1,6 @@
 # 概要
 Twitter利用者向けダンスレッスン予約サービス<br/>
-運営中のサイト:https://eedance.funspot.tokyo/
+サイト:https://eedance.funspot.tokyo/（現在は運用停止中）
 
 ## 機能
 - 簡単にダンスレッスンが開催できる
